@@ -3,279 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>高中英语通关系统</title>
+  <title>高中英语通关系统 - 总控台</title>
   <style>
-    /* 全局字体与排版：兼容手机与平板 */
-    :root {
-      --primary: #0b2b4a;
-      --accent: #1f5880;
-      --bg: #f0f5fb;
-      --text: #1a2a3a;
-      --card-bg: #ffffff;
-      --card-border: #e6eef6;
-    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { 
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; 
-      background: var(--bg); 
-      padding: 20px 16px 40px; 
-      color: var(--text); 
-      font-size: 16px; /* 基础字号加大，利于平板阅读 */
-      line-height: 1.6;
-    }
-    .container { max-width: 900px; margin: 0 auto; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 20px 16px 0; color: #1a2a3a; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+    .container { max-width: 1000px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; height: 100%; }
     
-    /* 主标题 */
-    h1 { font-size: 1.6rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
-    .subtitle { font-size: 0.95rem; color: #5d7385; margin-bottom: 24px; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: #0b2b4a; margin-bottom: 6px; text-align: center; }
+    .subtitle { font-size: 0.9rem; color: #5d7385; margin-bottom: 16px; text-align: center; }
 
-    /* 导航栏（顶部大按钮） */
-    .main-nav { 
-      display: flex; 
-      gap: 12px; 
-      background: var(--card-bg); 
-      padding: 8px; 
-      border-radius: 16px; 
-      margin-bottom: 24px; 
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
-      border: 1px solid var(--card-border);
-    }
-    .nav-btn { 
-      flex: 1; 
-      background: transparent; 
-      border: none; 
-      padding: 14px 10px; 
-      border-radius: 12px; 
-      font-size: 1rem; 
-      font-weight: 600; 
-      color: #5d7385; 
-      cursor: pointer; 
-      transition: 0.2s; 
-      text-align: center;
-    }
-    .nav-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(31, 88, 128, 0.3); }
+    /* 主控制台导航 */
+    .main-nav { display: flex; gap: 10px; background: white; padding: 8px; border-radius: 16px; margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #e6eef6; justify-content: center; flex-shrink: 0; }
+    .nav-btn { background: transparent; border: none; padding: 12px 20px; border-radius: 12px; font-size: 1rem; font-weight: 600; color: #5d7385; cursor: pointer; transition: 0.2s; text-align: center; flex: 1; }
+    .nav-btn.active { background: #1f5880; color: white; box-shadow: 0 4px 12px rgba(31, 88, 128, 0.3); }
     .nav-btn:hover:not(.active) { background: #e6f0f8; }
 
-    /* 页面容器 */
-    .page { display: none; animation: fadeIn 0.3s ease; }
-    .page.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    /* 内部模块导航（二级） */
+    .sub-nav { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; flex-shrink: 0; }
+    .sub-btn { background: #e3edf5; border: 1px solid #c1d7e9; padding: 8px 16px; border-radius: 30px; font-size: 0.9rem; font-weight: 600; color: #1f5880; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+    .sub-btn.active { background: #2a7faa; color: white; border-color: #2a7faa; }
+    .sub-btn:hover:not(.active) { background: #d0e2f0; }
 
-    /* 卡片通用样式 */
-    .card { 
-      background: var(--card-bg); 
-      border-radius: 20px; 
-      padding: 24px 20px; 
-      box-shadow: 0 6px 18px rgba(0, 20, 30, 0.06); 
-      border: 1px solid var(--card-border); 
-      margin-bottom: 20px; 
-    }
-    .card-title { font-weight: 700; font-size: 1.3rem; color: #134b6b; margin-bottom: 16px; border-bottom: 2px solid #e3edf5; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-    .card-title .status { font-size: 0.8rem; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: #e3edf5; color: #1f5880; }
-
-    /* 模块一：基础建设 - 入口网格 */
-    .module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media (max-width: 600px) { .module-grid { grid-template-columns: 1fr; } }
+    /* 内容展示区（iframe 容器） */
+    .content-area { flex: 1; background: white; border-radius: 20px 20px 0 0; overflow: hidden; border: 1px solid #e6eef6; border-bottom: none; box-shadow: 0 -4px 18px rgba(0,0,0,0.03); display: none; flex-direction: column; }
+    .content-area.active { display: flex; }
     
-    .module-card { 
-      background: #fafdff; 
-      border: 1px solid #d6e4f0; 
-      border-radius: 16px; 
-      padding: 20px; 
-      cursor: pointer; 
-      transition: 0.2s;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .module-card:hover { background: #e6f0f8; border-color: var(--accent); transform: translateY(-2px); }
-    .module-card h3 { color: var(--accent); font-size: 1.2rem; margin-bottom: 8px; }
-    .module-card p { font-size: 0.9rem; color: #666; margin-bottom: 16px; }
-    .module-card .tag { align-self: flex-start; background: #e3edf5; color: #1f5880; font-size: 0.8rem; padding: 4px 12px; border-radius: 20px; font-weight: 600; }
+    .iframe-wrapper { flex: 1; position: relative; width: 100%; height: 100%; }
+    iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-    /* 模块二：单元练习列表 */
-    .unit-list { list-style: none; }
-    .unit-list li { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      padding: 16px 0; 
-      border-bottom: 1px solid #e3edf5; 
-      font-size: 1.05rem;
+    /* 页面占位（单元练习未完成时） */
+    .placeholder-page { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; color: #888; padding: 40px; text-align: center; }
+    .placeholder-page h3 { color: #555; margin-bottom: 10px; }
+    
+    /* 移动端优化 */
+    @media (max-width: 600px) {
+      .main-nav { flex-wrap: wrap; }
+      .nav-btn { flex: 0 0 48%; font-size: 0.9rem; padding: 10px; }
     }
-    .unit-list li:last-child { border-bottom: none; }
-    .unit-list li .unit-name { font-weight: 600; color: var(--text); }
-    .unit-list li .unit-desc { font-size: 0.85rem; color: #888; margin-left: 10px; }
-    .unit-list li .btn-small { 
-      background: #e3edf5; color: #1f5880; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.85rem; 
-    }
-    .unit-list li .btn-small:hover { background: #c1d7e9; }
-    .unit-list li.locked { opacity: 0.6; }
-    .unit-list li.locked .btn-small { background: #e0e0e0; color: #888; cursor: not-allowed; }
-
-    /* 预留的 Day 占位 */
-    .day-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
-    .day-item { 
-      background: #f0f5fb; border: 1px dashed #b0cde0; border-radius: 12px; padding: 16px; text-align: center; color: #1f5880; font-weight: 600; cursor: pointer;
-    }
-    .day-item.done { background: #e3f5e9; border: 1px solid #a3d9b1; color: #1a7a3a; }
-    .day-item.exam { background: #fdf0e3; border: 1px solid #f2c5a1; color: #b16a3a; }
-
-    /* 弹窗遮罩（用于打开词缀/介词详情） */
-    .overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-    .overlay.show { display: flex; }
-    .overlay-content { background: white; width: 100%; max-width: 800px; max-height: 90vh; border-radius: 20px; overflow-y: auto; padding: 24px; position: relative; }
-    .close-btn { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888; }
-
-    /* 通用按钮 */
-    .btn-main { background: var(--accent); color: white; border: none; padding: 14px 24px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s; }
-    .btn-main:hover { background: #13466a; }
   </style>
 </head>
 <body>
 <div class="container">
-  
   <h1>🎓 高中英语通关系统</h1>
   <div class="subtitle">构词法基建 · 单元实战 · 阅读写作</div>
 
-  <!-- 主导航 -->
-  <div class="main-nav">
+  <!-- 一级导航 -->
+  <div class="main-nav" id="mainNav">
     <button class="nav-btn active" data-page="page-basic">📦 基础建设</button>
     <button class="nav-btn" data-page="page-unit">📖 单元练习</button>
     <button class="nav-btn" data-page="page-exam">✍️ 阅读写作</button>
   </div>
 
-  <!-- ================= 页面一：基础建设（词缀 + 介词） ================= -->
-  <div class="page active" id="page-basic">
-    <div class="card">
-      <div class="card-title">📦 基础建设 <span class="status">已完成</span></div>
-      
-      <div class="module-grid">
-        <!-- 词缀基因库入口 -->
-        <div class="module-card" onclick="openOverlay('overlay-affix')">
-          <div>
-            <h3>🌳 词缀基因库</h3>
-            <p>涵盖 30 天规划，目前已开放 Day 1-7（基础营）。</p>
-          </div>
-          <span class="tag">Day 1-7 已就绪</span>
-        </div>
+  <!-- ================= 页面一：基础建设 ================= -->
+  <div class="content-area active" id="page-basic">
+    <!-- 二级导航：词缀 vs 介词 -->
+    <div class="sub-nav" id="basicSubNav" style="padding: 12px 12px 0;">
+      <button class="sub-btn active" data-sub="sub-affix">🌳 词缀基因库 (Day 1-6)</button>
+      <button class="sub-btn" data-sub="sub-prep">🧭 介词实验室 (30题)</button>
+    </div>
 
-        <!-- 介词实验室入口 -->
-        <div class="module-card" onclick="openOverlay('overlay-prep')">
-          <div>
-            <h3>🧭 介词实验室</h3>
-            <p>14 个核心介词画面感 + 动词魔方 + 30 题错题本。</p>
-          </div>
-          <span class="tag">30 题挑战</span>
-        </div>
-      </div>
+    <!-- 词缀库容器 -->
+    <div class="iframe-wrapper" id="sub-affix" style="display: block;">
+      <!-- 默认加载 Day 1 -->
+      <iframe src="day1.html" title="Day 1"></iframe>
+    </div>
+
+    <!-- 介词实验室容器 -->
+    <div class="iframe-wrapper" id="sub-prep" style="display: none;">
+      <iframe src="preposition-lab.html" title="介词实验室"></iframe>
     </div>
   </div>
 
-  <!-- ================= 页面二：单元练习（预留） ================= -->
-  <div class="page" id="page-unit">
-    <div class="card">
-      <div class="card-title">📖 单元练习 <span class="status">待开发</span></div>
-      <p style="color:#666; margin-bottom:16px;">这里将按 Unit 1 - Unit N 的顺序，把课本核心词用词根法二次拆解，并配上微语境练习。</p>
-      <ul class="unit-list">
-        <li>
-          <div><span class="unit-name">Unit 1: Teenage Life</span><span class="unit-desc">核心词汇落地 + Chunk 阅读</span></div>
-          <button class="btn-small" onclick="alert('Unit 1 正在施工中...')">即将上线</button>
-        </li>
-        <li class="locked">
-          <div><span class="unit-name">Unit 2: Travelling Around</span><span class="unit-desc">待规划</span></div>
-          <button class="btn-small" disabled>锁定</button>
-        </li>
-        <li class="locked">
-          <div><span class="unit-name">Unit 3: Sports and Fitness</span><span class="unit-desc">待规划</span></div>
-          <button class="btn-small" disabled>锁定</button>
-        </li>
-      </ul>
+  <!-- ================= 页面二：单元练习 (占位) ================= -->
+  <div class="content-area" id="page-unit">
+    <div class="placeholder-page">
+      <h3>🚧 单元实战 (Unit 1 - Unit N)</h3>
+      <p>正在开发中，将包含：核心词词根拆解 + 阅读 Chunk 训练 + 作文模板。</p>
+      <p style="margin-top:20px; font-size:0.9rem;">后续设计完成后会链接到对应的 HTML 文件。</p>
     </div>
   </div>
 
-  <!-- ================= 页面三：阅读与写作（预留） ================= -->
-  <div class="page" id="page-exam">
-    <div class="card">
-      <div class="card-title">✍️ 阅读与写作 <span class="status">待开发</span></div>
-      <p style="color:#666; margin-bottom:16px;">含 Chunk 意群切分训练、作文万能框架、高级词替换。</p>
-      <div style="background:#fafafa; border:2px dashed #ccc; border-radius:16px; padding:30px; text-align:center; color:#888;">
-        🚧 模块开发中，敬请期待
-      </div>
+  <!-- ================= 页面三：阅读写作 (占位) ================= -->
+  <div class="content-area" id="page-exam">
+    <div class="placeholder-page">
+      <h3>✍️ 阅读与写作</h3>
+      <p>正在开发中，含 Chunk 意群切分和作文高级词替换。</p>
     </div>
   </div>
 
-</div>
-
-<!-- ================= 弹窗：词缀基因库 ================= -->
-<div class="overlay" id="overlay-affix">
-  <div class="overlay-content">
-    <button class="close-btn" onclick="closeOverlay('overlay-affix')">✕</button>
-    <h2 style="color:#134b6b; margin-bottom:16px;">🌳 词缀基因库 (Day 1-7)</h2>
-    
-    <!-- Day 导航 -->
-    <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
-      <button class="nav-btn active" style="flex:0 0 auto; padding:8px 16px; font-size:0.9rem;" onclick="alert('Day 1 基础营')">Day 1</button>
-      <button class="nav-btn" style="flex:0 0 auto; padding:8px 16px; font-size:0.9rem;" onclick="alert('Day 2 方向')">Day 2</button>
-      <button class="nav-btn" style="flex:0 0 auto; padding:8px 16px; font-size:0.9rem;" onclick="alert('Day 3 建造')">Day 3</button>
-      <button class="nav-btn" style="flex:0 0 auto; padding:8px 16px; font-size:0.9rem;" onclick="alert('Day 4 否定')">Day 4</button>
-      <button class="nav-btn" style="flex:0 0 auto; padding:8px 16px; font-size:0.9rem;" onclick="alert('Day 5 方位')">Day 5</button>
-      <button class="nav-btn" style="flex:0 0 auto; padding:8px 16px; font-size:0.9rem; background:#fdf0e3; color:#b16a3a;" onclick="alert('Day 6 基础大考')">Day 6 大考</button>
-      <button class="nav-btn" style="flex:0 0 auto; padding:8px 16px; font-size:0.9rem; background:#e3f5e9; color:#1a7a3a;" onclick="alert('Day 7 进阶营')">Day 7 进阶</button>
-    </div>
-
-    <div class="placeholder-box" style="border-color: #2a7faa; color: #1f5880; padding:40px; text-align:center; background:#f0f5fb; border-radius:16px;">
-      <h3>📅 这里将嵌入 Day 1-7 的完整学习卡片和题目代码</h3>
-      <p>每个 Day 都包含：学习卡片（带词源）、折叠家族树、15 道刷题。</p>
-    </div>
-  </div>
-</div>
-
-<!-- ================= 弹窗：介词实验室 ================= -->
-<div class="overlay" id="overlay-prep">
-  <div class="overlay-content">
-    <button class="close-btn" onclick="closeOverlay('overlay-prep')">✕</button>
-    <h2 style="color:#134b6b; margin-bottom:16px;">🧭 介词实验室 (30题)</h2>
-    <div class="placeholder-box" style="border-color: #2a7faa; color: #1f5880; padding:40px; text-align:center; background:#f0f5fb; border-radius:16px;">
-      <h3>🚪 这里将嵌入您刚刚做好的 30 题错题本版本</h3>
-      <p>包含：微电影翻牌、动词魔方、30题演练。</p>
-    </div>
-  </div>
 </div>
 
 <script>
-// ==========================================
-// 导航切换逻辑
-// ==========================================
-const navBtns = document.querySelectorAll('.main-nav .nav-btn');
-const pages = document.querySelectorAll('.page');
-navBtns.forEach(btn => {
-  btn.addEventListener('click', function() {
-    navBtns.forEach(b => b.classList.remove('active'));
-    pages.forEach(p => p.classList.remove('active'));
-    this.classList.add('active');
-    document.getElementById(this.dataset.page).classList.add('active');
+  // ==========================================
+  // 1. 主导航切换
+  // ==========================================
+  const mainNavBtns = document.querySelectorAll('#mainNav .nav-btn');
+  const pages = document.querySelectorAll('.content-area');
+  
+  mainNavBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      mainNavBtns.forEach(b => b.classList.remove('active'));
+      pages.forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById(this.dataset.page).classList.add('active');
+    });
   });
-});
 
-// ==========================================
-// 弹窗逻辑
-// ==========================================
-function openOverlay(id) {
-  document.getElementById(id).classList.add('show');
-}
-function closeOverlay(id) {
-  document.getElementById(id).classList.remove('show');
-}
+  // ==========================================
+  // 2. 基础建设二级导航切换 (词缀 vs 介词)
+  // ==========================================
+  const subBtns = document.querySelectorAll('.sub-btn');
+  const subContainers = document.querySelectorAll('.iframe-wrapper');
 
-// 点击遮罩背景关闭弹窗
-document.querySelectorAll('.overlay').forEach(overlay => {
-  overlay.addEventListener('click', function(e) {
-    if (e.target === this) {
-      this.classList.remove('show');
-    }
+  subBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      subBtns.forEach(b => b.classList.remove('active'));
+      subContainers.forEach(c => c.style.display = 'none');
+      
+      this.classList.add('active');
+      const targetId = this.dataset.sub;
+      document.getElementById(targetId).style.display = 'block';
+    });
   });
-});
+
+  // ==========================================
+  // 3. 动态切换 Day (如果您想让 Day 1-6 在一个 iframe 里点击切换)
+  // ==========================================
+  // 因为 Day 1-6 是独立文件，我们可以添加一个动态更改 iframe src 的函数
+  // 但这个功能我们可以后续通过修改 Day1 里的按钮来实现（加一个返回/下一关按钮）
+  // 目前，您可以把 Day 2 的按钮写进 day1.html 的底部，或者在总控台加一个“选择 Day”的下拉菜单。
+  // 为了简单，这里先展示 Day 1，后续我们会通过代码把 Day 1-6 的下拉选择做出来。
 </script>
 </body>
 </html>
