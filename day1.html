@@ -3,256 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>Day 1 & 2 · 词缀基因库 (精准词源版)</title>
+  <title>Day 1 · 基础营</title>
   <style>
+    /* 复用之前的样式，确保单独打开也好看 */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
     .container { max-width: 820px; margin: 0 auto; }
+    h1 { font-size: 1.4rem; color: #0b2b4a; border-left: 6px solid #2a7faa; padding-left: 14px; margin-bottom: 14px; }
+    .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.05); }
+    .card-title { font-weight: 700; font-size: 1.2rem; color: #134b6b; margin-bottom: 14px; border-bottom: 2px solid #e3edf5; padding-bottom: 8px; }
     
-    .progress-bar { display: flex; justify-content: space-between; background: white; padding: 10px 16px; border-radius: 40px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0eaf2; }
-    .step { font-size: 0.85rem; font-weight: 600; color: #a0b5c8; }
-    .step.active { color: #1f5880; }
-    .step.done { color: #1a7a3a; }
-
-    .page { display: none; background: white; border-radius: 20px; padding: 20px; box-shadow: 0 6px 18px rgba(0, 20, 30, 0.08); border: 1px solid #e6eef6; }
-    .page.active { display: block; }
-    h2 { font-size: 1.2rem; color: #134b6b; margin-bottom: 14px; border-bottom: 2px solid #e3edf5; padding-bottom: 8px; }
-    
-    .score-board { background: #e3edf5; padding: 8px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; color: #1f5880; margin-bottom: 16px; display: flex; justify-content: space-between; }
-
     .learn-card { background: #fafdff; border: 1px solid #e3ecf5; border-radius: 12px; padding: 14px; margin-bottom: 12px; }
     .learn-title { font-size: 1.15rem; font-weight: 700; color: #b13e2e; }
     .learn-en { font-size: 0.85rem; color: #1f5880; font-weight: 600; background: #e3edf5; display: inline-block; padding: 2px 8px; border-radius: 6px; margin-left: 8px; }
     .learn-img { font-size: 0.9rem; color: #5c4328; margin: 8px 0; background: #fdfaf2; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #d48c5c; }
-    
-    .learn-origin { font-size: 0.82rem; color: #6d8aa3; font-style: italic; margin-top: 6px; padding-left: 4px; }
-
     .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; text-align: center; }
     .family-list { display: none; list-style: none; padding: 0; margin-top: 10px; border-top: 1px dashed #d0dfec; padding-top: 10px; }
     .family-list.open { display: block; }
     .family-list li { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dotted #e0eaf2; }
     .fam-word { font-weight: 600; color: #b13e2e; width: 120px; }
     .fam-break { color: #666; flex: 1; font-size: 0.82rem; margin-left: 8px; }
-    .fam-mean { color: #1a4d6b; text-align: right; font-size: 0.85rem; width: 90px; }
-
-    .btn { background: #1f5880; color: white; border: none; padding: 12px 24px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 16px; width: 100%; transition: 0.2s; }
-    .btn:hover { background: #13466a; }
-    .btn-next { background: #1a7a3a; }
     
-    .quiz-card { background: #f8fbff; border: 1px solid #d5e4f1; border-radius: 16px; padding: 16px; margin-bottom: 14px; transition: 0.3s; }
-    .quiz-question { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; line-height: 1.5; }
-    .quiz-options { display: flex; flex-direction: column; gap: 8px; }
-    .quiz-opt { background: white; border: 1px solid #c9dae8; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
-    .quiz-opt:hover { background: #e6f0f8; }
-    .quiz-opt.correct { background: #d4edda; border-color: #28a745; color: #155724; font-weight: 700; }
-    .quiz-opt.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; font-weight: 700; }
-    .quiz-explain { display: none; margin-top: 10px; font-size: 0.85rem; color: #1a4d6b; background: #e3edf5; padding: 8px 12px; border-radius: 8px; }
+    .quiz-card { background: #f8fbff; border: 1px solid #d5e4f1; border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+    .quiz-question { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; }
+    .quiz-opt { background: white; border: 1px solid #c9dae8; padding: 10px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; margin-bottom: 8px; }
+    .quiz-opt.correct { background: #d4edda; border-color: #28a745; }
+    .quiz-opt.wrong { background: #f8d7da; border-color: #dc3545; }
+    .quiz-explain { display: none; margin-top: 10px; font-size: 0.85rem; color: #1a4d6b; background: #e3edf5; padding: 8px; border-radius: 8px; }
     .quiz-explain.show { display: block; }
-    
-    .feedback-ok { box-shadow: 0 0 10px rgba(40, 167, 69, 0.4); border-color: #28a745; }
-    .feedback-no { box-shadow: 0 0 10px rgba(220, 53, 69, 0.4); border-color: #dc3545; }
-
-    .finish-msg { text-align: center; padding: 30px 10px; display: none; }
-    .finish-msg.show { display: block; }
-    .finish-msg h3 { color: #1a7a3a; font-size: 1.3rem; margin-bottom: 10px; }
+    .score-board { background: #e3edf5; padding: 8px 16px; border-radius: 12px; font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 16px; }
+    .btn { background: #1f5880; color: white; border: none; padding: 12px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; margin-top: 16px; }
+    .btn-next { background: #1a7a3a; }
   </style>
 </head>
 <body>
 <div class="container">
-  
-  <div class="progress-bar" id="progressBar">
-    <span class="step active" id="step-0">1. 认零件</span>
-    <span class="step" id="step-1">2. 刷题库</span>
-    <span class="step" id="step-2">🏆 通关</span>
-  </div>
-
-  <div class="page active" id="page-0">
-    <h2>Day 1 & 2：精准词源版</h2>
-    <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">所有词源均基于 Etymonline 查证，只标注直接来源，不编造故事。</p>
+  <h1>Day 1 · 基础营</h1>
+  <div class="card">
+    <div class="card-title">1. 认零件 (前缀)</div>
     <div id="learnContainer"></div>
-    <button class="btn btn-next" onclick="goToPage(1)">✅ 学完了，去刷题 (15题)</button>
+    <button class="btn" onclick="switchTab('quiz')">✅ 学完了，去刷题 (15题)</button>
   </div>
-
-  <div class="page" id="page-1">
-    <h2>题海演练：15题挑战</h2>
-    <div class="score-board">
-      <span>📊 已答对: <strong id="scoreDisplay">0</strong> / 15</span>
-      <span id="progressText">进度: 0%</span>
-    </div>
+  <div class="card" id="quizCard" style="display:none;">
+    <div class="card-title">2. 刷题库</div>
+    <div class="score-board"><span>📊 得分: <strong id="scoreDisplay">0</strong> / 15</span><span id="progressText">进度: 0%</span></div>
     <div id="quizContainer"></div>
-    <button class="btn" onclick="goToPage(2)" id="btn-finish" style="display:none; background:#1a7a3a;">🏆 完成挑战，查看结算</button>
-  </div>
-
-  <div class="page" id="page-2">
-    <div class="finish-msg show" style="display:block;">
-      <h3>🎉 挑战完成！</h3>
-      <p style="color:#555; margin:10px 0; font-size:1.1rem;">最终得分：<strong id="finalScore" style="color:#1a7a3a; font-size:1.5rem;"></strong> / 15</p>
-      <button class="btn" onclick="location.reload()">🔄 再刷一次</button>
-    </div>
+    <button class="btn btn-next" id="btnFinish" style="display:none;" onclick="location.reload()">🏆 完成 Day 1</button>
   </div>
 </div>
 
 <script>
-// ==========================================
-// 数据区 (词源经过 Etymonline 查证修正)
-// ==========================================
-
+// ================== Day 1 专属数据 ==================
 const learnData = {
   prefixes: [
-    // --- Day 1 前缀 ---
-    { p: "in- / im-", en: "not / in", img: "否定：不；方向：向内、进入", 
-      origin: "源自拉丁语 in-（不/进入）。作为否定前缀时，与古英语 un-、希腊语 an- 同源于原始印欧语 *ne-。", 
-      ex: "invisible (看不见), import (进口)" },
-    { p: "re-", en: "again / back", img: "向后 / 再次", 
-      origin: "源自拉丁语 re-（向后/再次），可追溯至原始印欧语 *re-。", 
-      ex: "return (返回), review (复习)" },
-    { p: "pre-", en: "before / in front", img: "在前 / 预先", 
-      origin: "源自拉丁语 prae（在前），可追溯至原始印欧语 *per-。", 
-      ex: "predict (预测), prepare (准备)" },
-    // --- Day 2 前缀 ---
-    { p: "pro-", en: "forward / out", img: "向前的方向，迈步向前", 
-      origin: "源自拉丁语 pro（在前），部分词汇直接来自同源的希腊语 pro。两者均来自原始印欧语 *pro-。", 
-      ex: "progress (进步), promote (促进)" },
-    { p: "sub-", en: "under / below", img: "在下面，处于次级", 
-      origin: "源自拉丁语 sub（在下面），可追溯至原始印欧语 *(s)up-。", 
-      ex: "subway (地铁), submarine (潜艇)" },
-    { p: "trans-", en: "across / through", img: "跨越，从一边到另一边", 
-      origin: "源自拉丁语 trans（跨越），可追溯至原始印欧语 *tere-（穿过）。", 
-      ex: "transport (运输), translate (翻译)" }
+    { p: "in- / im-", en: "not / in", img: "否定：不；方向：向内、进入", origin: "源自拉丁语 in-。作为否定前缀时，与古英语 un- 同源。", ex: "invisible, import" },
+    { p: "re-", en: "again / back", img: "向后 / 再次", origin: "源自拉丁语 re-。", ex: "return, review" },
+    { p: "pre-", en: "before / in front", img: "在前 / 预先", origin: "源自拉丁语 prae。", ex: "predict, prepare" }
   ],
   roots: [
-    // --- Day 1 词根 ---
-    { 
-      r: "scrib / script", en: "write", img: "古罗马人用硬笔在蜡板上 '划' 出痕迹，画面是 '写'。", 
-      origin: "源自拉丁语 scribere（写）。",
-      family: [
-        { w: "subscribe", b: "sub(在下) + scrib(写)", m: "v. 订阅" },
-        { w: "describe", b: "de(向下) + scrib(写)", m: "v. 描述" },
-        { w: "prescribe", b: "pre(预先) + scrib(写)", m: "v. 开处方" },
-        { w: "inscribe", b: "in(在内) + scrib(写)", m: "v. 刻写" },
-        { w: "script", b: "script(写)", m: "n. 脚本" },
-        { w: "manuscript", b: "manu(手) + script(写)", m: "n. 手稿" }
-      ] 
-    },
-    { 
-      r: "spect / spic", en: "look / see", img: "画面是目光向某个方向投射出去， '看'。", 
-      origin: "源自拉丁语 specere（看）。",
-      family: [
-        { w: "inspect", b: "in(向内) + spect(看)", m: "v. 检查" },
-        { w: "respect", b: "re(再次) + spect(看)", m: "v. 尊敬" },
-        { w: "suspect", b: "su(下面) + spect(看)", m: "v. 怀疑" },
-        { w: "prospect", b: "pro(向前) + spect(看)", m: "n. 前景" },
-        { w: "spectator", b: "spect + ator(人)", m: "n. 观众" },
-        { w: "aspect", b: "a(朝向) + spect(看)", m: "n. 方面" }
-      ] 
-    },
-    { 
-      r: "tract", en: "pull / draw", img: "画面是一根绳子或一块磁铁，把东西 '拉' 过来。", 
-      origin: "源自拉丁语 trahere（拉/拖）。",
-      family: [
-        { w: "attract", b: "at(朝向) + tract(拉)", m: "v. 吸引" },
-        { w: "distract", b: "dis(分开) + tract(拉)", m: "v. 分心" },
-        { w: "extract", b: "ex(向外) + tract(拉)", m: "v. 提取" },
-        { w: "contract", b: "con(共同) + tract(拉)", m: "n. 合同/收缩" },
-        { w: "abstract", b: "abs(离开) + tract(拉)", m: "adj. 抽象的" }
-      ] 
-    },
-    // --- Day 2 词根 ---
-    { 
-      r: "dict", en: "say / speak", img: "画面是一个人张开嘴，大声宣布或断言。", 
-      origin: "源自拉丁语 dicere（说）。",
-      family: [
-        { w: "predict", b: "pre(预先) + dict(说)", m: "v. 预测" },
-        { w: "contradict", b: "contra(相反) + dict(说)", m: "v. 反驳" },
-        { w: "dictate", b: "dict(说) + ate(动词)", m: "v. 口述/命令" },
-        { w: "dictionary", b: "dict + ionary(物)", m: "n. 字典" },
-        { w: "dedicate", b: "de(加强) + dic(说) + ate", m: "v. 奉献" }
-      ] 
-    },
-    { 
-      r: "duc / duct", en: "lead / guide", img: "画面是一只手在前面拉着，引导你往前走。", 
-      origin: "源自拉丁语 ducere（引导），可追溯至原始印欧语 *deuk-。",
-      family: [
-        { w: "introduce", b: "intro(向内) + duc(引导)", m: "v. 介绍" },
-        { w: "produce", b: "pro(向前) + duc(引导)", m: "v. 生产" },
-        { w: "reduce", b: "re(向后) + duc(引导)", m: "v. 减少" },
-        { w: "conduct", b: "con(共同) + duct(引导)", m: "v. 引导/指挥" },
-        { w: "education", b: "e(向外) + duc(引导) + ation", m: "n. 教育" }
-      ] 
-    },
-    { 
-      r: "port", en: "carry / bring", img: "画面是一个人扛着货物，从一个港口搬到另一个地方。", 
-      origin: "源自拉丁语 portare（搬运）。",
-      family: [
-        { w: "import", b: "im(向内) + port(带)", m: "v. 进口" },
-        { w: "export", b: "ex(向外) + port(带)", m: "v. 出口" },
-        { w: "transport", b: "trans(跨越) + port(带)", m: "v. 运输" },
-        { w: "support", b: "sup(在下面) + port(带)", m: "v. 支持" },
-        { w: "portable", b: "port(带) + able(能)", m: "adj. 便携的" }
-      ] 
-    }
+    { r: "scrib / script", en: "write", img: "古罗马人在蜡板上 '划' 出痕迹，画面是 '写'。", origin: "源自拉丁语 scribere。", family: [{w:"subscribe",b:"sub(在下)+scrib",m:"v. 订阅"},{w:"describe",b:"de(向下)+scrib",m:"v. 描述"},{w:"prescribe",b:"pre(预先)+scrib",m:"v. 开处方"},{w:"script",b:"script",m:"n. 脚本"},{w:"manuscript",b:"manu(手)+script",m:"n. 手稿"}] },
+    { r: "spect / spic", en: "look / see", img: "目光向某个方向投射出去， '看'。", origin: "源自拉丁语 specere。", family: [{w:"inspect",b:"in(向内)+spect",m:"v. 检查"},{w:"respect",b:"re(再次)+spect",m:"v. 尊敬"},{w:"suspect",b:"su(下面)+spect",m:"v. 怀疑"},{w:"prospect",b:"pro(向前)+spect",m:"n. 前景"},{w:"spectator",b:"spect+ator(人)",m:"n. 观众"}] },
+    { r: "tract", en: "pull / draw", img: "磁铁把东西 '拉' 过来。", origin: "源自拉丁语 trahere。", family: [{w:"attract",b:"at(朝向)+tract",m:"v. 吸引"},{w:"distract",b:"dis(分开)+tract",m:"v. 分心"},{w:"extract",b:"ex(向外)+tract",m:"v. 提取"},{w:"contract",b:"con(共同)+tract",m:"n. 合同"},{w:"abstract",b:"abs(离开)+tract",m:"adj. 抽象的"}] }
   ]
 };
 
 const quizData = [
-  // Day 1 题
-  { q: "前缀 're-' 的核心英文含义是？", opts: ["A. not", "B. again / back", "C. before", "D. under"], ans: 1, exp: "re- = 向后/再次。return (返回) 就是向后转。" },
-  { q: "前缀 'pre-' 的画面感是？", opts: ["A. 站在前面/预先", "B. 在下面", "C. 共同", "D. 向外"], ans: 0, exp: "pre- 站在时间或空间的最前面，如 predict(预测)。" },
-  { q: "看到单词 invisible，前缀 'in-' 在这里的意思是？", opts: ["A. 向内", "B. 否定 (不)", "C. 进入", "D. 强调"], ans: 1, exp: "vis(看) + ible(能...的)，in(不) ➡️ 看不见的。" },
-  { q: "单词 import 中的 'im-' 代表什么画面？", opts: ["A. 不", "B. 向内 / 进入", "C. 在外", "D. 离开"], ans: 1, exp: "port(带)，im(向内) ➡️ 向内带 ➡️ 进口。" },
-  { q: "词根 'scrib / script' 的底层画面是？", opts: ["A. 看", "B. 说", "C. 写", "D. 拉"], ans: 2, exp: "scrib = 写。manuscript(手稿) 就是手写的东西。" },
-  { q: "词根 'spect / spic' 代表什么动作？", opts: ["A. 写", "B. 看", "C. 拿", "D. 建"], ans: 1, exp: "spect = 看。inspect 就是向里面看 ➡️ 检查。" },
-  { q: "词根 'tract' 的核心画面是？", opts: ["A. 写", "B. 看", "C. 拉/拖", "D. 转"], ans: 2, exp: "tract = 拉。tractor(拖拉机) 就是拉东西的车。" },
-  { q: "in + spect = ?", opts: ["A. 检查", "B. 尊敬", "C. 描述", "D. 预测"], ans: 0, exp: "in(向内) + spect(看) ➡️ 向里面看 ➡️ 检查。" },
-  { q: "dis + tract = ?", opts: ["A. 吸引", "B. 分心", "C. 提取", "D. 合同"], ans: 1, exp: "dis(分开) + tract(拉) ➡️ 把注意力拉开 ➡️ 分心。" },
-  { q: "pre + scrib + e = ?", opts: ["A. 订阅", "B. 描述", "C. 开处方", "D. 刻写"], ans: 2, exp: "pre(预先) + scrib(写) ➡️ 预先写好的药方 ➡️ 开处方。" },
-  // Day 2 题
-  { q: "前缀 'pro-' 的画面感是？", opts: ["A. 向后", "B. 向前/向外", "C. 在下面", "D. 跨越"], ans: 1, exp: "pro- = 向前/向外。progress(进步) 就是向前走。" },
-  { q: "前缀 'sub-' 的核心英文含义是？", opts: ["A. under / below", "B. across", "C. forward", "D. again"], ans: 0, exp: "sub- = 在下面。subway(地铁) 就是地下的路。" },
-  { q: "单词 transport 中的 'trans-' 代表什么画面？", opts: ["A. 向内", "B. 跨越/通过", "C. 向后", "D. 分离"], ans: 1, exp: "trans(跨越) + port(带) ➡️ 跨越两地带的货物 ➡️ 运输。" },
-  { q: "词根 'dict' 的底层画面是？", opts: ["A. 看", "B. 说", "C. 写", "D. 拉"], ans: 1, exp: "dict = 说。dictionary(字典) 就是收集说话词汇的书。" },
-  { q: "词根 'duc / duct' 代表什么动作？", opts: ["A. 引导/带领", "B. 携带", "C. 建造", "D. 转"], ans: 0, exp: "duc = 引导。conduct(指挥) 就是把大家引导到一起。" }
+  { q: "前缀 're-' 的核心英文含义是？", opts: ["A. not", "B. again / back", "C. before", "D. under"], ans: 1, exp: "re- = 向后/再次。" },
+  { q: "前缀 'pre-' 的画面感是？", opts: ["A. 站在前面/预先", "B. 在下面", "C. 共同", "D. 向外"], ans: 0, exp: "pre- 站在最前面。" },
+  { q: "单词 invisible 中的前缀 'in-' 的意思是？", opts: ["A. 向内", "B. 否定 (不)", "C. 进入", "D. 强调"], ans: 1, exp: "in(不) + vis(看) ➡️ 看不见的。" },
+  { q: "单词 import 中的 'im-' 代表什么画面？", opts: ["A. 不", "B. 向内 / 进入", "C. 在外", "D. 离开"], ans: 1, exp: "im(向内) + port(带) ➡️ 进口。" },
+  { q: "词根 'scrib / script' 的底层画面是？", opts: ["A. 看", "B. 说", "C. 写", "D. 拉"], ans: 2, exp: "scrib = 写。" },
+  { q: "词根 'spect / spic' 代表什么动作？", opts: ["A. 写", "B. 看", "C. 拿", "D. 建"], ans: 1, exp: "spect = 看。" },
+  { q: "词根 'tract' 的核心画面是？", opts: ["A. 写", "B. 看", "C. 拉/拖", "D. 转"], ans: 2, exp: "tract = 拉。" },
+  { q: "in + spect = ?", opts: ["A. 检查", "B. 尊敬", "C. 描述", "D. 预测"], ans: 0, exp: "in(向内) + spect(看) ➡️ 检查。" },
+  { q: "dis + tract = ?", opts: ["A. 吸引", "B. 分心", "C. 提取", "D. 合同"], ans: 1, exp: "dis(分开) + tract(拉) ➡️ 分心。" },
+  { q: "pre + scrib + e = ?", opts: ["A. 订阅", "B. 描述", "C. 开处方", "D. 刻写"], ans: 2, exp: "pre(预先) + scrib(写) ➡️ 开处方。" },
+  { q: "sub + scrib + e = ?", opts: ["A. 订阅", "B. 描述", "C. 开处方", "D. 刻写"], ans: 0, exp: "sub(在下) + scrib(写) ➡️ 订阅。" },
+  { q: "re + spect = ?", opts: ["A. 检查", "B. 尊敬", "C. 描述", "D. 预测"], ans: 1, exp: "re(再次) + spect(看) ➡️ 尊敬。" },
+  { q: "ex + tract = ?", opts: ["A. 吸引", "B. 分心", "C. 提取", "D. 合同"], ans: 2, exp: "ex(向外) + tract(拉) ➡️ 提取。" },
+  { q: "con + tract = ?", opts: ["A. 吸引", "B. 分心", "C. 提取", "D. 合同/收缩"], ans: 3, exp: "con(共同) + tract(拉) ➡️ 合同。" },
+  { q: "de + scrib + e = ?", opts: ["A. 订阅", "B. 描述", "C. 开处方", "D. 刻写"], ans: 1, exp: "de(向下) + scrib(写) ➡️ 描述。" }
 ];
 
-// ==========================================
-// 渲染逻辑区
-// ==========================================
-
+// ================== 渲染逻辑 ==================
 const learnContainer = document.getElementById('learnContainer');
-let learnHtml = '<h3 style="font-size:1rem; color:#1f5880; margin-bottom:8px;">🔠 前缀零件</h3>';
+let html = '<h3>🔠 前缀</h3>';
 learnData.prefixes.forEach(p => {
-  learnHtml += `<div class="learn-card">
-    <span class="learn-title">${p.p}</span><span class="learn-en">${p.en}</span>
-    <div class="learn-img">🎬 ${p.img}</div>
-    <div class="learn-origin">📜 词源：${p.origin}</div>
-    <div class="learn-ex">📖 例：${p.ex}</div>
-  </div>`;
+  html += `<div class="learn-card"><span class="learn-title">${p.p}</span><span class="learn-en">${p.en}</span><div class="learn-img">🎬 ${p.img}</div><div style="font-size:0.8rem; color:#888;">📜 ${p.origin}</div><div class="learn-ex">📖 ${p.ex}</div></div>`;
 });
-
-learnHtml += '<h3 style="font-size:1rem; color:#1f5880; margin:16px 0 8px;">🌳 词根引擎</h3>';
+html += '<h3 style="margin-top:16px;">🌳 词根</h3>';
 learnData.roots.forEach((r, idx) => {
-  learnHtml += `<div class="learn-card">
-    <span class="learn-title">${r.r}</span><span class="learn-en">${r.en}</span>
-    <div class="learn-img">🎬 ${r.img}</div>
-    <div class="learn-origin">📜 词源：${r.origin}</div>
-    <button class="family-toggle" onclick="toggleFamily(${idx})">👉 展开家族成员 (${r.family.length})</button>
-    <ul class="family-list" id="family-${idx}">`;
-  r.family.forEach(f => {
-    learnHtml += `<li><span class="fam-word">${f.w}</span><span class="fam-break">${f.b}</span><span class="fam-mean">${f.m}</span></li>`;
-  });
-  learnHtml += `</ul></div>`;
+  html += `<div class="learn-card"><span class="learn-title">${r.r}</span><span class="learn-en">${r.en}</span><div class="learn-img">🎬 ${r.img}</div><div style="font-size:0.8rem; color:#888;">📜 ${r.origin}</div><button class="family-toggle" onclick="toggleFamily(${idx})">👉 展开家族成员 (${r.family.length})</button><ul class="family-list" id="family-${idx}">`;
+  r.family.forEach(f => { html += `<li><span class="fam-word">${f.w}</span><span class="fam-break">${f.b}</span><span>${f.m}</span></li>`; });
+  html += `</ul></div>`;
 });
-learnContainer.innerHTML = learnHtml;
+learnContainer.innerHTML = html;
 
-function toggleFamily(idx) {
-  document.getElementById(`family-${idx}`).classList.toggle('open');
+function toggleFamily(idx) { document.getElementById(`family-${idx}`).classList.toggle('open'); }
+
+function switchTab(tab) {
+  document.getElementById('quizCard').style.display = 'block';
+  document.getElementById('quizCard').scrollIntoView({ behavior: 'smooth' });
 }
 
-let correctCount = 0;
-let answeredCount = 0;
+let correctCount = 0, answeredCount = 0;
 const quizContainer = document.getElementById('quizContainer');
 quizData.forEach((q, idx) => {
-  let html = `<div class="quiz-card" id="qcard-${idx}"><div class="quiz-question">${idx+1}. ${q.q}</div><div class="quiz-options">`;
+  let html = `<div class="quiz-card" id="qcard-${idx}"><div class="quiz-question">${idx+1}. ${q.q}</div><div>`;
   q.opts.forEach((opt, oi) => {
     html += `<div class="quiz-opt" onclick="checkAnswer(${idx}, ${oi}, this)">${opt}</div>`;
   });
@@ -263,39 +120,14 @@ quizData.forEach((q, idx) => {
 function checkAnswer(qIdx, oIdx, el) {
   const q = quizData[qIdx];
   const parent = el.parentElement;
-  const card = document.getElementById(`qcard-${qIdx}`);
   Array.from(parent.children).forEach(c => c.style.pointerEvents = 'none');
-  
-  if(oIdx === q.ans) {
-    el.classList.add('correct');
-    card.classList.add('feedback-ok');
-    correctCount++;
-  } else {
-    el.classList.add('wrong');
-    parent.children[q.ans].classList.add('correct');
-    card.classList.add('feedback-no');
-  }
-  
+  if(oIdx === q.ans) { el.classList.add('correct'); correctCount++; } 
+  else { el.classList.add('wrong'); parent.children[q.ans].classList.add('correct'); }
   document.getElementById(`exp-${qIdx}`).classList.add('show');
   answeredCount++;
   document.getElementById('scoreDisplay').innerText = correctCount;
-  let percent = Math.round((answeredCount / quizData.length) * 100);
-  document.getElementById('progressText').innerText = `进度: ${percent}%`;
-  
-  if(answeredCount === quizData.length) {
-    document.getElementById('btn-finish').style.display = 'block';
-    document.getElementById('finalScore').innerText = correctCount;
-  }
-}
-
-function goToPage(pageIdx) {
-  document.querySelectorAll('.page').forEach((p, i) => p.classList.toggle('active', i === pageIdx));
-  document.querySelectorAll('.step').forEach((s, i) => {
-    s.classList.remove('active', 'done');
-    if(i < pageIdx) s.classList.add('done');
-    if(i === pageIdx) s.classList.add('active');
-  });
-  window.scrollTo(0, 0);
+  document.getElementById('progressText').innerText = `进度: ${Math.round((answeredCount/quizData.length)*100)}%`;
+  if(answeredCount === quizData.length) document.getElementById('btnFinish').style.display = 'block';
 }
 </script>
 </body>
