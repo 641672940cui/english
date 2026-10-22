@@ -6,88 +6,89 @@
   <title>高中英语通关系统 - 总控台</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 20px 16px 0; color: #1a2a3a; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-    .container { max-width: 1000px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; height: 100%; }
+    /* 调整 body，让页面占满屏幕，取消滚动条（滚动交给 iframe） */
+    html, body { height: 100%; overflow: hidden; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; color: #1a2a3a; font-size: 16px; display: flex; flex-direction: column; }
+    .container { max-width: 1000px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; height: 100%; padding: 12px 14px 0; }
     
-    h1 { font-size: 1.5rem; font-weight: 700; color: #0b2b4a; margin-bottom: 6px; text-align: center; }
-    .subtitle { font-size: 0.9rem; color: #5d7385; margin-bottom: 16px; text-align: center; }
+    /* 标题区（紧凑点，省空间） */
+    .header { text-align: center; margin-bottom: 12px; flex-shrink: 0; }
+    .header h1 { font-size: 1.4rem; font-weight: 700; color: #0b2b4a; margin-bottom: 4px; }
+    .header p { font-size: 0.85rem; color: #5d7385; }
 
-    /* 主控制台导航 */
-    .main-nav { display: flex; gap: 10px; background: white; padding: 8px; border-radius: 16px; margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #e6eef6; justify-content: center; flex-shrink: 0; }
-    .nav-btn { background: transparent; border: none; padding: 12px 20px; border-radius: 12px; font-size: 1rem; font-weight: 600; color: #5d7385; cursor: pointer; transition: 0.2s; text-align: center; flex: 1; }
+    /* 顶部主控台导航 */
+    .main-nav { display: flex; gap: 10px; background: white; padding: 6px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #e6eef6; justify-content: center; flex-shrink: 0; }
+    .nav-btn { background: transparent; border: none; padding: 10px 16px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; color: #5d7385; cursor: pointer; transition: 0.2s; flex: 1; text-align: center; }
     .nav-btn.active { background: #1f5880; color: white; box-shadow: 0 4px 12px rgba(31, 88, 128, 0.3); }
     .nav-btn:hover:not(.active) { background: #e6f0f8; }
 
-    /* 内部模块导航（二级） */
-    .sub-nav { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; flex-shrink: 0; }
-    .sub-btn { background: #e3edf5; border: 1px solid #c1d7e9; padding: 8px 16px; border-radius: 30px; font-size: 0.9rem; font-weight: 600; color: #1f5880; cursor: pointer; white-space: nowrap; transition: 0.2s; }
-    .sub-btn.active { background: #2a7faa; color: white; border-color: #2a7faa; }
-    .sub-btn:hover:not(.active) { background: #d0e2f0; }
+    /* 词缀库的二级导航（Day 1 - Day N） */
+    .day-nav { display: flex; gap: 8px; margin-bottom: 10px; overflow-x: auto; flex-shrink: 0; padding-bottom: 4px; }
+    .day-btn { background: #e3edf5; border: 1px solid #c1d7e9; padding: 6px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 600; color: #1f5880; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+    .day-btn.active { background: #2a7faa; color: white; border-color: #2a7faa; }
+    .day-btn.exam { background: #fdf0e3; color: #b16a3a; border-color: #f2c5a1; }
+    .day-btn.exam.active { background: #b16a3a; color: white; border-color: #b16a3a; }
 
-    /* 内容展示区（iframe 容器） */
-    .content-area { flex: 1; background: white; border-radius: 20px 20px 0 0; overflow: hidden; border: 1px solid #e6eef6; border-bottom: none; box-shadow: 0 -4px 18px rgba(0,0,0,0.03); display: none; flex-direction: column; }
+    /* iframe 内容展示区 */
+    .content-area { flex: 1; background: white; border-radius: 20px 20px 0 0; overflow: hidden; border: 1px solid #e6eef6; border-bottom: none; display: none; flex-direction: column; box-shadow: 0 -4px 18px rgba(0,0,0,0.03); }
     .content-area.active { display: flex; }
     
-    .iframe-wrapper { flex: 1; position: relative; width: 100%; height: 100%; }
-    iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-
-    /* 页面占位（单元练习未完成时） */
-    .placeholder-page { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; color: #888; padding: 40px; text-align: center; }
-    .placeholder-page h3 { color: #555; margin-bottom: 10px; }
+    /* 二级导航栏容器（仅词缀库用） */
+    .sub-nav-container { background: #f8fbff; border-bottom: 1px solid #e6eef6; padding: 10px 16px 6px; flex-shrink: 0; }
     
-    /* 移动端优化 */
-    @media (max-width: 600px) {
-      .main-nav { flex-wrap: wrap; }
-      .nav-btn { flex: 0 0 48%; font-size: 0.9rem; padding: 10px; }
-    }
+    /* 真正的 iframe */
+    iframe { flex: 1; width: 100%; border: none; background: #f0f5fb; }
+
+    /* 占位提示页 */
+    .placeholder-page { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; color: #888; text-align: center; padding: 40px; }
+    .placeholder-page h3 { color: #555; margin-bottom: 10px; font-size: 1.2rem; }
   </style>
 </head>
 <body>
 <div class="container">
-  <h1>🎓 高中英语通关系统</h1>
-  <div class="subtitle">构词法基建 · 单元实战 · 阅读写作</div>
+  
+  <div class="header">
+    <h1>🎓 高中英语通关系统</h1>
+    <p>词缀基因库 · 介词实验室 · 单元实战</p>
+  </div>
 
   <!-- 一级导航 -->
   <div class="main-nav" id="mainNav">
-    <button class="nav-btn active" data-page="page-basic">📦 基础建设</button>
+    <button class="nav-btn active" data-page="page-affix">🌳 词缀基因库</button>
+    <button class="nav-btn" data-page="page-prep">🧭 介词实验室</button>
     <button class="nav-btn" data-page="page-unit">📖 单元练习</button>
-    <button class="nav-btn" data-page="page-exam">✍️ 阅读写作</button>
   </div>
 
-  <!-- ================= 页面一：基础建设 ================= -->
-  <div class="content-area active" id="page-basic">
-    <!-- 二级导航：词缀 vs 介词 -->
-    <div class="sub-nav" id="basicSubNav" style="padding: 12px 12px 0;">
-      <button class="sub-btn active" data-sub="sub-affix">🌳 词缀基因库 (Day 1-6)</button>
-      <button class="sub-btn" data-sub="sub-prep">🧭 介词实验室 (30题)</button>
+  <!-- ================= 页面一：词缀基因库 (含 Day 二级导航) ================= -->
+  <div class="content-area active" id="page-affix">
+    <!-- 二级导航：Day 列表 -->
+    <div class="sub-nav-container">
+      <div class="day-nav" id="dayNav">
+        <button class="day-btn active" data-day="day1">Day 1 基础</button>
+        <button class="day-btn" data-day="day2">Day 2 方向</button>
+        <button class="day-btn" data-day="day3">Day 3 建造</button>
+        <button class="day-btn" data-day="day4">Day 4 否定</button>
+        <button class="day-btn" data-day="day5">Day 5 方位</button>
+        <button class="day-btn exam" data-day="day6">Day 6 大考</button>
+        <!-- 未来直接在下方加 day7, day8 即可 -->
+        <button class="day-btn" data-day="day7" style="opacity:0.5;" onclick="alert('待开发')">Day 7...</button>
+      </div>
     </div>
-
-    <!-- 词缀库容器 -->
-    <div class="iframe-wrapper" id="sub-affix" style="display: block;">
-      <!-- 默认加载 Day 1 -->
-      <iframe src="day1.html" title="Day 1"></iframe>
-    </div>
-
-    <!-- 介词实验室容器 -->
-    <div class="iframe-wrapper" id="sub-prep" style="display: none;">
-      <iframe src="preposition-lab.html" title="介词实验室"></iframe>
-    </div>
+    <!-- 默认加载 Day 1 的独立 HTML -->
+    <iframe id="affixIframe" src="day1.html" title="Day 1"></iframe>
   </div>
 
-  <!-- ================= 页面二：单元练习 (占位) ================= -->
+  <!-- ================= 页面二：介词实验室 ================= -->
+  <div class="content-area" id="page-prep">
+    <!-- 直接加载您部署好的介词 HTML 文件 -->
+    <iframe src="preposition-lab.html" title="介词实验室"></iframe>
+  </div>
+
+  <!-- ================= 页面三：单元练习 ================= -->
   <div class="content-area" id="page-unit">
     <div class="placeholder-page">
       <h3>🚧 单元实战 (Unit 1 - Unit N)</h3>
       <p>正在开发中，将包含：核心词词根拆解 + 阅读 Chunk 训练 + 作文模板。</p>
-      <p style="margin-top:20px; font-size:0.9rem;">后续设计完成后会链接到对应的 HTML 文件。</p>
-    </div>
-  </div>
-
-  <!-- ================= 页面三：阅读写作 (占位) ================= -->
-  <div class="content-area" id="page-exam">
-    <div class="placeholder-page">
-      <h3>✍️ 阅读与写作</h3>
-      <p>正在开发中，含 Chunk 意群切分和作文高级词替换。</p>
     </div>
   </div>
 
@@ -110,29 +111,28 @@
   });
 
   // ==========================================
-  // 2. 基础建设二级导航切换 (词缀 vs 介词)
+  // 2. Day 二级导航逻辑（切换 iframe 的 src）
   // ==========================================
-  const subBtns = document.querySelectorAll('.sub-btn');
-  const subContainers = document.querySelectorAll('.iframe-wrapper');
+  const dayBtns = document.querySelectorAll('.day-btn');
+  const affixIframe = document.getElementById('affixIframe');
 
-  subBtns.forEach(btn => {
+  dayBtns.forEach(btn => {
     btn.addEventListener('click', function() {
-      subBtns.forEach(b => b.classList.remove('active'));
-      subContainers.forEach(c => c.style.display = 'none');
-      
+      // 如果点击的是待开发的 Day，直接跳过
+      if (this.innerText.includes('待开发')) return;
+
+      // 切换按钮样式
+      dayBtns.forEach(b => b.classList.remove('active'));
       this.classList.add('active');
-      const targetId = this.dataset.sub;
-      document.getElementById(targetId).style.display = 'block';
+
+      // 拿到 day1, day2... 等对应的文件名
+      const dayName = this.dataset.day; 
+      
+      // 改变 iframe 地址（加载对应的独立文件）
+      // 注意：如果您服务器上的文件名叫 day1.html, 这里就是 day1.html
+      affixIframe.src = `${dayName}.html`;
     });
   });
-
-  // ==========================================
-  // 3. 动态切换 Day (如果您想让 Day 1-6 在一个 iframe 里点击切换)
-  // ==========================================
-  // 因为 Day 1-6 是独立文件，我们可以添加一个动态更改 iframe src 的函数
-  // 但这个功能我们可以后续通过修改 Day1 里的按钮来实现（加一个返回/下一关按钮）
-  // 目前，您可以把 Day 2 的按钮写进 day1.html 的底部，或者在总控台加一个“选择 Day”的下拉菜单。
-  // 为了简单，这里先展示 Day 1，后续我们会通过代码把 Day 1-6 的下拉选择做出来。
 </script>
 </body>
 </html>
