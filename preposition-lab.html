@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>介词实验室 3.0 (错题本版)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
+    .container { max-width: 820px; margin: 0 auto; }
+    h1 { font-size: 1.4rem; font-weight: 700; color: #0b2b4a; border-left: 6px solid #2a7faa; padding-left: 14px; margin: 6px 0 8px 0; }
+    .sub { background: #e3edf5; padding: 6px 18px; border-radius: 40px; font-size: 0.82rem; font-weight: 600; color: #144a6b; display: inline-block; margin-bottom: 14px; }
+
+    .tab-bar { display: flex; gap: 6px; margin-bottom: 16px; background: white; padding: 6px 8px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0eaf2; overflow-x: auto; }
+    .tab-btn { background: transparent; border: none; padding: 8px 14px; border-radius: 30px; font-size: 0.88rem; font-weight: 600; color: #3d5f7a; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+    .tab-btn.active { background: #1f5880; color: white; }
+
+    .card { display: none; background: white; border-radius: 20px; padding: 18px 16px; margin-bottom: 20px; box-shadow: 0 6px 18px rgba(0, 20, 30, 0.08); border: 1px solid #e6eef6; }
+    .card.active { display: block; }
+    .card-title { font-weight: 700; font-size: 1.15rem; color: #134b6b; margin-bottom: 12px; border-bottom: 2px solid #e3edf5; padding-bottom: 8px; }
+
+    .flip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; margin-bottom: 10px; }
+    .flip-card { background: #fdfaf2; border: 1px solid #f2e1c5; border-radius: 12px; height: 260px; perspective: 1000px; cursor: pointer; }
+    .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: flex-start; padding: 12px; border-radius: 12px; }
+    .flip-front { background: #fdfaf2; color: #b16a3a; align-items: center; justify-content: center; }
+    .flip-front h3 { font-size: 1.8rem; margin-bottom: 6px; }
+    .flip-front p { font-size: 0.9rem; font-weight: 600; text-align: center; }
+    .flip-back { background: #fff; border: 1px solid #f2e1c5; color: #5c4328; transform: rotateY(180deg); font-size: 0.78rem; text-align: left; line-height: 1.5; }
+    .flip-back strong { color: #b13e2e; }
+    .flip-back ul { padding-left: 14px; margin-top: 4px; }
+    .flip-back li { margin-bottom: 3px; }
+
+    .verb-family { background: #f2f7fd; border: 1px solid #d6e4f0; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+    .verb-title { font-weight: 700; color: #1f5880; font-size: 1.05rem; margin-bottom: 8px; }
+    .verb-list { list-style: none; padding-left: 0; }
+    .verb-list li { font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dotted #c1d7e9; display: flex; justify-content: space-between; }
+    .verb-list li:last-child { border-bottom: none; }
+    .verb-word { font-weight: 600; color: #b13e2e; width: 110px; }
+    .verb-exp { color: #1a4d6b; font-size: 0.85rem; flex: 1; text-align: right; }
+
+    .quiz-card { background: #f8fbff; border: 1px solid #d5e4f1; border-radius: 16px; padding: 16px; margin-bottom: 14px; transition: 0.3s; }
+    .quiz-question { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; line-height: 1.5; }
+    .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+    .quiz-opt { background: white; border: 1px solid #c9dae8; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+    .quiz-opt:hover { background: #e6f0f8; }
+    .quiz-opt.correct { background: #d4edda; border-color: #28a745; color: #155724; font-weight: 700; }
+    .quiz-opt.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; font-weight: 700; }
+    .quiz-explain { display: none; margin-top: 10px; font-size: 0.85rem; color: #1a4d6b; background: #e3edf5; padding: 8px 12px; border-radius: 8px; }
+    .quiz-explain.show { display: block; }
+    
+    .score-board { background: #e3edf5; padding: 8px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; color: #1f5880; margin-bottom: 16px; display: flex; justify-content: space-between; }
+
+    /* 错题本样式 */
+    .wrong-book { display: none; background: #fff5f5; border: 1px solid #f5c6cb; border-radius: 16px; padding: 16px; margin-top: 20px; }
+    .wrong-book.show { display: block; }
+    .wrong-book h3 { color: #b13e2e; font-size: 1.1rem; margin-bottom: 10px; }
+    .wrong-item { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; border-left: 3px solid #dc3545; font-size: 0.9rem; }
+    .wrong-item .q-text { font-weight: 600; margin-bottom: 4px; }
+    .wrong-item .a-text { color: #1a7a3a; font-weight: 600; }
+    .wrong-item .e-text { color: #6d8aa3; font-size: 0.82rem; margin-top: 4px; }
+    .btn-wrong { background: #b13e2e; color: white; border: none; padding: 10px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; margin-top: 8px; width: 100%; }
+    .btn-wrong:hover { background: #8f2e20; }
+    .btn-reset-wrong { background: #6d8aa3; margin-top: 8px; width: 100%; border: none; padding: 10px; border-radius: 30px; font-weight: 600; cursor: pointer; color: white; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🧭 介词实验室 3.0</h1>
+  <div class="sub">空间画面 · 动词搭配 · 30题大挑战 · 错题本</div>
+
+  <div class="tab-bar" id="tabBar">
+    <button class="tab-btn active" data-tab="0">🎴 微电影图鉴</button>
+    <button class="tab-btn" data-tab="1">🧱 动词魔方</button>
+    <button class="tab-btn" data-tab="2">🔍 真题演练</button>
+  </div>
+
+  <div class="card active" id="card-0">
+    <div class="card-title">点击卡片，翻转看深度解析</div>
+    <div class="flip-grid" id="flipGrid"></div>
+  </div>
+
+  <div class="card" id="card-1">
+    <div class="card-title">介词当老大：高中必考短语家族</div>
+    <div id="verbFamilyContainer"></div>
+  </div>
+
+  <div class="card" id="card-2">
+    <div class="card-title">语境秒判（30题）</div>
+    <div class="score-board">
+      <span>📊 已答对: <strong id="scoreDisplay">0</strong> / 30</span>
+      <span id="progressText">进度: 0%</span>
+    </div>
+    <div id="quizContainer"></div>
+
+    <!-- 错题本区域 -->
+    <div class="wrong-book" id="wrongBook">
+      <h3>📕 我的错题本</h3>
+      <div id="wrongList"></div>
+      <button class="btn-wrong" onclick="retryWrong()">🔄 重练错题</button>
+      <button class="btn-reset-wrong" onclick="clearWrong()">🗑️ 清空错题本</button>
+    </div>
+    
+    <button class="btn-wrong" id="showWrongBtn" onclick="showWrongBook()" style="display:none; margin-top:20px;">📕 查看我的错题本</button>
+  </div>
+
+</div>
+
+<script>
+// ==========================================
+// 数据区 (包含修正后的题目)
+// ==========================================
+
+const prepData = [
+  { word: "ON", tag: "接触 + 支撑", desc: "紧贴平面，脚踩在上面，引申为依赖/处于某种状态。", examples: ["<strong>on</strong> the bus (脚踩车底板)", "<strong>on</strong> time (踩在时间点，准时)", "<strong>on</strong> a diet (踩在饮食计划上，节食)", "depend <strong>on</strong> (重心挂在上面，依赖)"] },
+  { word: "IN", tag: "包围 + 容器", desc: "被包裹在三维空间或时间段里。", examples: ["<strong>in</strong> the car (缩在铁盒里)", "<strong>in</strong> time (在截止盒关门前挤入，及时)", "<strong>in</strong> love (被爱情泡泡包围)", "<strong>in</strong> 2020 (处于2020这个时间大盒)"] },
+  { word: "AT", tag: "坐标 + 点", desc: "把地点/时间缩小成一个精确的点。", examples: ["<strong>at</strong> the door (站在门口坐标点)", "<strong>at</strong> night (夜间这个抽象时间点)", "<strong>at</strong> 8 o'clock (时间点)"] },
+  { word: "OVER", tag: "跨越 / 覆盖", desc: "画弧线飞越，或盖子盖在上方，引申为控制。", examples: ["jump <strong>over</strong> (腾空越过)", "bridge <strong>over</strong> (凌驾河面)", "talk it <strong>over</strong> (摊开从头到尾看，商量)", "control <strong>over</strong> (居高临下控制)"] },
+  { word: "ABOVE", tag: "正上方 + 悬空", desc: "位置更高，但互不接触、互不干扰。", examples: ["fly <strong>above</strong> (在云层上方飞，不碰云)", "temperature <strong>above</strong> zero (纯高度比较)"] },
+  { word: "THROUGH", tag: "内部穿透", desc: "从一端进去，从另一端出来。", examples: ["walk <strong>through</strong> (在树林内部穿行)", "look <strong>through</strong> (视线穿透玻璃)"] },
+  { word: "ACROSS", tag: "表面横穿", desc: "在一个平面上从一侧到另一侧。", examples: ["walk <strong>across</strong> (从马路这边走到另一边)"] },
+  { word: "ALONG", tag: "沿着 + 线", desc: "顺着长条形的走向移动。", examples: ["walk <strong>along</strong> the river (顺着河岸线走)"] },
+  { word: "BY", tag: "在旁边 / 通过", desc: "从旁边经过；引申为通过某种手段。", examples: ["sit <strong>by</strong> the window (坐在窗边)", "go <strong>by</strong> bus (通过坐公交这种方式)", "<strong>by</strong> the way (在路边顺便说一句)"] },
+  { word: "WITH", tag: "连在一起", desc: "两个事物在物理或逻辑上连接在一起。", examples: ["play <strong>with</strong> friends (和朋友一起)", "a cup <strong>with</strong> a handle (带有把手)", "fill it <strong>with</strong> water (用水填满)"] },
+  { word: "FOR", tag: "向前 / 为了", desc: "朝着一个目标前进，引申为为了。", examples: ["wait <strong>for</strong> (朝着对方来的方向等)", "leave <strong>for</strong> Beijing (向着北京出发)", "a gift <strong>for</strong> you (目标指向你)"] },
+  { word: "UNDER", tag: "正下方 + 被罩住", desc: "被上方物体完全罩住，引申为处于控制状态。", examples: ["<strong>under</strong> the tree (树冠正下方)", "<strong>under</strong> control (处于控制之下)", "<strong>under</strong> construction (处于施工状态中)"] },
+  { word: "AGAINST", tag: "靠着 / 反对", desc: "物体斜靠在另一个物体上；引申为对抗。", examples: ["lean <strong>against</strong> the wall (靠着墙)", "be <strong>against</strong> the plan (反对计划)"] },
+  { word: "WITHOUT", tag: "在外面 / 缺失", desc: "某个东西不在场，在范围之外。", examples: ["coffee <strong>without</strong> sugar (糖在杯子外面)", "go <strong>without</strong> me (我留在外面)"] }
+];
+
+const verbFamilyData = [
+  {
+    prep: "UP 家族 (向上/彻底完成)",
+    verbs: [
+      { w: "give up", exp: "双手一摊向上抛出 ➡️ 放弃" },
+      { w: "put up with", exp: "竖起(up)盾牌跟着(with)麻烦 ➡️ 忍受" },
+      { w: "take up", exp: "把时间/空间向上拿过来占满 ➡️ 占据 / 开始从事" },
+      { w: "break up", exp: "碎裂向上飞散 ➡️ 分手 / 散会" },
+      { w: "bring up", exp: "带着孩子向上长 ➡️ 抚养；把话题提上来 ➡️ 提出" },
+      { w: "turn up", exp: "旋转着出现/把音量向上调 ➡️ 出现 / 调高音量" }
+    ]
+  },
+  {
+    prep: "OVER 家族 (跨越/越过上方)",
+    verbs: [
+      { w: "get over", exp: "越过障碍 ➡️ 克服 / 恢复" },
+      { w: "take over", exp: "手越过别人抓住方向盘 ➡️ 接管 / 控制" },
+      { w: "look over", exp: "视线越过整个表面 ➡️ 检查 / 浏览" },
+      { w: "think over", exp: "把问题在脑子里翻越一遍 ➡️ 仔细考虑" }
+    ]
+  },
+  {
+    prep: "IN / INTO 家族 (进入内部)",
+    verbs: [
+      { w: "look into", exp: "视线进入箱子内部 ➡️ 调查" },
+      { w: "run into", exp: "跑进别人的空间 ➡️ 偶遇 / 撞上" },
+      { w: "take in", exp: "把外面的东西拿进肚子/脑子 ➡️ 吸收 / 理解" },
+      { w: "break in", exp: "打破门进入内部 ➡️ 闯入" }
+    ]
+  },
+  {
+    prep: "OUT 家族 (向外/脱离)",
+    verbs: [
+      { w: "run out of", exp: "从内部跑光 ➡️ 用完" },
+      { w: "figure out", exp: "把关键图形从乱麻中揪出来 ➡️ 弄清楚" },
+      { w: "put out", exp: "向外把火扑灭 ➡️ 扑灭 / 熄灭" },
+      { w: "carry out", exp: "带着任务向外执行到底 ➡️ 执行 / 实施" },
+      { w: "turn out", exp: "翻转倒出来 ➡️ 结果是 / 证明是" }
+    ]
+  }
+];
+
+const prepQuizData = [
+  { q: "He is ______ a diet, so he refuses to eat any cake.", opts: ["A. in", "B. on", "C. at", "D. with"], ans: 1, exp: "on a diet = 节食。画面：双脚踩在（on）规定的饮食计划上，表示处于这种状态。" },
+  { q: "The train arrived ______ time, so we didn't miss the meeting.", opts: ["A. on", "B. in", "C. at", "D. by"], ans: 0, exp: "on time = 准时。画面：精准踩在时间点（on）上。如果是 in time 则是“及时”赶在最后期限前。" },
+  { q: "Don't worry, we will arrive ______ time for the movie.", opts: ["A. on", "B. in", "C. at", "D. with"], ans: 1, exp: "in time = 及时。画面：在截止时间盒子关门前挤进去（in）。" },
+  { q: "He jumped ______ the fence and ran away.", opts: ["A. above", "B. over", "C. through", "D. across"], ans: 1, exp: "over 画面：腾空画弧线越过障碍。above 只是在上面，不表示跨越动作。" },
+  { q: "The plane is flying ______ the clouds at 10,000 meters.", opts: ["A. over", "B. above", "C. on", "D. through"], ans: 1, exp: "above 画面：在云层正上方悬空，不接触、不跨越。" },
+  { q: "We walked ______ the forest and finally saw the lake.", opts: ["A. across", "B. over", "C. through", "D. above"], ans: 2, exp: "through 画面：在森林内部穿行，从一端进去，另一端出来。" },
+  { q: "Be careful when you walk ______ the street.", opts: ["A. through", "B. across", "C. along", "D. over"], ans: 1, exp: "across 画面：在马路这个平面上，从一侧横穿到另一侧。" },
+  // 修正第8题逻辑：住在河边能看水，选 by
+  { q: "The house is ______ the river. We can see the water from the window.", opts: ["A. along", "B. through", "C. across", "D. by"], ans: 3, exp: "by the river = 在河边。画面：房子紧挨着河流的旁边（by）。along 是顺着河流走。" },
+  { q: "We stayed ______ a small hotel near the station.", opts: ["A. at", "B. in", "C. on", "D. by"], ans: 0, exp: "at a hotel = 把酒店看成一个具体的坐标点，强调功能位置。" },
+  { q: "She is sitting ______ the window, reading a book.", opts: ["A. by", "B. on", "C. in", "D. at"], ans: 0, exp: "by the window = 在窗边。画面：坐在窗户旁边（by）。" },
+  { q: "I usually get up ______ 7 o'clock ______ the morning.", opts: ["A. at / in", "B. on / in", "C. in / on", "D. at / on"], ans: 0, exp: "具体时间点用 at（7点），在早晨这个时间段用 in（the morning）。" },
+  { q: "He was born ______ May 5th, 2005.", opts: ["A. in", "B. on", "C. at", "D. for"], ans: 1, exp: "具体到某一天（5月5日）用 on。如果只说月份（May）则用 in。" },
+  { q: "I can't ______ the noise anymore. I'm going to complain.", opts: ["A. put off", "B. put up with", "C. put out", "D. take up"], ans: 1, exp: "put up with = 忍受。画面：up(竖起) + with(和...一起) ➡️ 竖起防御盾牌和麻烦待在一起。" },
+  { q: "The police are going to ______ the case.", opts: ["A. look after", "B. look into", "C. look over", "D. look up"], ans: 1, exp: "look into = 调查。画面：视线进入箱子内部，深入查看。" },
+  { q: "We have ______ milk. Can you buy some?", opts: ["A. run out of", "B. run into", "C. run over", "D. run across"], ans: 0, exp: "run out of = 用完。画面：牛奶从容器内部跑光了。" },
+  { q: "He finally ______ the answer after thinking for an hour.", opts: ["A. figured out", "B. put out", "C. took up", "D. gave up"], ans: 0, exp: "figure out = 弄清楚。画面：把关键图形从乱麻中揪出来。" },
+  { q: "The new manager will ______ the company next week.", opts: ["A. take over", "B. take in", "C. take up", "D. take off"], ans: 0, exp: "take over = 接管。画面：手越过别人，抓住方向盘。" },
+  { q: "I'd like to ______ a new hobby, like painting.", opts: ["A. take over", "B. take up", "C. take in", "D. take off"], ans: 1, exp: "take up = 开始从事。画面：把新爱好从无到有向上拿进生活。" },
+  { q: "He usually goes to school ______ bus, but today he is walking.", opts: ["A. by", "B. with", "C. on", "D. in"], ans: 0, exp: "by + 交通工具 表示“通过某种交通方式”。画面：站在公交车旁边，借着它的力（by）前行。" },
+  { q: "Don't worry. The project is ______ control. We will finish it on time.", opts: ["A. under", "B. in", "C. below", "D. over"], ans: 0, exp: "under control = 处于控制之下。画面：被上方强有力的手罩住（under），在掌控之中。" },
+  // 修正解析，使更直观
+  { q: "She is very good ______ playing the piano.", opts: ["A. at", "B. in", "C. on", "D. for"], ans: 0, exp: "be good at = 擅长。画面：at 表示在一个具体的点（技能点）上很精通。" },
+  { q: "The teacher divided the students ______ four groups.", opts: ["A. into", "B. in", "C. among", "D. between"], ans: 0, exp: "divide... into... 画面：把整体切分（分开）并送进（into）四个小盒子里。" },
+  { q: "He is standing ______ his friends, feeling very happy.", opts: ["A. among", "B. between", "C. in", "D. on"], ans: 0, exp: "among = 在……之中（三者或以上）。画面：混在人堆里。between 仅用于两者之间。" },
+  { q: "I'm really looking forward ______ you again.", opts: ["A. to see", "B. to seeing", "C. seeing", "D. for seeing"], ans: 1, exp: "look forward to 中的 to 是介词，画面：向前看并且指向（to）那个点。介词后接动名词 doing。" },
+  { q: "His plan didn't ______ as he had expected.", opts: ["A. work out", "B. give out", "C. break out", "D. turn out"], ans: 3, exp: "turn out = 结果是。画面：把盲盒翻转（turn）倒出来（out），发现真相。" },
+  { q: "We haven't decided ______ the date of the meeting yet.", opts: ["A. on", "B. at", "C. in", "D. about"], ans: 0, exp: "decide on = 决定/定下来。画面：双脚踩在（on）那个确定的选项上。" },
+  { q: "He took my umbrella ______ mistake.", opts: ["A. by", "B. in", "C. on", "D. with"], ans: 0, exp: "by mistake = 错误地。画面：在“错误”这个手段（by）的借力下，拿错了。" },
+  { q: "The book is ______ the desk. You can find it easily.", opts: ["A. on", "B. in", "C. at", "D. under"], ans: 0, exp: "on the desk = 在桌面上。画面：书紧贴着桌子的平面（on）。" },
+  { q: "I'm sorry, but I didn't do it ______ purpose.", opts: ["A. on", "B. by", "C. in", "D. at"], ans: 0, exp: "on purpose = 故意地。画面：脚下踩着一个明确的目的（on purpose）。" },
+  { q: "He is ______ a hurry to catch the train.", opts: ["A. in", "B. on", "C. at", "D. with"], ans: 0, exp: "in a hurry = 匆忙。画面：整个人被包裹在“匆忙”这个状态盒子里（in）。" }
+];
+
+// ==========================================
+// 渲染与逻辑区
+// ==========================================
+
+let wrongAnswers = [];
+let retrying = false;
+let retryIndices = [];
+
+const flipGrid = document.getElementById('flipGrid');
+prepData.forEach(p => {
+  let examplesHtml = p.examples.map(e => `<li>${e}</li>`).join('');
+  let html = `
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><h3>${p.word}</h3><p>${p.tag}</p></div>
+        <div class="flip-back"><p style="margin-bottom:6px; font-weight:700; color:#b16a3a;">${p.desc}</p><ul>${examplesHtml}</ul></div>
+      </div>
+    </div>
+  `;
+  flipGrid.innerHTML += html;
+});
+
+const verbFamilyContainer = document.getElementById('verbFamilyContainer');
+verbFamilyData.forEach(vf => {
+  let html = `<div class="verb-family"><div class="verb-title">${vf.prep}</div><ul class="verb-list">`;
+  vf.verbs.forEach(v => { html += `<li><span class="verb-word">${v.w}</span><span class="verb-exp">${v.exp}</span></li>`; });
+  html += `</ul></div>`;
+  verbFamilyContainer.innerHTML += html;
+});
+
+function renderQuiz(indices) {
+  const quizContainer = document.getElementById('quizContainer');
+  quizContainer.innerHTML = '';
+  indices.forEach((realIdx, displayIdx) => {
+    const q = prepQuizData[realIdx];
+    let html = `<div class="quiz-card" id="qcard-${displayIdx}"><div class="quiz-question">${displayIdx+1}. ${q.q}</div><div class="quiz-options">`;
+    q.opts.forEach((opt, oi) => {
+      html += `<div class="quiz-opt" onclick="checkPrepQuiz(${realIdx}, ${oi}, this, ${displayIdx})">${opt}</div>`;
+    });
+    html += `</div><div class="quiz-explain" id="prep-exp-${displayIdx}">💡 ${q.exp}</div></div>`;
+    quizContainer.innerHTML += html;
+  });
+}
+
+let correctCount = 0;
+let answeredCount = 0;
+
+function initQuiz() {
+  wrongAnswers = [];
+  retrying = false;
+  correctCount = 0;
+  answeredCount = 0;
+  const indices = prepQuizData.map((_, i) => i);
+  renderQuiz(indices);
+  document.getElementById('scoreDisplay').innerText = '0';
+  document.getElementById('progressText').innerText = '进度: 0%';
+  document.getElementById('wrongBook').classList.remove('show');
+  document.getElementById('showWrongBtn').style.display = 'none';
+}
+
+function checkPrepQuiz(realIdx, oIdx, el, displayIdx) {
+  const q = prepQuizData[realIdx];
+  const parent = el.parentElement;
+  const card = document.getElementById(`qcard-${displayIdx}`);
+  Array.from(parent.children).forEach(c => c.style.pointerEvents = 'none');
+  
+  if(oIdx === q.ans) {
+    el.classList.add('correct');
+    card.style.boxShadow = '0 0 10px rgba(40, 167, 69, 0.4)';
+    correctCount++;
+  } else {
+    el.classList.add('wrong');
+    parent.children[q.ans].classList.add('correct');
+    card.style.boxShadow = '0 0 10px rgba(220, 53, 69, 0.4)';
+    // 记录错题
+    if(!wrongAnswers.find(w => w.idx === realIdx)) {
+      wrongAnswers.push({ idx: realIdx, q: q.q, opts: q.opts, ans: q.ans, exp: q.exp });
+    }
+  }
+  
+  document.getElementById(`prep-exp-${displayIdx}`).classList.add('show');
+  answeredCount++;
+  document.getElementById('scoreDisplay').innerText = correctCount;
+  
+  const total = retrying ? retryIndices.length : prepQuizData.length;
+  let percent = Math.round((answeredCount / total) * 100);
+  document.getElementById('progressText').innerText = `进度: ${percent}%`;
+  
+  if(answeredCount === total) {
+    if(!retrying) {
+      document.getElementById('showWrongBtn').style.display = 'block';
+      if(wrongAnswers.length === 0) {
+        document.getElementById('showWrongBtn').innerText = '🎉 全对！没有错题';
+        document.getElementById('showWrongBtn').style.background = '#1a7a3a';
+      } else {
+        document.getElementById('showWrongBtn').innerText = `📕 查看错题本 (${wrongAnswers.length}题)`;
+      }
+    } else {
+      // 重练结束
+      if(wrongAnswers.length === 0) {
+        document.getElementById('showWrongBtn').innerText = '🎉 错题已全部掌握！';
+        document.getElementById('showWrongBtn').style.background = '#1a7a3a';
+        document.getElementById('showWrongBtn').style.display = 'block';
+      } else {
+        document.getElementById('showWrongBtn').innerText = `📕 仍有 ${wrongAnswers.length} 题需要重练`;
+        document.getElementById('showWrongBtn').style.display = 'block';
+        document.getElementById('showWrongBtn').style.background = '#b13e2e';
+      }
+    }
+  }
+}
+
+function showWrongBook() {
+  const book = document.getElementById('wrongBook');
+  const list = document.getElementById('wrongList');
+  list.innerHTML = '';
+  if(wrongAnswers.length === 0) {
+    list.innerHTML = '<p style="color:#1a7a3a; font-weight:600;">🎉 恭喜你，没有错题！</p>';
+  } else {
+    wrongAnswers.forEach(w => {
+      const correctLetter = String.fromCharCode(65 + w.ans);
+      list.innerHTML += `<div class="wrong-item">
+        <div class="q-text">${w.q}</div>
+        <div class="a-text">✅ 正确答案：${correctLetter}. ${w.opts[w.ans].replace(/^[A-D]\.\s*/, '')}</div>
+        <div class="e-text">💡 ${w.exp}</div>
+      </div>`;
+    });
+  }
+  book.classList.add('show');
+  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+
+function retryWrong() {
+  if(wrongAnswers.length === 0) return;
+  retrying = true;
+  retryIndices = wrongAnswers.map(w => w.idx);
+  // 保留错题，但清空本轮错题记录以便重新算
+  const retryQs = wrongAnswers.map(w => ({...w}));
+  wrongAnswers = [];
+  correctCount = 0;
+  answeredCount = 0;
+  
+  // 隐藏错题本
+  document.getElementById('wrongBook').classList.remove('show');
+  document.getElementById('showWrongBtn').style.display = 'none';
+  
+  // 只渲染错题
+  const quizContainer = document.getElementById('quizContainer');
+  quizContainer.innerHTML = '';
+  retryIndices.forEach((realIdx, displayIdx) => {
+    const q = prepQuizData[realIdx];
+    let html = `<div class="quiz-card" id="qcard-${displayIdx}"><div class="quiz-question">${displayIdx+1}. ${q.q}</div><div class="quiz-options">`;
+    q.opts.forEach((opt, oi) => {
+      html += `<div class="quiz-opt" onclick="checkPrepQuiz(${realIdx}, ${oi}, this, ${displayIdx})">${opt}</div>`;
+    });
+    html += `</div><div class="quiz-explain" id="prep-exp-${displayIdx}">💡 ${q.exp}</div></div>`;
+    quizContainer.innerHTML += html;
+  });
+  document.getElementById('scoreDisplay').innerText = '0';
+  document.getElementById('progressText').innerText = '进度: 0%';
+}
+
+function clearWrong() {
+  initQuiz();
+}
+
+const tabBtns = document.querySelectorAll('.tab-btn');
+const cards = document.querySelectorAll('.card');
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', function() {
+    const idx = this.dataset.tab;
+    tabBtns.forEach(b => b.classList.remove('active'));
+    cards.forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('card-' + idx).classList.add('active');
+  });
+});
+
+initQuiz();
+</script>
+</body>
+</html>
