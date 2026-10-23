@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Day 13 · 基础大复习 (30题含错题本)</title>
+  <style>
+    /* 样式完全复用 */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
+    .container { max-width: 820px; margin: 0 auto; }
+    h1 { font-size: 1.4rem; color: #0b2b4a; border-left: 6px solid #b13e2e; padding-left: 14px; margin-bottom: 14px; }
+    
+    .progress-bar { display: flex; justify-content: space-between; background: white; padding: 10px 16px; border-radius: 40px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0eaf2; }
+    .step { font-size: 0.85rem; font-weight: 600; color: #a0b5c8; }
+    .step.active { color: #b13e2e; }
+    .step.done { color: #1a7a3a; }
+
+    .page { display: none; background: white; border-radius: 20px; padding: 20px; box-shadow: 0 6px 18px rgba(0, 20, 30, 0.08); border: 1px solid #e6eef6; }
+    .page.active { display: block; }
+    h2 { font-size: 1.2rem; color: #134b6b; margin-bottom: 14px; border-bottom: 2px solid #e3edf5; padding-bottom: 8px; }
+    
+    .learn-card { background: #fafdff; border: 1px solid #e3ecf5; border-radius: 12px; padding: 14px; margin-bottom: 12px; text-align: center; }
+    .learn-title { font-size: 1.2rem; font-weight: 700; color: #b13e2e; }
+
+    .btn { background: #1f5880; color: white; border: none; padding: 12px 24px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 16px; width: 100%; transition: 0.2s; }
+    .btn:hover { background: #13466a; }
+    .btn-next { background: #1a7a3a; }
+    .btn-wrong { background: #b13e2e; }
+    
+    .quiz-card { background: #f8fbff; border: 1px solid #d5e4f1; border-radius: 16px; padding: 16px; margin-bottom: 14px; transition: 0.3s; }
+    .quiz-question { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; line-height: 1.5; }
+    .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+    .quiz-opt { background: white; border: 1px solid #c9dae8; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+    .quiz-opt:hover { background: #e6f0f8; }
+    .quiz-opt.correct { background: #d4edda; border-color: #28a745; color: #155724; font-weight: 700; }
+    .quiz-opt.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; font-weight: 700; }
+    .quiz-explain { display: none; margin-top: 10px; font-size: 0.85rem; color: #1a4d6b; background: #e3edf5; padding: 8px 12px; border-radius: 8px; }
+    .quiz-explain.show { display: block; }
+    
+    .feedback-ok { box-shadow: 0 0 10px rgba(40, 167, 69, 0.4); border-color: #28a745; }
+    .feedback-no { box-shadow: 0 0 10px rgba(220, 53, 69, 0.4); border-color: #dc3545; }
+
+    .finish-msg { text-align: center; padding: 30px 10px; display: none; }
+    .finish-msg.show { display: block; }
+    .finish-msg h3 { color: #1a7a3a; font-size: 1.3rem; margin-bottom: 10px; }
+    .score-board { background: #e3edf5; padding: 8px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; color: #1f5880; margin-bottom: 16px; display: flex; justify-content: space-between; }
+
+    .wrong-book { display: none; background: #fff5f5; border: 1px solid #f5c6cb; border-radius: 16px; padding: 16px; margin-top: 20px; }
+    .wrong-book.show { display: block; }
+    .wrong-book h3 { color: #b13e2e; font-size: 1.1rem; margin-bottom: 10px; }
+    .wrong-item { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; border-left: 3px solid #dc3545; font-size: 0.9rem; }
+    .wrong-item .q-text { font-weight: 600; margin-bottom: 4px; }
+    .wrong-item .a-text { color: #1a7a3a; font-weight: 600; }
+    .wrong-item .e-text { color: #6d8aa3; font-size: 0.82rem; margin-top: 4px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="progress-bar" id="progressBar">
+    <span class="step active" id="step-0">1. 考前须知</span>
+    <span class="step" id="step-1">2. 混编大考(30题)</span>
+    <span class="step" id="step-2">🏆 结算</span>
+  </div>
+
+  <div class="page active" id="page-0">
+    <h2>Day 13：基础大复习</h2>
+    <div class="learn-card" style="padding: 30px 20px;">
+      <div class="learn-title">📝 排雷大考</div>
+      <p style="color:#555; margin-top:10px; font-size:0.95rem; line-height:1.8;">
+        本卷涵盖 Day 1 - Day 12 的所有核心前缀与词根。<br>
+        共 <strong>30 道选择题</strong>，随机乱序排列。<br>
+        做错会自动进错题本，可随时重练。
+      </p>
+      <p style="color:#b13e2e; font-weight:600; margin-top:15px;">请勿翻阅之前的笔记，凭画面感直接作答！</p>
+    </div>
+    <button class="btn btn-next" onclick="goToPage(1)" style="background:#b13e2e;">🚀 开始大考</button>
+  </div>
+
+  <div class="page" id="page-1">
+    <h2>混编大考 (30题)</h2>
+    <div class="score-board">
+      <span>📊 已答对: <strong id="scoreDisplay">0</strong> / 30</span>
+      <span id="progressText">进度: 0%</span>
+    </div>
+    <div id="quizContainer"></div>
+    
+    <div class="wrong-book" id="wrongBook">
+      <h3>📕 我的错题本</h3>
+      <div id="wrongList"></div>
+      <button class="btn btn-wrong" onclick="retryWrong()">🔄 重练错题</button>
+    </div>
+    <button class="btn btn-wrong" id="showWrongBtn" onclick="showWrongBook()" style="display:none;">📕 查看错题本</button>
+    <button class="btn" id="btn-finish" onclick="goToPage(2)" style="display:none; background:#1a7a3a; margin-top:12px;">🏆 完成 Day 13</button>
+  </div>
+
+  <div class="page" id="page-2">
+    <div class="finish-msg show" style="display:block;">
+      <h3>🎉 Day 13 通关！</h3>
+      <p style="color:#555; margin:10px 0; font-size:1.1rem;">复习已完成，基础营顺利毕业！</p>
+      <button class="btn" onclick="location.reload()">🔄 再刷一次</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==========================================
+// Day 13 数据区：30题大混编
+// ==========================================
+const quizData = [
+  // 1-5 前缀辨析
+  { q: "前缀 'trans-' 的画面感是？", opts: ["A. 跨越/通过", "B. 向内", "C. 向后", "D. 否定"], ans: 0, exp: "trans- = 跨越。(Day 2)" },
+  { q: "前缀 'bi-' 的画面感是？", opts: ["A. 单一", "B. 双/二", "C. 多", "D. 跨越"], ans: 1, exp: "bi- = 二。(Day 8)" },
+  { q: "前缀 'tele-' 的核心含义是？", opts: ["A. 远距离", "B. 自动", "C. 手", "D. 头"], ans: 0, exp: "tele- = 远。(Day 9)" },
+  { q: "前缀 'micro-' 的含义是？", opts: ["A. 微小", "B. 宏大", "C. 声音", "D. 水"], ans: 0, exp: "micro- = 微小。(Day 10)" },
+  { q: "前缀 'anti-' 的画面感是？", opts: ["A. 对抗/反对", "B. 共同", "C. 在下面", "D. 向外"], ans: 0, exp: "anti- = 对抗。(Day 4)" },
+
+  // 6-10 词根混编 (基础)
+  { q: "词根 'spect' 的画面是？", opts: ["A. 看", "B. 说", "C. 写", "D. 拉"], ans: 0, exp: "spect = 看。(Day 1)" },
+  { q: "词根 'dict' 的画面是？", opts: ["A. 说", "B. 写", "C. 引导", "D. 建造"], ans: 0, exp: "dict = 说。(Day 2)" },
+  { q: "词根 'tract' 的核心画面是？", opts: ["A. 拉/拖", "B. 看", "C. 写", "D. 转"], ans: 0, exp: "tract = 拉。(Day 1)" },
+  { q: "词根 'port' 的核心画面是？", opts: ["A. 带/运", "B. 写", "C. 看", "D. 拉"], ans: 0, exp: "port = 带/运。(Day 2)" },
+  { q: "词根 'scrib / script' 的底层画面是？", opts: ["A. 写", "B. 看", "C. 说", "D. 拉"], ans: 0, exp: "scrib = 写。(Day 1)" },
+
+  // 11-15 词根混编 (进阶)
+  { q: "词根 'sci' 的底层画面是？", opts: ["A. 知道", "B. 看", "C. 相信", "D. 感觉"], ans: 0, exp: "sci = 知道。(Day 7)" },
+  { q: "词根 'cred' 代表什么动作？", opts: ["A. 相信", "B. 知道", "C. 感觉", "D. 看"], ans: 0, exp: "cred = 相信。(Day 7)" },
+  { q: "词根 'sens / sent' 的核心画面是？", opts: ["A. 感觉", "B. 相信", "C. 知道", "D. 写"], ans: 0, exp: "sens = 感觉。(Day 7)" },
+  { q: "词根 'vis / vid' 代表什么？", opts: ["A. 看", "B. 说", "C. 活", "D. 相信"], ans: 0, exp: "vis/vid = 看。(Day 8)" },
+  { q: "词根 'bio' 代表什么？", opts: ["A. 生命", "B. 看", "C. 相信", "D. 拉"], ans: 0, exp: "bio = 生命。(Day 8)" },
+
+  // 16-20 词根混编 (扩展)
+  { q: "词根 'manu' 代表什么？", opts: ["A. 手", "B. 脚", "C. 头", "D. 水"], ans: 0, exp: "manu = 手。(Day 9)" },
+  { q: "词根 'ped' 的核心画面是？", opts: ["A. 脚", "B. 手", "C. 头", "D. 看"], ans: 0, exp: "ped = 脚。(Day 9)" },
+  { q: "词根 'capit' 的画面是？", opts: ["A. 头", "B. 手", "C. 脚", "D. 声音"], ans: 0, exp: "capit = 头。(Day 9)" },
+  { q: "词根 'geo' 代表什么？", opts: ["A. 地球", "B. 水", "C. 声音", "D. 听"], ans: 0, exp: "geo = 地球。(Day 10)" },
+  { q: "词根 'aqua' 的画面是？", opts: ["A. 水", "B. 地球", "C. 声音", "D. 听"], ans: 0, exp: "aqua = 水。(Day 10)" },
+
+  // 21-25 词根混编 (社会与逻辑)
+  { q: "词根 'phon' 代表什么？", opts: ["A. 声音", "B. 水", "C. 地球", "D. 听"], ans: 0, exp: "phon = 声音。(Day 10)" },
+  { q: "词根 'aud' 的底层画面是？", opts: ["A. 听", "B. 说", "C. 看", "D. 写"], ans: 0, exp: "aud = 听。(Day 10)" },
+  { q: "词根 'soci' 代表什么？", opts: ["A. 社会/同伴", "B. 人民", "C. 法律", "D. 公正"], ans: 0, exp: "soci = 社会。(Day 11)" },
+  { q: "词根 'dem' 的画面是？", opts: ["A. 人民", "B. 社会", "C. 法律", "D. 公正"], ans: 0, exp: "dem = 人民。(Day 11)" },
+  { q: "词根 'leg' 的核心画面是？", opts: ["A. 法律/读", "B. 社会", "C. 人民", "D. 公正"], ans: 0, exp: "leg = 法律。(Day 11)" },
+
+  // 26-30 词根混编 (思维与逻辑 + 后缀)
+  { q: "词根 'jur/jus' 代表什么？", opts: ["A. 法律/公正", "B. 人民", "C. 社会", "D. 读"], ans: 0, exp: "jur/jus = 法律/公正。(Day 11)" },
+  { q: "词根 'log' 的核心画面是？", opts: ["A. 言语/学科", "B. 判断", "C. 结束", "D. 开始"], ans: 0, exp: "log = 言语/学科。(Day 12)" },
+  { q: "词根 'jud' 代表什么动作？", opts: ["A. 判断", "B. 说", "C. 结束", "D. 开始"], ans: 0, exp: "jud = 判断。(Day 12)" },
+  { q: "词根 'fin' 的画面是？", opts: ["A. 结束/界限", "B. 开始", "C. 判断", "D. 说"], ans: 0, exp: "fin = 结束/界限。(Day 12)" },
+  { q: "词根 'init' 代表什么？", opts: ["A. 开始", "B. 结束", "C. 判断", "D. 言语"], ans: 0, exp: "init = 开始。(Day 12)" }
+];
+
+// ==========================================
+// 渲染与错题本逻辑
+// ==========================================
+let wrongAnswers = []; 
+let retrying = false;
+let retryIndices = [];
+let correctCount = 0;
+let answeredCount = 0;
+
+const quizContainer = document.getElementById('quizContainer');
+
+function renderQuiz(indices) {
+  quizContainer.innerHTML = '';
+  indices.forEach((realIdx, displayIdx) => {
+    const q = quizData[realIdx];
+    let html = `<div class="quiz-card" id="qcard-${displayIdx}"><div class="quiz-question">${displayIdx+1}. ${q.q}</div><div class="quiz-options">`;
+    q.opts.forEach((opt, oi) => {
+      html += `<div class="quiz-opt" onclick="checkAnswer(${realIdx}, ${oi}, this, ${displayIdx})">${opt}</div>`;
+    });
+    html += `</div><div class="quiz-explain" id="exp-${displayIdx}">💡 ${q.exp}</div></div>`;
+    quizContainer.innerHTML += html;
+  });
+}
+
+function initQuiz() {
+  wrongAnswers = [];
+  retrying = false;
+  correctCount = 0;
+  answeredCount = 0;
+  const indices = quizData.map((_, i) => i);
+  renderQuiz(indices);
+  document.getElementById('scoreDisplay').innerText = '0';
+  document.getElementById('progressText').innerText = '进度: 0%';
+  document.getElementById('wrongBook').classList.remove('show');
+  document.getElementById('showWrongBtn').style.display = 'none';
+  document.getElementById('btn-finish').style.display = 'none';
+}
+
+function checkAnswer(realIdx, oIdx, el, displayIdx) {
+  const q = quizData[realIdx];
+  const parent = el.parentElement;
+  const card = document.getElementById(`qcard-${displayIdx}`);
+  Array.from(parent.children).forEach(c => c.style.pointerEvents = 'none');
+  
+  if(oIdx === q.ans) {
+    el.classList.add('correct');
+    card.classList.add('feedback-ok');
+    correctCount++;
+  } else {
+    el.classList.add('wrong');
+    parent.children[q.ans].classList.add('correct');
+    card.classList.add('feedback-no');
+    if(!wrongAnswers.find(w => w.idx === realIdx)) {
+      wrongAnswers.push({ idx: realIdx, q: q.q, opts: q.opts, ans: q.ans, exp: q.exp });
+    }
+  }
+  
+  document.getElementById(`exp-${displayIdx}`).classList.add('show');
+  answeredCount++;
+  document.getElementById('scoreDisplay').innerText = correctCount;
+  
+  const total = retrying ? retryIndices.length : quizData.length;
+  document.getElementById('progressText').innerText = `进度: ${Math.round((answeredCount/total)*100)}%`;
+  
+  if(answeredCount === total) {
+    document.getElementById('showWrongBtn').style.display = 'block';
+    if(retrying) {
+      document.getElementById('btn-finish').style.display = 'block';
+    }
+    if(wrongAnswers.length === 0) {
+      document.getElementById('showWrongBtn').innerText = '🎉 全对！没有错题';
+      document.getElementById('showWrongBtn').style.background = '#1a7a3a';
+    } else {
+      document.getElementById('showWrongBtn').innerText = `📕 查看错题本 (${wrongAnswers.length}题)`;
+      document.getElementById('showWrongBtn').style.background = '#b13e2e';
+    }
+  }
+}
+
+function showWrongBook() {
+  const book = document.getElementById('wrongBook');
+  const list = document.getElementById('wrongList');
+  list.innerHTML = '';
+  if(wrongAnswers.length === 0) {
+    list.innerHTML = '<p style="color:#1a7a3a; font-weight:600;">🎉 恭喜你，没有错题！</p>';
+  } else {
+    wrongAnswers.forEach(w => {
+      const correctLetter = String.fromCharCode(65 + w.ans);
+      list.innerHTML += `<div class="wrong-item">
+        <div class="q-text">${w.q}</div>
+        <div class="a-text">✅ 正确答案：${correctLetter}. ${w.opts[w.ans].replace(/^[A-D]\.\s*/, '')}</div>
+        <div class="e-text">💡 ${w.exp}</div>
+      </div>`;
+    });
+  }
+  book.classList.add('show');
+}
+
+function retryWrong() {
+  if(wrongAnswers.length === 0) return;
+  retrying = true;
+  retryIndices = wrongAnswers.map(w => w.idx);
+  wrongAnswers = [];
+  correctCount = 0;
+  answeredCount = 0;
+  
+  document.getElementById('wrongBook').classList.remove('show');
+  document.getElementById('showWrongBtn').style.display = 'none';
+  document.getElementById('btn-finish').style.display = 'none';
+  document.getElementById('scoreDisplay').innerText = '0';
+  document.getElementById('progressText').innerText = '进度: 0%';
+  
+  renderQuiz(retryIndices);
+}
+
+function goToPage(pageIdx) {
+  document.querySelectorAll('.page').forEach((p, i) => p.classList.toggle('active', i === pageIdx));
+  document.querySelectorAll('.step').forEach((s, i) => {
+    s.classList.remove('active', 'done');
+    if(i < pageIdx) s.classList.add('done');
+    if(i === pageIdx) s.classList.add('active');
+  });
+  window.scrollTo(0, 0);
+}
+
+// 初始化
+initQuiz();
+</script>
+</body>
+</html>
