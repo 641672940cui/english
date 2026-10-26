@@ -3,29 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>Day 9 · 手脚与头脑 (含错题本)</title>
+  <title>Day 9 · 手脚与头脑 (修正版)</title>
   <style>
-    /* 统一的标准样式 */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
     .container { max-width: 820px; margin: 0 auto; }
     h1 { font-size: 1.4rem; color: #0b2b4a; border-left: 6px solid #2a7faa; padding-left: 14px; margin-bottom: 14px; }
-    
     .progress-bar { display: flex; justify-content: space-between; background: white; padding: 10px 16px; border-radius: 40px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0eaf2; }
     .step { font-size: 0.85rem; font-weight: 600; color: #a0b5c8; }
     .step.active { color: #1f5880; }
     .step.done { color: #1a7a3a; }
-
     .page { display: none; background: white; border-radius: 20px; padding: 20px; box-shadow: 0 6px 18px rgba(0, 20, 30, 0.08); border: 1px solid #e6eef6; }
     .page.active { display: block; }
     h2 { font-size: 1.2rem; color: #134b6b; margin-bottom: 14px; border-bottom: 2px solid #e3edf5; padding-bottom: 8px; }
-    
     .learn-card { background: #fafdff; border: 1px solid #e3ecf5; border-radius: 12px; padding: 14px; margin-bottom: 12px; }
     .learn-title { font-size: 1.15rem; font-weight: 700; color: #b13e2e; }
     .learn-en { font-size: 0.85rem; color: #1f5880; font-weight: 600; background: #e3edf5; display: inline-block; padding: 2px 8px; border-radius: 6px; margin-left: 8px; }
     .learn-img { font-size: 0.9rem; color: #5c4328; margin: 8px 0; background: #fdfaf2; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #d48c5c; }
     .learn-origin { font-size: 0.82rem; color: #6d8aa3; font-style: italic; margin-top: 6px; padding-left: 4px; }
-    
     .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; text-align: center; }
     .family-list { display: none; list-style: none; padding: 0; margin-top: 10px; border-top: 1px dashed #d0dfec; padding-top: 10px; }
     .family-list.open { display: block; }
@@ -33,12 +28,10 @@
     .fam-word { font-weight: 600; color: #b13e2e; width: 120px; }
     .fam-break { color: #666; flex: 1; font-size: 0.82rem; margin-left: 8px; }
     .fam-mean { color: #1a4d6b; text-align: right; font-size: 0.85rem; width: 90px; }
-
     .btn { background: #1f5880; color: white; border: none; padding: 12px 24px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 16px; width: 100%; transition: 0.2s; }
     .btn:hover { background: #13466a; }
     .btn-next { background: #1a7a3a; }
     .btn-wrong { background: #b13e2e; }
-    
     .quiz-card { background: #f8fbff; border: 1px solid #d5e4f1; border-radius: 16px; padding: 16px; margin-bottom: 14px; transition: 0.3s; }
     .quiz-question { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; line-height: 1.5; }
     .quiz-options { display: flex; flex-direction: column; gap: 8px; }
@@ -48,16 +41,12 @@
     .quiz-opt.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; font-weight: 700; }
     .quiz-explain { display: none; margin-top: 10px; font-size: 0.85rem; color: #1a4d6b; background: #e3edf5; padding: 8px 12px; border-radius: 8px; }
     .quiz-explain.show { display: block; }
-    
     .feedback-ok { box-shadow: 0 0 10px rgba(40, 167, 69, 0.4); border-color: #28a745; }
     .feedback-no { box-shadow: 0 0 10px rgba(220, 53, 69, 0.4); border-color: #dc3545; }
-
     .finish-msg { text-align: center; padding: 30px 10px; display: none; }
     .finish-msg.show { display: block; }
     .finish-msg h3 { color: #1a7a3a; font-size: 1.3rem; margin-bottom: 10px; }
     .score-board { background: #e3edf5; padding: 8px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; color: #1f5880; margin-bottom: 16px; display: flex; justify-content: space-between; }
-
-    /* 错题本样式 */
     .wrong-book { display: none; background: #fff5f5; border: 1px solid #f5c6cb; border-radius: 16px; padding: 16px; margin-top: 20px; }
     .wrong-book.show { display: block; }
     .wrong-book h3 { color: #b13e2e; font-size: 1.1rem; margin-bottom: 10px; }
@@ -69,20 +58,17 @@
 </head>
 <body>
 <div class="container">
-  
   <div class="progress-bar" id="progressBar">
     <span class="step active" id="step-0">1. 认零件</span>
     <span class="step" id="step-1">2. 刷题库</span>
     <span class="step" id="step-2">🏆 通关</span>
   </div>
-
   <div class="page active" id="page-0">
-    <h2>Day 9：手脚与头脑</h2>
-    <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">今天掌握：前缀 (auto/tele) + 手 (manu) + 脚 (ped) + 头 (cap/capit)。<br><span style="color:#b13e2e;">⚠️ 题目中夹杂旧知识复习，做错的会自动进错题本。</span></p>
+    <h2>Day 9：手脚与头脑 (修正版)</h2>
+    <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">今天掌握：前缀 (auto/tele) + 手 (manu) + 脚 (ped) + 头 (cap/capit)。<br><span style="color:#b13e2e;">⚠️ 已剔除儿科医生等干扰项，只保留“脚”的词源。</span></p>
     <div id="learnContainer"></div>
     <button class="btn btn-next" onclick="goToPage(1)">✅ 学完了，去刷题</button>
   </div>
-
   <div class="page" id="page-1">
     <h2>题海演练：15题挑战</h2>
     <div class="score-board">
@@ -90,7 +76,6 @@
       <span id="progressText">进度: 0%</span>
     </div>
     <div id="quizContainer"></div>
-    
     <div class="wrong-book" id="wrongBook">
       <h3>📕 我的错题本</h3>
       <div id="wrongList"></div>
@@ -99,7 +84,6 @@
     <button class="btn btn-wrong" id="showWrongBtn" onclick="showWrongBook()" style="display:none;">📕 查看错题本</button>
     <button class="btn" id="btn-finish" onclick="goToPage(2)" style="display:none; background:#1a7a3a; margin-top:12px;">🏆 完成 Day 9</button>
   </div>
-
   <div class="page" id="page-2">
     <div class="finish-msg show" style="display:block;">
       <h3>🎉 Day 9 通关！</h3>
@@ -110,9 +94,6 @@
 </div>
 
 <script>
-// ==========================================
-// Day 9 数据区
-// ==========================================
 const learnData = {
   prefixes: [
     { p: "auto-", en: "self / same", img: "画面是自己给自己发指令，不需要别人帮忙。", origin: "源自希腊语 autos (自己)。", ex: "automatic (自动的), autobiography (自传)" },
@@ -120,35 +101,29 @@ const learnData = {
   ],
   roots: [
     { r: "manu", en: "hand", img: "画面是一双手在操作工具。", origin: "源自拉丁语 manus (手)。", family: [{ w: "manual", b: "manu(手) + al(形/名)", m: "adj. 手工的 / n. 手册" },{ w: "manufacture", b: "manu(手) + fact(做) + ure", m: "v. 制造" },{ w: "manuscript", b: "manu(手) + script(写)", m: "n. 手稿" }] },
-    { r: "ped", en: "foot / child", img: "画面是一双脚踏在地上，或者一个小孩在走路。", origin: "源自拉丁语 pes/pedis (脚) 或希腊语 pais (儿童)。", family: [{ w: "pedal", b: "ped(脚) + al", m: "n. 踏板 / v. 踩踏板" },{ w: "pedestrian", b: "ped(脚) + estrian(人)", m: "n. 行人" },{ w: "pediatrician", b: "ped(儿童) + iatrician(医生)", m: "n. 儿科医生" }] },
+    { r: "ped", en: "foot", img: "画面是一双脚踏在地上。", origin: "源自拉丁语 pes/pedis (脚)。(注: ped 也有儿童词源，高中阶段优先记“脚”)。", family: [{ w: "pedal", b: "ped(脚) + al", m: "n. 踏板 / v. 踩踏板" },{ w: "pedestrian", b: "ped(脚) + estrian(人)", m: "n. 行人" }] },
     { r: "cap / capit", en: "head", img: "画面是人的头顶，或者在队伍的最前面。", origin: "源自拉丁语 caput (头)。", family: [{ w: "capital", b: "capit(头) + al", m: "n. 首都 / 资本" },{ w: "captain", b: "capit(头) + ain(人)", m: "n. 船长 / 队长" },{ w: "decapitate", b: "de(去掉) + capit(头) + ate", m: "v. 斩首" }] }
   ]
 };
 
 const quizData = [
-  // --- Day 9 新知识 ---
-  { q: "前缀 'tele-' 的核心含义是？", opts: ["A. 远距离", "B. 自动", "C. 手", "D. 头"], ans: 0, exp: "tele- = 远。telephone(电话) 就是远距离传声。" },
-  { q: "前缀 'auto-' 的画面感是？", opts: ["A. 自己/自动", "B. 远方", "C. 多", "D. 相反"], ans: 0, exp: "auto- = 自己。automatic(自动的) 就是自己动。" },
-  { q: "词根 'manu' 代表什么？", opts: ["A. 脚", "B. 手", "C. 头", "D. 生命"], ans: 1, exp: "manu = 手。manual(手工的) 就是用手做的。" },
-  { q: "词根 'ped' 的核心画面是？", opts: ["A. 手", "B. 头", "C. 脚", "D. 看"], ans: 2, exp: "ped = 脚。pedal(踏板) 就是脚踩的东西。" },
-  { q: "词根 'cap/capit' 代表什么？", opts: ["A. 头", "B. 手", "C. 脚", "D. 写"], ans: 0, exp: "cap/capit = 头。capital(首都) 就是一个国家的“头”部。" },
-  { q: "单词 manufacture (manu + fact + ure) 的字面画面是？", opts: ["A. 用手做 ➡️ 制造", "B. 用脚走 ➡️ 运输", "C. 用头想 ➡️ 思考", "D. 自动做 ➡️ 自动化"], ans: 0, exp: "manu(手) + fact(做) ➡️ 用手做 ➡️ 制造。" },
+  { q: "前缀 'tele-' 的核心含义是？", opts: ["A. 远距离", "B. 自动", "C. 手", "D. 头"], ans: 0, exp: "tele- = 远。telephone(电话)。" },
+  { q: "前缀 'auto-' 的画面感是？", opts: ["A. 自己/自动", "B. 远方", "C. 多", "D. 相反"], ans: 0, exp: "auto- = 自己。automatic(自动的)。" },
+  { q: "词根 'manu' 代表什么？", opts: ["A. 脚", "B. 手", "C. 头", "D. 生命"], ans: 1, exp: "manu = 手。manual(手工的)。" },
+  { q: "词根 'ped' 的核心画面是？", opts: ["A. 手", "B. 头", "C. 脚", "D. 看"], ans: 2, exp: "ped = 脚。pedal(踏板)。" },
+  { q: "词根 'cap/capit' 代表什么？", opts: ["A. 头", "B. 手", "C. 脚", "D. 写"], ans: 0, exp: "cap/capit = 头。capital(首都)。" },
+  { q: "单词 manufacture (manu + fact + ure) 的字面画面是？", opts: ["A. 用手做 ➡️ 制造", "B. 用脚走 ➡️ 运输", "C. 用头想 ➡️ 思考", "D. 自动做 ➡️ 自动化"], ans: 0, exp: "manu(手) + fact(做) ➡️ 制造。" },
   { q: "单词 manuscript (manu + script) 的字面画面是？", opts: ["A. 手写的稿子 ➡️ 手稿", "B. 脚踩的踏板", "C. 头部的装饰", "D. 远距离传输"], ans: 0, exp: "manu(手) + script(写) ➡️ 手稿。" },
-  { q: "单词 pedestrian (ped + estrian) 的字面画面是？", opts: ["A. 用脚走路的人 ➡️ 行人", "B. 用手工作的人", "C. 站在前面的人", "D. 自动行走的人"], ans: 0, exp: "ped(脚) + estrian(人) ➡️ 用脚走的人 ➡️ 行人。" },
-
-  // --- 滚动复习 (Day 1-8) ---
-  { q: "【复习】单词 'predict' 中的词根是？", opts: ["A. dict (说)", "B. spect (看)", "C. port (带)", "D. cred (信)"], ans: 0, exp: "dict = 说。pre(预先) + dict(说) ➡️ 预测。" },
-  { q: "【复习】前缀 'trans-' 的画面感是？", opts: ["A. 跨越/通过", "B. 向内", "C. 向后", "D. 否定"], ans: 0, exp: "trans- = 跨越。transport(运输)。" },
-  { q: "【复习】词根 'vis / vid' 代表什么？", opts: ["A. 看", "B. 说", "C. 活", "D. 相信"], ans: 0, exp: "vis/vid = 看。vision(视力)。" },
-  { q: "【复习】单词 'invisible' 中的前缀 'in-' 含义是？", opts: ["A. 不", "B. 向内", "C. 在下面", "D. 共同"], ans: 0, exp: "in(不) + vis(看) + ible(能) ➡️ 看不见的。" },
-  { q: "【复习】单词 'survive' 中的词根 'viv' 代表什么？", opts: ["A. 活", "B. 看", "C. 相信", "D. 感觉"], ans: 0, exp: "viv = 活。survive(幸存)。" },
-  { q: "【复习】后缀 '-ment' 通常把词变成什么词性？", opts: ["A. 名词", "B. 动词", "C. 形容词", "D. 副词"], ans: 0, exp: "ment 是名词后缀。development(发展)。" },
-  { q: "【复习】词根 'cred' 的底层画面是？", opts: ["A. 相信", "B. 知道", "C. 感觉", "D. 看"], ans: 0, exp: "cred = 相信。incredible(难以置信的)。" }
+  { q: "单词 pedestrian (ped + estrian) 的字面画面是？", opts: ["A. 用脚走路的人 ➡️ 行人", "B. 用手工作的人", "C. 站在前面的人", "D. 自动行走的人"], ans: 0, exp: "ped(脚) + estrian(人) ➡️ 行人。" },
+  { q: "【复习】单词 'predict' 中的词根是？", opts: ["A. dict (说)", "B. spect (看)", "C. port (带)", "D. cred (信)"], ans: 0, exp: "dict = 说。(Day 2)" },
+  { q: "【复习】前缀 'trans-' 的画面感是？", opts: ["A. 跨越/通过", "B. 向内", "C. 向后", "D. 否定"], ans: 0, exp: "trans- = 跨越。(Day 2)" },
+  { q: "【复习】词根 'vis / vid' 代表什么？", opts: ["A. 看", "B. 说", "C. 活", "D. 相信"], ans: 0, exp: "vis/vid = 看。(Day 8)" },
+  { q: "【复习】单词 'invisible' 中的前缀 'in-' 含义是？", opts: ["A. 不", "B. 向内", "C. 在下面", "D. 共同"], ans: 0, exp: "in(不) + vis(看) ➡️ 看不见的。(Day 1)" },
+  { q: "【复习】单词 'survive' 中的词根 'viv' 代表什么？", opts: ["A. 活", "B. 看", "C. 相信", "D. 感觉"], ans: 0, exp: "viv = 活。(Day 8)" },
+  { q: "【复习】后缀 '-ment' 通常把词变成什么词性？", opts: ["A. 名词", "B. 动词", "C. 形容词", "D. 副词"], ans: 0, exp: "ment 是名词后缀。(Day 7)" },
+  { q: "【复习】词根 'cred' 的底层画面是？", opts: ["A. 相信", "B. 知道", "C. 感觉", "D. 看"], ans: 0, exp: "cred = 相信。(Day 7)" }
 ];
 
-// ==========================================
-// 渲染与错题本逻辑 (标准模板)
-// ==========================================
 const learnContainer = document.getElementById('learnContainer');
 let learnHtml = '<h3 style="font-size:1rem; color:#1f5880; margin-bottom:8px;">🔠 前缀零件</h3>';
 learnData.prefixes.forEach(p => {
@@ -161,7 +136,6 @@ learnData.roots.forEach((r, idx) => {
   learnHtml += `</ul></div>`;
 });
 learnContainer.innerHTML = learnHtml;
-
 function toggleFamily(idx) { document.getElementById(`family-${idx}`).classList.toggle('open'); }
 
 let wrongAnswers = []; 
@@ -169,7 +143,6 @@ let retrying = false;
 let retryIndices = [];
 let correctCount = 0;
 let answeredCount = 0;
-
 const quizContainer = document.getElementById('quizContainer');
 
 function renderQuiz(indices) {
@@ -204,7 +177,6 @@ function checkAnswer(realIdx, oIdx, el, displayIdx) {
   const parent = el.parentElement;
   const card = document.getElementById(`qcard-${displayIdx}`);
   Array.from(parent.children).forEach(c => c.style.pointerEvents = 'none');
-  
   if(oIdx === q.ans) {
     el.classList.add('correct');
     card.classList.add('feedback-ok');
@@ -217,19 +189,14 @@ function checkAnswer(realIdx, oIdx, el, displayIdx) {
       wrongAnswers.push({ idx: realIdx, q: q.q, opts: q.opts, ans: q.ans, exp: q.exp });
     }
   }
-  
   document.getElementById(`exp-${displayIdx}`).classList.add('show');
   answeredCount++;
   document.getElementById('scoreDisplay').innerText = correctCount;
-  
   const total = retrying ? retryIndices.length : quizData.length;
   document.getElementById('progressText').innerText = `进度: ${Math.round((answeredCount/total)*100)}%`;
-  
   if(answeredCount === total) {
     document.getElementById('showWrongBtn').style.display = 'block';
-    if(retrying) {
-      document.getElementById('btn-finish').style.display = 'block';
-    }
+    if(retrying) document.getElementById('btn-finish').style.display = 'block';
     if(wrongAnswers.length === 0) {
       document.getElementById('showWrongBtn').innerText = '🎉 全对！没有错题';
       document.getElementById('showWrongBtn').style.background = '#1a7a3a';
@@ -249,11 +216,7 @@ function showWrongBook() {
   } else {
     wrongAnswers.forEach(w => {
       const correctLetter = String.fromCharCode(65 + w.ans);
-      list.innerHTML += `<div class="wrong-item">
-        <div class="q-text">${w.q}</div>
-        <div class="a-text">✅ 正确答案：${correctLetter}. ${w.opts[w.ans].replace(/^[A-D]\.\s*/, '')}</div>
-        <div class="e-text">💡 ${w.exp}</div>
-      </div>`;
+      list.innerHTML += `<div class="wrong-item"><div class="q-text">${w.q}</div><div class="a-text">✅ 正确答案：${correctLetter}. ${w.opts[w.ans].replace(/^[A-D]\.\s*/, '')}</div><div class="e-text">💡 ${w.exp}</div></div>`;
     });
   }
   book.classList.add('show');
@@ -266,13 +229,11 @@ function retryWrong() {
   wrongAnswers = [];
   correctCount = 0;
   answeredCount = 0;
-  
   document.getElementById('wrongBook').classList.remove('show');
   document.getElementById('showWrongBtn').style.display = 'none';
   document.getElementById('btn-finish').style.display = 'none';
   document.getElementById('scoreDisplay').innerText = '0';
   document.getElementById('progressText').innerText = '进度: 0%';
-  
   renderQuiz(retryIndices);
 }
 
@@ -285,8 +246,6 @@ function goToPage(pageIdx) {
   });
   window.scrollTo(0, 0);
 }
-
-// 初始化
 initQuiz();
 </script>
 </body>
