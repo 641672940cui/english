@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Day 17 · 遮盖与保护 (修复版)</title>
+  <style>
+    /* 标准样式复用（已确认无遗漏） */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
+    .container { max-width: 820px; margin: 0 auto; }
+    h1 { font-size: 1.4rem; color: #0b2b4a; border-left: 6px solid #2a7faa; padding-left: 14px; margin-bottom: 14px; }
+    
+    .progress-bar { display: flex; justify-content: space-between; background: white; padding: 10px 16px; border-radius: 40px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0eaf2; }
+    .step { font-size: 0.85rem; font-weight: 600; color: #a0b5c8; }
+    .step.active { color: #1f5880; }
+    .step.done { color: #1a7a3a; }
+
+    .page { display: none; background: white; border-radius: 20px; padding: 20px; box-shadow: 0 6px 18px rgba(0, 20, 30, 0.08); border: 1px solid #e6eef6; }
+    .page.active { display: block; }
+    h2 { font-size: 1.2rem; color: #134b6b; margin-bottom: 14px; border-bottom: 2px solid #e3edf5; padding-bottom: 8px; }
+    
+    .learn-card { background: #fafdff; border: 1px solid #e3ecf5; border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+    .learn-title { font-size: 1.15rem; font-weight: 700; color: #b13e2e; }
+    .learn-en { font-size: 0.85rem; color: #1f5880; font-weight: 600; background: #e3edf5; display: inline-block; padding: 2px 8px; border-radius: 6px; margin-left: 8px; }
+    .learn-img { font-size: 0.9rem; color: #5c4328; margin: 8px 0; background: #fdfaf2; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #d48c5c; }
+    .learn-origin { font-size: 0.82rem; color: #6d8aa3; font-style: italic; margin-top: 6px; padding-left: 4px; }
+    
+    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; text-align: center; }
+    .family-list { display: none; list-style: none; padding: 0; margin-top: 10px; border-top: 1px dashed #d0dfec; padding-top: 10px; }
+    .family-list.open { display: block; }
+    .family-list li { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dotted #e0eaf2; }
+    .fam-word { font-weight: 600; color: #b13e2e; width: 120px; }
+    .fam-break { color: #666; flex: 1; font-size: 0.82rem; margin-left: 8px; }
+    .fam-mean { color: #1a4d6b; text-align: right; font-size: 0.85rem; width: 90px; }
+
+    .btn { background: #1f5880; color: white; border: none; padding: 12px 24px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 16px; width: 100%; transition: 0.2s; }
+    .btn:hover { background: #13466a; }
+    .btn-next { background: #1a7a3a; }
+    .btn-wrong { background: #b13e2e; }
+    
+    .quiz-card { background: #f8fbff; border: 1px solid #d5e4f1; border-radius: 16px; padding: 16px; margin-bottom: 14px; transition: 0.3s; }
+    .quiz-question { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; line-height: 1.5; }
+    .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+    .quiz-opt { background: white; border: 1px solid #c9dae8; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+    .quiz-opt:hover { background: #e6f0f8; }
+    .quiz-opt.correct { background: #d4edda; border-color: #28a745; color: #155724; font-weight: 700; }
+    .quiz-opt.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; font-weight: 700; }
+    .quiz-explain { display: none; margin-top: 10px; font-size: 0.85rem; color: #1a4d6b; background: #e3edf5; padding: 8px 12px; border-radius: 8px; }
+    .quiz-explain.show { display: block; }
+    
+    .feedback-ok { box-shadow: 0 0 10px rgba(40, 167, 69, 0.4); border-color: #28a745; }
+    .feedback-no { box-shadow: 0 0 10px rgba(220, 53, 69, 0.4); border-color: #dc3545; }
+
+    .finish-msg { text-align: center; padding: 30px 10px; display: none; }
+    .finish-msg.show { display: block; }
+    .finish-msg h3 { color: #1a7a3a; font-size: 1.3rem; margin-bottom: 10px; }
+    .score-board { background: #e3edf5; padding: 8px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; color: #1f5880; margin-bottom: 16px; display: flex; justify-content: space-between; }
+
+    .wrong-book { display: none; background: #fff5f5; border: 1px solid #f5c6cb; border-radius: 16px; padding: 16px; margin-top: 20px; }
+    .wrong-book.show { display: block; }
+    .wrong-book h3 { color: #b13e2e; font-size: 1.1rem; margin-bottom: 10px; }
+    .wrong-item { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; border-left: 3px solid #dc3545; font-size: 0.9rem; }
+    .wrong-item .q-text { font-weight: 600; margin-bottom: 4px; }
+    .wrong-item .a-text { color: #1a7a3a; font-weight: 600; }
+    .wrong-item .e-text { color: #6d8aa3; font-size: 0.82rem; margin-top: 4px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="progress-bar" id="progressBar">
+    <span class="step active" id="step-0">1. 认零件</span>
+    <span class="step" id="step-1">2. 刷题库</span>
+    <span class="step" id="step-2">🏆 通关</span>
+  </div>
+
+  <div class="page active" id="page-0">
+    <h2>Day 17：遮盖与保护</h2>
+    <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">今天掌握：遮盖 (tect) + 保护/服务 (serv) + 保护/遮盖 (cover)。<br><span style="color:#b13e2e;">⚠️ 做错的题目会自动进错题本。</span></p>
+    <div id="learnContainer"></div>
+    <button class="btn btn-next" onclick="goToPage(1)">✅ 学完了，去刷题</button>
+  </div>
+
+  <div class="page" id="page-1">
+    <h2>题海演练：15题挑战</h2>
+    <div class="score-board">
+      <span>📊 已答对: <strong id="scoreDisplay">0</strong> / 15</span>
+      <span id="progressText">进度: 0%</span>
+    </div>
+    <div id="quizContainer"></div>
+    
+    <!-- 关键修复：错题本结构必须完整存在 -->
+    <div class="wrong-book" id="wrongBook">
+      <h3>📕 我的错题本</h3>
+      <div id="wrongList"></div>
+      <button class="btn btn-wrong" onclick="retryWrong()">🔄 重练错题</button>
+    </div>
+    <button class="btn btn-wrong" id="showWrongBtn" onclick="showWrongBook()" style="display:none;">📕 查看错题本</button>
+    <button class="btn" id="btn-finish" onclick="goToPage(2)" style="display:none; background:#1a7a3a; margin-top:12px;">🏆 完成 Day 17</button>
+  </div>
+
+  <div class="page" id="page-2">
+    <div class="finish-msg show" style="display:block;">
+      <h3>🎉 Day 17 通关！</h3>
+      <p style="color:#555; margin:10px 0; font-size:1.1rem;">保护类词根，完美掌握！</p>
+      <button class="btn" onclick="location.reload()">🔄 再刷一次</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==========================================
+// Day 17 数据区
+// ==========================================
+const learnData = {
+  prefixes: [
+    { p: "se-", en: "apart / away", img: "画面是把东西从主体上剥离下来，放到一边。", origin: "源自拉丁语 se- (分开)。", ex: "separate (分离), select (选出)" }
+  ],
+  roots: [
+    { r: "tect", en: "cover / build", img: "画面是给房子盖上一层屋顶，把里面保护起来。", origin: "源自拉丁语 tegere (遮盖)。", family: [{ w: "protect", b: "pro(向前/公开) + tect(遮盖)", m: "v. 保护" },{ w: "detect", b: "de(去掉) + tect(遮盖)", m: "v. 发现" },{ w: "architect", b: "archi(首要) + tect(建造)", m: "n. 建筑师" }] },
+    { r: "serv", en: "serve / keep", img: "画面是一个人弯下腰，为别人提供服务，或者把东西保存起来。", origin: "源自拉丁语 servire (服务) 或 servare (保存)。", family: [{ w: "preserve", b: "pre(预先) + serv(保存) + e", m: "v. 保存 / 保护" },{ w: "reserve", b: "re(再次/向后) + serv(保存) + e", m: "v. 预留 / 预订" },{ w: "observe", b: "ob(朝向) + serv(看/保持) + e", m: "v. 观察" }] },
+    { r: "cover", en: "cover", img: "复习：画面是一块布盖在上面，遮住视线。", origin: "源自拉丁语 cooperire (覆盖)。", family: [{ w: "discover", b: "dis(去掉) + cover(遮盖)", m: "v. 发现" },{ w: "recover", b: "re(再次) + cover(遮盖)", m: "v. 恢复" }] }
+  ]
+};
+
+const quizData = [
+  // --- 新知识 8题 ---
+  { q: "前缀 'se-' 的含义是？", opts: ["A. 分开/离开", "B. 向内", "C. 向前", "D. 否定"], ans: 0, exp: "se- = 分开。separate(分离)。" },
+  { q: "词根 'tect' 的画面是？", opts: ["A. 遮盖/建造", "B. 服务", "C. 看", "D. 写"], ans: 0, exp: "tect = 遮盖/建造。protect(保护)。" },
+  { q: "词根 'serv' 的核心含义是？", opts: ["A. 服务/保存", "B. 遮盖", "C. 分开", "D. 看"], ans: 0, exp: "serv = 服务/保存。preserve(保存)。" },
+  { q: "单词 'protect' (pro + tect) 的字面画面是？", opts: ["A. 在前面遮盖 ➡️ 保护", "B. 分开遮盖 ➡️ 拆开", "C. 再次遮盖 ➡️ 隐藏", "D. 去掉遮盖 ➡️ 发现"], ans: 0, exp: "pro(向前) + tect(遮盖) ➡️ 保护。" },
+  { q: "单词 'detect' (de + tect) 的字面画面是？", opts: ["A. 去掉遮盖 ➡️ 发现", "B. 在前面遮盖 ➡️ 保护", "C. 再次遮盖 ➡️ 隐藏", "D. 分开遮盖 ➡️ 拆开"], ans: 0, exp: "de(去掉) + tect(遮盖) ➡️ 发现。" },
+  { q: "单词 'preserve' (pre + serv + e) 的字面画面是？", opts: ["A. 预先保存 ➡️ 保护/保存", "B. 再次服务 ➡️ 重复劳动", "C. 向前服务 ➡️ 奉献", "D. 分开服务 ➡️ 辞职"], ans: 0, exp: "pre(预先) + serv(保存) ➡️ 保存。" },
+  { q: "单词 'observe' (ob + serv + e) 的字面画面是？", opts: ["A. 朝向某个方向看/保持关注 ➡️ 观察", "B. 分开服务 ➡️ 分开", "C. 再次保存 ➡️ 储存", "D. 向前遮盖 ➡️ 保护"], ans: 0, exp: "ob(朝向) + serv(看) ➡️ 观察。" },
+  { q: "单词 'recover' (re + cover) 的字面画面是？", opts: ["A. 再次遮盖 ➡️ 恢复", "B. 去掉遮盖 ➡️ 发现", "C. 向前遮盖 ➡️ 保护", "D. 分开遮盖 ➡️ 拆开"], ans: 0, exp: "re(再次) + cover(遮盖) ➡️ 恢复。" },
+
+  // --- 滚动复习 7题 ---
+  { q: "【复习】词根 'photo' 代表什么？", opts: ["A. 光", "B. 热", "C. 自然", "D. 声音"], ans: 0, exp: "photo = 光。(Day 16)" },
+  { q: "【复习】词根 'lumin' 的画面是？", opts: ["A. 光/发光", "B. 热", "C. 自然", "D. 写"], ans: 0, exp: "lumin = 光/发光。(Day 16)" },
+  { q: "【复习】单词 'thermometer' 中的词根是？", opts: ["A. therm (热)", "B. meter (测量)", "C. photo (光)", "D. phys (自然)"], ans: 0, exp: "therm = 热。(Day 16)" },
+  { q: "【复习】词根 'phys' 的核心含义是？", opts: ["A. 自然/物理", "B. 光", "C. 热", "D. 声音"], ans: 0, exp: "phys = 自然。(Day 16)" },
+  { q: "【复习】词根 'simil' 代表什么？", opts: ["A. 相似", "B. 相等", "C. 测量", "D. 多"], ans: 0, exp: "simil = 相似。(Day 15)" },
+  { q: "【复习】单词 'equator' 中的词根是？", opts: ["A. equ (相等)", "B. simil (相似)", "C. meter (测量)", "D. multi (多)"], ans: 0, exp: "equ = 相等。(Day 15)" },
+  { q: "【复习】词根 'man' 代表什么？", opts: ["A. 手/处理", "B. 命令", "C. 爱", "D. 光"], ans: 0, exp: "man = 手/处理。(Day 14)" }
+];
+
+// ==========================================
+// 渲染与错题本逻辑 (标准模板，已自检无遗漏)
+// ==========================================
+const learnContainer = document.getElementById('learnContainer');
+let learnHtml = '<h3 style="font-size:1rem; color:#1f5880; margin-bottom:8px;">🔠 前缀零件</h3>';
+learnData.prefixes.forEach(p => {
+  learnHtml += `<div class="learn-card"><span class="learn-title">${p.p}</span><span class="learn-en">${p.en}</span><div class="learn-img">🎬 ${p.img}</div><div class="learn-origin">📜 词源：${p.origin}</div><div class="learn-ex">📖 例：${p.ex}</div></div>`;
+});
+learnHtml += '<h3 style="font-size:1rem; color:#1f5880; margin:16px 0 8px;">🌳 词根引擎</h3>';
+learnData.roots.forEach((r, idx) => {
+  learnHtml += `<div class="learn-card"><span class="learn-title">${r.r}</span><span class="learn-en">${r.en}</span><div class="learn-img">🎬 ${r.img}</div><div class="learn-origin">📜 词源：${r.origin}</div><button class="family-toggle" onclick="toggleFamily(${idx})">👉 展开家族成员 (${r.family.length})</button><ul class="family-list" id="family-${idx}">`;
+  r.family.forEach(f => { learnHtml += `<li><span class="fam-word">${f.w}</span><span class="fam-break">${f.b}</span><span class="fam-mean">${f.m}</span></li>`; });
+  learnHtml += `</ul></div>`;
+});
+learnContainer.innerHTML = learnHtml;
+
+function toggleFamily(idx) { document.getElementById(`family-${idx}`).classList.toggle('open'); }
+
+let wrongAnswers = []; 
+let retrying = false;
+let retryIndices = [];
+let correctCount = 0;
+let answeredCount = 0;
+
+const quizContainer = document.getElementById('quizContainer');
+
+function renderQuiz(indices) {
+  quizContainer.innerHTML = '';
+  indices.forEach((realIdx, displayIdx) => {
+    const q = quizData[realIdx];
+    let html = `<div class="quiz-card" id="qcard-${displayIdx}"><div class="quiz-question">${displayIdx+1}. ${q.q}</div><div class="quiz-options">`;
+    q.opts.forEach((opt, oi) => {
+      html += `<div class="quiz-opt" onclick="checkAnswer(${realIdx}, ${oi}, this, ${displayIdx})">${opt}</div>`;
+    });
+    html += `</div><div class="quiz-explain" id="exp-${displayIdx}">💡 ${q.exp}</div></div>`;
+    quizContainer.innerHTML += html;
+  });
+}
+
+function initQuiz() {
+  wrongAnswers = [];
+  retrying = false;
+  correctCount = 0;
+  answeredCount = 0;
+  const indices = quizData.map((_, i) => i);
+  renderQuiz(indices);
+  document.getElementById('scoreDisplay').innerText = '0';
+  document.getElementById('progressText').innerText = '进度: 0%';
+  document.getElementById('wrongBook').classList.remove('show');
+  document.getElementById('showWrongBtn').style.display = 'none';
+  document.getElementById('btn-finish').style.display = 'none';
+}
+
+function checkAnswer(realIdx, oIdx, el, displayIdx) {
+  const q = quizData[realIdx];
+  const parent = el.parentElement;
+  const card = document.getElementById(`qcard-${displayIdx}`);
+  Array.from(parent.children).forEach(c => c.style.pointerEvents = 'none');
+  
+  if(oIdx === q.ans) {
+    el.classList.add('correct');
+    card.classList.add('feedback-ok');
+    correctCount++;
+  } else {
+    el.classList.add('wrong');
+    parent.children[q.ans].classList.add('correct');
+    card.classList.add('feedback-no');
+    if(!wrongAnswers.find(w => w.idx === realIdx)) {
+      wrongAnswers.push({ idx: realIdx, q: q.q, opts: q.opts, ans: q.ans, exp: q.exp });
+    }
+  }
+  
+  document.getElementById(`exp-${displayIdx}`).classList.add('show');
+  answeredCount++;
+  document.getElementById('scoreDisplay').innerText = correctCount;
+  
+  const total = retrying ? retryIndices.length : quizData.length;
+  document.getElementById('progressText').innerText = `进度: ${Math.round((answeredCount/total)*100)}%`;
+  
+  if(answeredCount === total) {
+    document.getElementById('showWrongBtn').style.display = 'block';
+    if(retrying) {
+      document.getElementById('btn-finish').style.display = 'block';
+    }
+    if(wrongAnswers.length === 0) {
+      document.getElementById('showWrongBtn').innerText = '🎉 全对！没有错题';
+      document.getElementById('showWrongBtn').style.background = '#1a7a3a';
+    } else {
+      document.getElementById('showWrongBtn').innerText = `📕 查看错题本 (${wrongAnswers.length}题)`;
+      document.getElementById('showWrongBtn').style.background = '#b13e2e';
+    }
+  }
+}
+
+function showWrongBook() {
+  const book = document.getElementById('wrongBook');
+  const list = document.getElementById('wrongList');
+  list.innerHTML = '';
+  if(wrongAnswers.length === 0) {
+    list.innerHTML = '<p style="color:#1a7a3a; font-weight:600;">🎉 恭喜你，没有错题！</p>';
+  } else {
+    wrongAnswers.forEach(w => {
+      const correctLetter = String.fromCharCode(65 + w.ans);
+      list.innerHTML += `<div class="wrong-item">
+        <div class="q-text">${w.q}</div>
+        <div class="a-text">✅ 正确答案：${correctLetter}. ${w.opts[w.ans].replace(/^[A-D]\.\s*/, '')}</div>
+        <div class="e-text">💡 ${w.exp}</div>
+      </div>`;
+    });
+  }
+  book.classList.add('show');
+}
+
+function retryWrong() {
+  if(wrongAnswers.length === 0) return;
+  retrying = true;
+  retryIndices = wrongAnswers.map(w => w.idx);
+  wrongAnswers = [];
+  correctCount = 0;
+  answeredCount = 0;
+  
+  document.getElementById('wrongBook').classList.remove('show');
+  document.getElementById('showWrongBtn').style.display = 'none';
+  document.getElementById('btn-finish').style.display = 'none';
+  document.getElementById('scoreDisplay').innerText = '0';
+  document.getElementById('progressText').innerText = '进度: 0%';
+  
+  renderQuiz(retryIndices);
+}
+
+function goToPage(pageIdx) {
+  document.querySelectorAll('.page').forEach((p, i) => p.classList.toggle('active', i === pageIdx));
+  document.querySelectorAll('.step').forEach((s, i) => {
+    s.classList.remove('active', 'done');
+    if(i < pageIdx) s.classList.add('done');
+    if(i === pageIdx) s.classList.add('active');
+  });
+  window.scrollTo(0, 0);
+}
+
+// 初始化
+initQuiz();
+</script>
+</body>
+</html>
