@@ -9,7 +9,7 @@
     body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
     .container { max-width: 820px; margin: 0 auto; }
     
-    .progress-bar { display: flex; justify-content: space-between; background: white; padding: 10px 16px; border-radius: 40px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0eaf2; }
+    .progress-bar { display: flex; justify-content: space-between; background: white; padding: 10px 16px; border-radius: 40px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e6eef6; }
     .step { font-size: 0.85rem; font-weight: 600; color: #a0b5c8; }
     .step.active { color: #1f5880; }
     .step.done { color: #1a7a3a; }
@@ -26,7 +26,7 @@
     .learn-img { font-size: 0.9rem; color: #5c4328; margin: 8px 0; background: #fdfaf2; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #d48c5c; }
     .learn-origin { font-size: 0.82rem; color: #6d8aa3; font-style: italic; margin-top: 6px; padding-left: 4px; }
 
-    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; text-align: center; }
+    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; }
     .family-list { display: none; list-style: none; padding: 0; margin-top: 10px; border-top: 1px dashed #d0dfec; padding-top: 10px; }
     .family-list.open { display: block; }
     .family-list li { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dotted #e0eaf2; }
@@ -68,6 +68,7 @@
   <div class="page active" id="page-0">
     <h2>Day 5：方位拓展与施压</h2>
     <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">今天掌握：inter(之间) / super(超越) / ex(向外) + 压/送。</p>
+    <p style="font-size:0.8rem; color:#666; margin:0 0 12px; line-height:1.6;">⚠️ 词源拆分是助记，不等于严格历史还原；重点先抓“常见语义”和“词旅顺序”。</p>
     <div id="learnContainer"></div>
     <button class="btn btn-next" onclick="goToPage(1)">✅ 学完了，去刷题 (15题)</button>
   </div>
@@ -138,8 +139,8 @@ const learnData = {
 
 const quizData = [
   // 第一关：前缀辨析
-  { q: "前缀 'inter-' 的画面感是？", opts: ["A. 在下面", "B. 在……之间/相互", "C. 向外", "D. 超越"], ans: 1, exp: "inter- = 在……之间。international(国际的) 就是国家之间的。" },
-  { q: "前缀 'super-' 的核心英文含义是？", opts: ["A. under", "B. between", "C. above / beyond", "D. out"], ans: 2, exp: "super- = 在上方/超越。supermarket(超市) 就是大的市场。" },
+  { q: "前缀 'inter-' 的画面感是？", opts: ["A. 在下面", "B. 在……之间/相互", "C. 向外", "D. 超越"], ans: 1, exp: "inter- = 在……之间。international(国际的) 就是多个国家之间的。" },
+  { q: "前缀 'super-' 的核心英文含义是？", opts: ["A. under", "B. between", "C. above / beyond", "D. out"], ans: 2, exp: "super- = 在上方/超越。supermarket(超市) 就是大的超越普通店铺的市场。" },
   { q: "单词 export 中的 'ex-' 代表什么画面？", opts: ["A. 向内", "B. 向外/出", "C. 向后", "D. 之间"], ans: 1, exp: "ex(向外) + port(带) ➡️ 向外带 ➡️ 出口。" },
   { q: "单词 ex-president 中的 'ex-' 表示什么？", opts: ["A. 向外的", "B. 前任的", "C. 超越的", "D. 内部的"], ans: 1, exp: "ex- 指已经向外走的人 ➡️ 前任的。" },
   { q: "以下哪个前缀表示 '在……之间'？", opts: ["A. super-", "B. ex-", "C. inter-", "D. trans-"], ans: 2, exp: "inter- = 之间。interact(互动) 就是彼此之间行动。" },
@@ -147,9 +148,9 @@ const quizData = [
   // 第二关：词根反应
   { q: "词根 'press' 的底层画面是？", opts: ["A. 看", "B. 压", "C. 写", "D. 送"], ans: 1, exp: "press = 压。pressure(压力) 就是压下来的力。" },
   { q: "词根 'mit / miss' 代表什么动作？", opts: ["A. 送/放出", "B. 压", "C. 建造", "D. 转"], ans: 0, exp: "mit/miss = 送/放出。mission(任务) 就是被派送出去做的事。" },
-  { q: "单词 express (ex + press) 的字面画面是？", opts: ["A. 向内压", "B. 向外压/挤出", "C. 向下压", "D. 一起压"], ans: 1, exp: "ex(向外) + press(压) ➡️ 把内心的想法向外挤出来 ➡️ 表达。" },
-  { q: "单词 dismiss (dis + miss) 的字面画面是？", opts: ["A. 把大家送到一起", "B. 把大家分开送走", "C. 向前送", "D. 接受进来"], ans: 1, exp: "dis(分开) + miss(送) ➡️ 把大家分开送走 ➡️ 解散。" },
-  { q: "单词 submit (sub + mit) 的字面画面是？", opts: ["A. 向上送", "B. 从下往上送/把自己放在下面", "C. 向外送", "D. 一起送"], ans: 1, exp: "sub(在下) + mit(送) ➡️ 把自己放在下面送上去 ➡️ 提交/屈服。" },
+  { q: "单词 express (ex + press) 的字面画面是？", opts: ["A. 向内压", "B. 向外压/挤出", "C. 向下压", "D. 一起压"], ans: 1, exp: "ex(向外) + press(压) ➡️ 把内心内容挤出去 ➡️ 表达。" },
+  { q: "单词 dismiss (dis + miss) 的字面画面是？", opts: ["A. 把大家送到一起", "B. 把大家分开送走", "C. 向前送", "D. 接受进来"], ans: 1, exp: "dis(分开) + miss(送) ➡️ 分开送走 ➡️ 解散/解雇。" },
+  { q: "单词 submit (sub + mit) 的字面画面是？", opts: ["A. 向上送", "B. 从下往上送/把自己放在下面", "C. 向外送", "D. 一起送"], ans: 1, exp: "sub(在下) + mit(送) ➡️ 放到下方递交/提交。" },
 
   // 第三关：组合应用
   { q: "ex + press = ?", opts: ["A. 表达", "B. 印象", "C. 压抑", "D. 压缩"], ans: 0, exp: "ex(向外) + press(压) ➡️ 向外挤出 ➡️ 表达。" },

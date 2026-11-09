@@ -17,7 +17,7 @@
     .learn-title { font-size: 1.15rem; font-weight: 700; color: #b13e2e; }
     .learn-en { font-size: 0.85rem; color: #1f5880; font-weight: 600; background: #e3edf5; display: inline-block; padding: 2px 8px; border-radius: 6px; margin-left: 8px; }
     .learn-img { font-size: 0.9rem; color: #5c4328; margin: 8px 0; background: #fdfaf2; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #d48c5c; }
-    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; text-align: center; }
+    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; }
     .family-list { display: none; list-style: none; padding: 0; margin-top: 10px; border-top: 1px dashed #d0dfec; padding-top: 10px; }
     .family-list.open { display: block; }
     .family-list li { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dotted #e0eaf2; }
@@ -41,6 +41,7 @@
   <h1>Day 2 · 方向与动作</h1>
   <div class="card">
     <div class="card-title">1. 认零件 (前缀 + 词根)</div>
+    <p style="font-size:0.8rem; color:#666; margin:0 0 12px; line-height:1.6;">⚠️ 词根/前缀拆分是高频记忆法，不等于严格历史还原；先记“最常见意思”和“画面感”，再看词族。</p>
     <div id="learnContainer"></div>
     <button class="btn" onclick="switchTab('quiz')">✅ 学完了，去刷题 (15题)</button>
   </div>
@@ -61,9 +62,9 @@ const learnData = {
     { p: "trans-", en: "across / through", img: "跨越，从一边到另一边", origin: "源自拉丁语 trans。", ex: "transport, translate" }
   ],
   roots: [
-    { r: "dict", en: "say / speak", img: "张开嘴，大声宣布或断言。", origin: "源自拉丁语 dicere。", family: [{w:"predict",b:"pre(预先)+dict",m:"v. 预测"},{w:"contradict",b:"contra(相反)+dict",m:"v. 反驳"},{w:"dictate",b:"dict+ate",m:"v. 口述"},{w:"dictionary",b:"dict+ionary",m:"n. 字典"},{w:"dedicate",b:"de(加强)+dic+ate",m:"v. 奉献"}] },
-    { r: "duc / duct", en: "lead / guide", img: "一只手在前面拉着，引导你往前走。", origin: "源自拉丁语 ducere。", family: [{w:"introduce",b:"intro(向内)+duc",m:"v. 介绍"},{w:"produce",b:"pro(向前)+duc",m:"v. 生产"},{w:"reduce",b:"re(向后)+duc",m:"v. 减少"},{w:"conduct",b:"con(共同)+duct",m:"v. 指挥"},{w:"education",b:"e(向外)+duc+ation",m:"n. 教育"}] },
-    { r: "port", en: "carry / bring", img: "扛着货物，从一个港口搬到另一个地方。", origin: "源自拉丁语 portare。", family: [{w:"import",b:"im(向内)+port",m:"v. 进口"},{w:"export",b:"ex(向外)+port",m:"v. 出口"},{w:"transport",b:"trans(跨越)+port",m:"v. 运输"},{w:"support",b:"sup(在下面)+port",m:"v. 支持"},{w:"portable",b:"port+able(能)",m:"adj. 便携的"}] }
+    { r: "dict", en: "say / speak", img: "张开嘴，大声宣布或断言。", origin: "源自拉丁语 dicere。", family: [{w:"predict",b:"pre(预先)+dict",m:"v. 预测"},{w:"contradict",b:"contra(相反)+dict",m:"v. 反驳"},{w:"dictate",b:"dict(说)+ate",m:"v. 口述/命令"},{w:"dictionary",b:"dict(说)+ion(名词)+ary",m:"n. 字典"}] },
+    { r: "duc / duct", en: "lead / guide", img: "一只手在前面拉着，引导你往前走。", origin: "源自拉丁语 ducere。", family: [{w:"introduce",b:"intro(向内)+duc",m:"v. 介绍"},{w:"produce",b:"pro(向前)+duc",m:"v. 生产"},{w:"reduce",b:"re(向后)+duc",m:"v. 减少"},{w:"conduct",b:"con(共同)+duct",m:"v. 引导/指挥"}] },
+    { r: "port", en: "carry / bring", img: "扛着货物，从一个港口搬到另一个地方。", origin: "源自拉丁语 portare。", family: [{w:"import",b:"im(向内)+port",m:"v. 进口"},{w:"export",b:"ex(向外)+port",m:"v. 出口"},{w:"transport",b:"trans(跨越)+port",m:"v. 运输"},{w:"support",b:"sub(在下/支撑)+port",m:"v. 支持/支撑"}] }
   ]
 };
 
@@ -76,12 +77,12 @@ const quizData = [
   { q: "词根 'duc / duct' 代表什么动作？", opts: ["A. 引导/带领", "B. 携带", "C. 建造", "D. 转"], ans: 0, exp: "duc = 引导。" },
   { q: "词根 'port' 的核心画面是？", opts: ["A. 写", "B. 看", "C. 带/运", "D. 拉"], ans: 2, exp: "port = 带/运。" },
   { q: "单词 predict (pre + dict) 的字面画面是？", opts: ["A. 提前说", "B. 反对说", "C. 一起说", "D. 向回说"], ans: 0, exp: "pre(预先) + dict(说) ➡️ 预测。" },
-  { q: "单词 support (sup + port) 的字面画面是？", opts: ["A. 向外带", "B. 在下面托着", "C. 跨越运输", "D. 向内推"], ans: 1, exp: "sup(在下面) + port(带) ➡️ 支持。" },
+  { q: "单词 support (sub + port) 的字面画面是？", opts: ["A. 向外带", "B. 在下面托着", "C. 跨越运输", "D. 向内推"], ans: 1, exp: "sub(在下/支撑) + port(带/运) ➡️ 托住、支撑。" },
   { q: "intro + duc + e = ?", opts: ["A. 介绍", "B. 生产", "C. 减少", "D. 教育"], ans: 0, exp: "intro(向内) + duc(引导) ➡️ 介绍。" },
   { q: "con + duct = ?", opts: ["A. 生产", "B. 引导/指挥", "C. 减少", "D. 进口"], ans: 1, exp: "con(共同) + duct(引导) ➡️ 指挥。" },
   { q: "ex + port = ?", opts: ["A. 进口", "B. 出口", "C. 运输", "D. 支持"], ans: 1, exp: "ex(向外) + port(带) ➡️ 出口。" },
   { q: "contra + dict = ?", opts: ["A. 预测", "B. 反驳", "C. 口述", "D. 奉献"], ans: 1, exp: "contra(相反) + dict(说) ➡️ 反驳。" },
-  { q: "e + duc + ation = ?", opts: ["A. 引导", "B. 教育", "C. 生产", "D. 减少"], ans: 1, exp: "e(向外) + duc(引导) ➡️ 教育。" },
+  { q: "e + duc + ation = ?", opts: ["A. 引导", "B. 教育", "C. 生产", "D. 减少"], ans: 1, exp: "这个题用作助记：e + duc(引导) + ation → 教育；更准确词源是 educare '引导、培养'。" },
   { q: "trans + port = ?", opts: ["A. 进口", "B. 出口", "C. 运输", "D. 支持"], ans: 2, exp: "trans(跨越) + port(带) ➡️ 运输。" }
 ];
 
@@ -89,7 +90,7 @@ const quizData = [
 const learnContainer = document.getElementById('learnContainer');
 let html = '<h3>🔠 前缀</h3>';
 learnData.prefixes.forEach(p => {
-  html += `<div class="learn-card"><span class="learn-title">${p.p}</span><span class="learn-en">${p.en}</span><div class="learn-img">🎬 ${p.img}</div><div style="font-size:0.8rem; color:#888;">📜 ${p.origin}</div><div class="learn-ex">📖 ${p.ex}</div></div>`;
+  html += `<div class="learn-card"><span class="learn-title">${p.p}</span><span class="learn-en">${p.en}</span><div class="learn-img">🎬 ${p.img}</div><div style="font-size:0.8rem; color:#888;">📜 ${p.origin}</div><div style="font-size:0.8rem; color:#555; margin-top:6px;">📖 例：${p.ex}</div></div>`;
 });
 html += '<h3 style="margin-top:16px;">🌳 词根</h3>';
 learnData.roots.forEach((r, idx) => {

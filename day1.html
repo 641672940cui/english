@@ -17,7 +17,7 @@
     .learn-title { font-size: 1.15rem; font-weight: 700; color: #b13e2e; }
     .learn-en { font-size: 0.85rem; color: #1f5880; font-weight: 600; background: #e3edf5; display: inline-block; padding: 2px 8px; border-radius: 6px; margin-left: 8px; }
     .learn-img { font-size: 0.9rem; color: #5c4328; margin: 8px 0; background: #fdfaf2; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #d48c5c; }
-    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; text-align: center; }
+    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; }
     .family-list { display: none; list-style: none; padding: 0; margin-top: 10px; border-top: 1px dashed #d0dfec; padding-top: 10px; }
     .family-list.open { display: block; }
     .family-list li { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dotted #e0eaf2; }
@@ -41,6 +41,7 @@
   <h1>Day 1 · 基础营</h1>
   <div class="card">
     <div class="card-title">1. 认零件 (前缀)</div>
+    <p style="font-size:0.8rem; color:#666; margin:0 0 12px; line-height:1.6;">⚠️ 词根/前缀拆分是帮助记忆的“画面法”，不等于绝对严谨的历史还原；重点先抓“最常见的含义”和“词家族联想”。</p>
     <div id="learnContainer"></div>
     <button class="btn" onclick="switchTab('quiz')">✅ 学完了，去刷题 (15题)</button>
   </div>
@@ -56,14 +57,14 @@
 // ================== Day 1 专属数据 ==================
 const learnData = {
   prefixes: [
-    { p: "in- / im-", en: "not / in", img: "否定：不；方向：向内、进入", origin: "源自拉丁语 in-。作为否定前缀时，与古英语 un- 同源。", ex: "invisible, import" },
+    { p: "in- / im-", en: "not / in", img: "否定：不；方向：向内、进入", origin: "源自拉丁语 in-；本课程中用作“否定/向内”的助记拆分，不是所有词都必须严格按字面拆解。", ex: "invisible, import" },
     { p: "re-", en: "again / back", img: "向后 / 再次", origin: "源自拉丁语 re-。", ex: "return, review" },
     { p: "pre-", en: "before / in front", img: "在前 / 预先", origin: "源自拉丁语 prae。", ex: "predict, prepare" }
   ],
   roots: [
-    { r: "scrib / script", en: "write", img: "古罗马人在蜡板上 '划' 出痕迹，画面是 '写'。", origin: "源自拉丁语 scribere。", family: [{w:"subscribe",b:"sub(在下)+scrib",m:"v. 订阅"},{w:"describe",b:"de(向下)+scrib",m:"v. 描述"},{w:"prescribe",b:"pre(预先)+scrib",m:"v. 开处方"},{w:"script",b:"script",m:"n. 脚本"},{w:"manuscript",b:"manu(手)+script",m:"n. 手稿"}] },
-    { r: "spect / spic", en: "look / see", img: "目光向某个方向投射出去， '看'。", origin: "源自拉丁语 specere。", family: [{w:"inspect",b:"in(向内)+spect",m:"v. 检查"},{w:"respect",b:"re(再次)+spect",m:"v. 尊敬"},{w:"suspect",b:"su(下面)+spect",m:"v. 怀疑"},{w:"prospect",b:"pro(向前)+spect",m:"n. 前景"},{w:"spectator",b:"spect+ator(人)",m:"n. 观众"}] },
-    { r: "tract", en: "pull / draw", img: "磁铁把东西 '拉' 过来。", origin: "源自拉丁语 trahere。", family: [{w:"attract",b:"at(朝向)+tract",m:"v. 吸引"},{w:"distract",b:"dis(分开)+tract",m:"v. 分心"},{w:"extract",b:"ex(向外)+tract",m:"v. 提取"},{w:"contract",b:"con(共同)+tract",m:"n. 合同"},{w:"abstract",b:"abs(离开)+tract",m:"adj. 抽象的"}] }
+    { r: "scrib / script", en: "write", img: "古罗马人在蜡板上 '划' 出痕迹，画面是 '写'。", origin: "源自拉丁语 scribere。", family: [{w:"subscribe",b:"sub(在下)+scrib",m:"v. 订阅"},{w:"prescribe",b:"pre(预先)+scrib",m:"v. 开处方"},{w:"describe",b:"de(向下)+scrib",m:"v. 描述"},{w:"inscribe",b:"in(向内)+scrib",m:"v. 刻写"}] },
+    { r: "spect / spic", en: "look / see", img: "目光向某个方向投射出去， '看'。", origin: "源自拉丁语 specere。", family: [{w:"inspect",b:"in(向内)+spect",m:"v. 检查"},{w:"respect",b:"re(再次)+spect",m:"v. 尊敬"},{w:"expect",b:"ex(向外)+pect(看)",m:"v. 期待"},{w:"suspect",b:"sus(下面? 近似‘向下’)+pect",m:"v. 怀疑"}] },
+    { r: "tract", en: "pull / draw", img: "磁铁把东西 '拉' 过来。", origin: "源自拉丁语 trahere。", family: [{w:"attract",b:"at(朝向)+tract",m:"v. 吸引"},{w:"distract",b:"dis(分开)+tract",m:"v. 分心"},{w:"extract",b:"ex(向外)+tract",m:"v. 提取"},{w:"contract",b:"con(共同)+tract",m:"v. 合同/收缩"}] }
   ]
 };
 
@@ -89,7 +90,7 @@ const quizData = [
 const learnContainer = document.getElementById('learnContainer');
 let html = '<h3>🔠 前缀</h3>';
 learnData.prefixes.forEach(p => {
-  html += `<div class="learn-card"><span class="learn-title">${p.p}</span><span class="learn-en">${p.en}</span><div class="learn-img">🎬 ${p.img}</div><div style="font-size:0.8rem; color:#888;">📜 ${p.origin}</div><div class="learn-ex">📖 ${p.ex}</div></div>`;
+  html += `<div class="learn-card"><span class="learn-title">${p.p}</span><span class="learn-en">${p.en}</span><div class="learn-img">🎬 ${p.img}</div><div style="font-size:0.8rem; color:#888;">📜 ${p.origin}</div><div style="font-size:0.8rem; color:#555; margin-top:6px;">📖 例：${p.ex}</div></div>`;
 });
 html += '<h3 style="margin-top:16px;">🌳 词根</h3>';
 learnData.roots.forEach((r, idx) => {

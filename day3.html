@@ -9,7 +9,7 @@
     body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
     .container { max-width: 820px; margin: 0 auto; }
     
-    .progress-bar { display: flex; justify-content: space-between; background: white; padding: 10px 16px; border-radius: 40px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0eaf2; }
+    .progress-bar { display: flex; justify-content: space-between; background: white; padding: 10px 16px; border-radius: 40px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e6eef6; }
     .step { font-size: 0.85rem; font-weight: 600; color: #a0b5c8; }
     .step.active { color: #1f5880; }
     .step.done { color: #1a7a3a; }
@@ -26,7 +26,7 @@
     .learn-img { font-size: 0.9rem; color: #5c4328; margin: 8px 0; background: #fdfaf2; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #d48c5c; }
     .learn-origin { font-size: 0.82rem; color: #6d8aa3; font-style: italic; margin-top: 6px; padding-left: 4px; }
 
-    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; text-align: center; }
+    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; }
     .family-list { display: none; list-style: none; padding: 0; margin-top: 10px; border-top: 1px dashed #d0dfec; padding-top: 10px; }
     .family-list.open { display: block; }
     .family-list li { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dotted #e0eaf2; }
@@ -68,6 +68,7 @@
   <div class="page active" id="page-0">
     <h2>Day 3：数量与建造</h2>
     <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">今天掌握：co(共同) / over(过度) / under(不足) + 建造/形状/做。</p>
+    <p style="font-size:0.8rem; color:#666; margin:0 0 12px; line-height:1.6;">⚠️ 词源拆分是助记，不等于严格历史还原；先抓“最常见含义”和“词族画面感”。</p>
     <div id="learnContainer"></div>
     <button class="btn btn-next" onclick="goToPage(1)">✅ 学完了，去刷题 (15题)</button>
   </div>
@@ -122,7 +123,7 @@ const learnData = {
     },
     { 
       r: "form", en: "shape", img: "画面是一个模具，把材料塑造成特定的形状。", 
-      origin: "源自拉丁语 forma（形状/模型）。",
+      origin: "源自拉丁语 forma（形状/模型），本课中可用作‘塑形/成形’的助记。",
       family: [
         { w: "inform", b: "in(向内) + form(形)", m: "v. 通知" },
         { w: "reform", b: "re(再次) + form(形)", m: "v. 改革" },
@@ -149,21 +150,21 @@ const quizData = [
   // 第一关：前缀
   { q: "前缀 'co- / con-' 的画面感是？", opts: ["A. 向后", "B. 共同/一起", "C. 在下面", "D. 跨越"], ans: 1, exp: "co-/con- = 共同。cooperate(合作) 就是一起工作。" },
   { q: "前缀 'over-' 的引申义是？", opts: ["A. 不足", "B. 过度/在上方", "C. 分离", "D. 向后"], ans: 1, exp: "over- 表示过度、超过界限，如 overwork(过度工作)。" },
-  { q: "单词 underestimate 中的 'under-' 代表什么？", opts: ["A. 在上面", "B. 在下面/不足", "C. 共同", "D. 向外"], ans: 1, exp: "under(在下面) + estimate(估计) ➡️ 估计不足 ➡️ 低估。" },
-  { q: "单词 overcome 中的 'over-' 代表什么画面？", opts: ["A. 在障碍物上方越过", "B. 在下面", "C. 共同", "D. 分离"], ans: 0, exp: "over(越过) + come(来) ➡️ 越过障碍而来 ➡️ 克服。" },
+  { q: "单词 underestimate 中的 'under-' 代表什么？", opts: ["A. 在上面", "B. 在下面/不足", "C. 共同", "D. 向外"], ans: 1, exp: "under(在下面) + estimate(估计) ➡️ 估计不足。" },
+  { q: "单词 overcome 中的 'over-' 代表什么画面？", opts: ["A. 在障碍物上方越过", "B. 在下面", "C. 共同", "D. 分离"], ans: 0, exp: "over(越过) + come(来) ➡️ 越过困难。" },
   { q: "以下哪个前缀表示 '共同 / 一起'？", opts: ["A. trans-", "B. con-", "C. under-", "D. pro-"], ans: 1, exp: "con- = 共同。connect(连接) 就是连在一起。" },
 
   // 第二关：词根
   { q: "词根 'struct' 的底层画面是？", opts: ["A. 看", "B. 建造/堆砌", "C. 写", "D. 拉"], ans: 1, exp: "struct = 建造。structure(结构) 就是建出来的东西。" },
-  { q: "词根 'form' 代表什么动作？", opts: ["A. 建造", "B. 形成/形状", "C. 做", "D. 转"], ans: 1, exp: "form = 形状/形成。inform 就是往脑子里放入形状（信息）。" },
+  { q: "词根 'form' 代表什么动作？", opts: ["A. 建造", "B. 形成/形状", "C. 做", "D. 转"], ans: 1, exp: "form = 形状/形成；它常用于记忆 '把信息塑成形状'。" },
   { q: "词根 'fact / fect' 的核心画面是？", opts: ["A. 写", "B. 看", "C. 做/制造", "D. 拉"], ans: 2, exp: "fact/fect = 做。factory(工厂) 就是做东西的地方。" },
-  { q: "单词 instruct (in + struct) 的字面画面是？", opts: ["A. 在内部建造", "B. 向外建", "C. 破坏", "D. 一起建"], ans: 0, exp: "in(向内) + struct(建) ➡️ 在头脑内部建构知识 ➡️ 指导/教授。" },
-  { q: "单词 transform (trans + form) 的字面画面是？", opts: ["A. 向内变形", "B. 跨越形状/改变形态", "C. 重新形成", "D. 一起形成"], ans: 1, exp: "trans(跨越) + form(形) ➡️ 跨越原来的形状 ➡️ 转换/变形。" },
+  { q: "单词 instruct (in + struct) 的字面画面是？", opts: ["A. 在内部建造", "B. 向外建", "C. 破坏", "D. 一起建"], ans: 0, exp: "in(向内) + struct(建) ➡️ 在脑里搭建说明/指导。" },
+  { q: "单词 transform (trans + form) 的字面画面是？", opts: ["A. 向内变形", "B. 跨越形状/改变形态", "C. 重新形成", "D. 一起形成"], ans: 1, exp: "trans(跨越) + form(形) ➡️ 改变形态。" },
 
   // 第三关：拼整车
   { q: "con + struct = ?", opts: ["A. 破坏", "B. 建设", "C. 指导", "D. 阻挡"], ans: 1, exp: "con(共同) + struct(建) ➡️ 大家一起建 ➡️ 建设。" },
   { q: "de + struct = ?", opts: ["A. 建设", "B. 破坏", "C. 指导", "D. 结构"], ans: 1, exp: "de(向下/反) + struct(建) ➡️ 反向建造 ➡️ 破坏。" },
-  { q: "in + form = ?", opts: ["A. 通知", "B. 改革", "C. 变形", "D. 制服"], ans: 0, exp: "in(向内) + form(形) ➡️ 把信息放入脑海中 ➡️ 通知。" },
+  { q: "in + form = ?", opts: ["A. 通知", "B. 改革", "C. 变形", "D. 制服"], ans: 0, exp: "inform 可用作 in(向内) + form(塑形/成形) 的助记：把信息塑入脑中；更准确的词源是 informare '告知'。" },
   { q: "e + fect = ?", opts: ["A. 完美", "B. 效果", "C. 感染", "D. 制造"], ans: 1, exp: "e(向外) + fect(做) ➡️ 做出来的向外结果 ➡️ 效果。" },
   { q: "trans + form = ?", opts: ["A. 通知", "B. 改革", "C. 变形/转换", "D. 制服"], ans: 2, exp: "trans(跨越) + form(形) ➡️ 改变形态 ➡️ 变形/转换。" }
 ];
