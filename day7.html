@@ -5,71 +5,283 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>Day 7 · 认知与情感 (含错题本)</title>
   <style>
-    /* 样式与 Day 8 完全统一，保证体验一致 */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f0f5fb;
+      padding: 14px 10px 30px;
+      color: #1a2a3a;
+    }
     .container { max-width: 820px; margin: 0 auto; }
-    h1 { font-size: 1.4rem; color: #0b2b4a; border-left: 6px solid #2a7faa; padding-left: 14px; margin-bottom: 14px; }
-    
-    .progress-bar { display: flex; justify-content: space-between; background: white; padding: 10px 16px; border-radius: 40px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e0eaf2; }
+    h1 {
+      font-size: 1.4rem;
+      color: #0b2b4a;
+      border-left: 6px solid #2a7faa;
+      padding-left: 14px;
+      margin-bottom: 14px;
+    }
+
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      background: white;
+      padding: 10px 16px;
+      border-radius: 40px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e0eaf2;
+    }
     .step { font-size: 0.85rem; font-weight: 600; color: #a0b5c8; }
     .step.active { color: #1f5880; }
     .step.done { color: #1a7a3a; }
 
-    .page { display: none; background: white; border-radius: 20px; padding: 20px; box-shadow: 0 6px 18px rgba(0, 20, 30, 0.08); border: 1px solid #e6eef6; }
+    .page {
+      display: none;
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 6px 18px rgba(0, 20, 30, 0.08);
+      border: 1px solid #e6eef6;
+    }
     .page.active { display: block; }
-    h2 { font-size: 1.2rem; color: #134b6b; margin-bottom: 14px; border-bottom: 2px solid #e3edf5; padding-bottom: 8px; }
-    
-    .learn-card { background: #fafdff; border: 1px solid #e3ecf5; border-radius: 12px; padding: 14px; margin-bottom: 12px; }
-    .learn-title { font-size: 1.15rem; font-weight: 700; color: #b13e2e; }
-    .learn-en { font-size: 0.85rem; color: #1f5880; font-weight: 600; background: #e3edf5; display: inline-block; padding: 2px 8px; border-radius: 6px; margin-left: 8px; }
-    .learn-img { font-size: 0.9rem; color: #5c4328; margin: 8px 0; background: #fdfaf2; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #d48c5c; }
-    .learn-origin { font-size: 0.82rem; color: #6d8aa3; font-style: italic; margin-top: 6px; padding-left: 4px; }
-    
-    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; text-align: center; }
-    .family-list { display: none; list-style: none; padding: 0; margin-top: 10px; border-top: 1px dashed #d0dfec; padding-top: 10px; }
-    .family-list.open { display: block; }
-    .family-list li { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dotted #e0eaf2; }
-    .fam-word { font-weight: 600; color: #b13e2e; width: 120px; }
-    .fam-break { color: #666; flex: 1; font-size: 0.82rem; margin-left: 8px; }
-    .fam-mean { color: #1a4d6b; text-align: right; font-size: 0.85rem; width: 90px; }
+    h2 {
+      font-size: 1.2rem;
+      color: #134b6b;
+      margin-bottom: 14px;
+      border-bottom: 2px solid #e3edf5;
+      padding-bottom: 8px;
+    }
 
-    .btn { background: #1f5880; color: white; border: none; padding: 12px 24px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 16px; width: 100%; transition: 0.2s; }
+    .learn-card {
+      background: #fafdff;
+      border: 1px solid #e3ecf5;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .learn-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #b13e2e;
+    }
+    .learn-en {
+      font-size: 0.85rem;
+      color: #1f5880;
+      font-weight: 600;
+      background: #e3edf5;
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-left: 8px;
+    }
+    .learn-img {
+      font-size: 0.9rem;
+      color: #5c4328;
+      margin: 8px 0;
+      background: #fdfaf2;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border-left: 3px solid #d48c5c;
+    }
+    .learn-origin {
+      font-size: 0.82rem;
+      color: #6d8aa3;
+      font-style: italic;
+      margin-top: 6px;
+      padding-left: 4px;
+    }
+
+    .family-toggle {
+      display: block;
+      width: 100%;
+      background: #e3edf5;
+      border: none;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: #1f5880;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .family-list {
+      display: none;
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+      border-top: 1px dashed #d0dfec;
+      padding-top: 10px;
+    }
+    .family-list.open { display: block; }
+    .family-list li {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      padding: 6px 0;
+      border-bottom: 1px dotted #e0eaf2;
+    }
+    .fam-word {
+      font-weight: 600;
+      color: #b13e2e;
+      width: 120px;
+    }
+    .fam-break {
+      color: #666;
+      flex: 1;
+      font-size: 0.82rem;
+      margin-left: 8px;
+    }
+    .fam-mean {
+      color: #1a4d6b;
+      text-align: right;
+      font-size: 0.85rem;
+      width: 90px;
+    }
+
+    .btn {
+      background: #1f5880;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+      width: 100%;
+      transition: 0.2s;
+    }
     .btn:hover { background: #13466a; }
     .btn-next { background: #1a7a3a; }
     .btn-wrong { background: #b13e2e; }
-    
-    .quiz-card { background: #f8fbff; border: 1px solid #d5e4f1; border-radius: 16px; padding: 16px; margin-bottom: 14px; transition: 0.3s; }
-    .quiz-question { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; line-height: 1.5; }
+
+    .quiz-card {
+      background: #f8fbff;
+      border: 1px solid #d5e4f1;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      transition: 0.3s;
+    }
+    .quiz-question {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
     .quiz-options { display: flex; flex-direction: column; gap: 8px; }
-    .quiz-opt { background: white; border: 1px solid #c9dae8; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
-    .quiz-opt:hover { background: #e6f0f8; }
-    .quiz-opt.correct { background: #d4edda; border-color: #28a745; color: #155724; font-weight: 700; }
-    .quiz-opt.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; font-weight: 700; }
-    .quiz-explain { display: none; margin-top: 10px; font-size: 0.85rem; color: #1a4d6b; background: #e3edf5; padding: 8px 12px; border-radius: 8px; }
+    .quiz-opt {
+      background: white;
+      border: 1px solid #c9dae8;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.2s;
+      text-align: left;
+    }
+    .quiz-opt:hover:not(:disabled) { background: #e6f0f8; }
+    .quiz-opt:disabled { cursor: default; opacity: 1; }
+    .quiz-opt.correct {
+      background: #d4edda;
+      border-color: #28a745;
+      color: #155724;
+      font-weight: 700;
+    }
+    .quiz-opt.wrong {
+      background: #f8d7da;
+      border-color: #dc3545;
+      color: #721c24;
+      font-weight: 700;
+    }
+    .quiz-explain {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #1a4d6b;
+      background: #e3edf5;
+      padding: 8px 12px;
+      border-radius: 8px;
+      line-height: 1.6;
+    }
     .quiz-explain.show { display: block; }
-    
-    .feedback-ok { box-shadow: 0 0 10px rgba(40, 167, 69, 0.4); border-color: #28a745; }
-    .feedback-no { box-shadow: 0 0 10px rgba(220, 53, 69, 0.4); border-color: #dc3545; }
 
-    .finish-msg { text-align: center; padding: 30px 10px; display: none; }
+    .feedback-ok {
+      box-shadow: 0 0 10px rgba(40, 167, 69, 0.4);
+      border-color: #28a745;
+    }
+    .feedback-no {
+      box-shadow: 0 0 10px rgba(220, 53, 69, 0.4);
+      border-color: #dc3545;
+    }
+
+    .finish-msg {
+      text-align: center;
+      padding: 30px 10px;
+      display: none;
+    }
     .finish-msg.show { display: block; }
-    .finish-msg h3 { color: #1a7a3a; font-size: 1.3rem; margin-bottom: 10px; }
-    .score-board { background: #e3edf5; padding: 8px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; color: #1f5880; margin-bottom: 16px; display: flex; justify-content: space-between; }
+    .finish-msg h3 {
+      color: #1a7a3a;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+    .score-board {
+      background: #e3edf5;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1f5880;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
 
-    /* 错题本样式 */
-    .wrong-book { display: none; background: #fff5f5; border: 1px solid #f5c6cb; border-radius: 16px; padding: 16px; margin-top: 20px; }
+    .wrong-book {
+      display: none;
+      background: #fff5f5;
+      border: 1px solid #f5c6cb;
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 20px;
+    }
     .wrong-book.show { display: block; }
-    .wrong-book h3 { color: #b13e2e; font-size: 1.1rem; margin-bottom: 10px; }
-    .wrong-item { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; border-left: 3px solid #dc3545; font-size: 0.9rem; }
+    .wrong-book h3 {
+      color: #b13e2e;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+    .wrong-item {
+      background: white;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      border-left: 3px solid #dc3545;
+      font-size: 0.9rem;
+    }
     .wrong-item .q-text { font-weight: 600; margin-bottom: 4px; }
     .wrong-item .a-text { color: #1a7a3a; font-weight: 600; }
-    .wrong-item .e-text { color: #6d8aa3; font-size: 0.82rem; margin-top: 4px; }
+    .wrong-item .e-text {
+      color: #6d8aa3;
+      font-size: 0.82rem;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 520px) {
+      .progress-bar { padding: 9px 10px; }
+      .step { font-size: 0.76rem; }
+      .page { padding: 15px; }
+      .score-board { font-size: 0.82rem; padding: 8px 10px; }
+      .fam-word { width: 100px; }
+    }
   </style>
 </head>
 <body>
 <div class="container">
-  
   <div class="progress-bar" id="progressBar">
     <span class="step active" id="step-0">1. 认零件</span>
     <span class="step" id="step-1">2. 刷题库</span>
@@ -78,7 +290,10 @@
 
   <div class="page active" id="page-0">
     <h2>Day 7：认知与情感</h2>
-    <p style="font-size:0.85rem; color:#666; margin-bottom:12px;">今天掌握：名词后缀 (-tion/-ment/-able) + 认知词根 (sci/cred/sens)。<br><span style="color:#b13e2e;">⚠️ 做错的题目会自动进错题本。</span></p>
+    <p style="font-size:0.85rem; color:#666; margin-bottom:12px; line-height:1.7;">
+      今天掌握：名词后缀 <strong>(-tion / -ment / -able)</strong> + 认知词根 <strong>(sci / cred / sens)</strong>。<br>
+      <span style="color:#b13e2e; font-weight:600;">⚠️ 做错的题会自动收进错题本，重练更有效！</span>
+    </p>
     <div id="learnContainer"></div>
     <button class="btn btn-next" onclick="goToPage(1)">✅ 学完了，去刷题</button>
   </div>
@@ -90,203 +305,272 @@
       <span id="progressText">进度: 0%</span>
     </div>
     <div id="quizContainer"></div>
-    
-    <!-- 错题本展示区 -->
+
     <div class="wrong-book" id="wrongBook">
       <h3>📕 我的错题本</h3>
       <div id="wrongList"></div>
       <button class="btn btn-wrong" onclick="retryWrong()">🔄 重练错题</button>
     </div>
+
     <button class="btn btn-wrong" id="showWrongBtn" onclick="showWrongBook()" style="display:none;">📕 查看错题本</button>
-    <button class="btn" id="btn-finish" onclick="goToPage(2)" style="display:none; background:#1a7a3a; margin-top:12px;">🏆 完成 Day 7</button>
   </div>
 
   <div class="page" id="page-2">
-    <div class="finish-msg show" style="display:block;">
-      <h3>🎉 Day 7 通关！</h3>
-      <p style="color:#555; margin:10px 0; font-size:1.1rem;">你已经掌握了认知/情感词根和名词后缀。</p>
-      <button class="btn" onclick="location.reload()">🔄 再刷一次</button>
+    <div class="finish-msg show">
+      <h3 id="finishTitle">🎉 恭喜通关！</h3>
+      <p style="color:#555; margin:10px 0; font-size:1.08rem;">最终得分：<strong id="finalScore" style="color:#1a7a3a; font-size:1.5rem;"></strong> / 15</p>
+      <div id="comment" style="margin-top:10px; font-weight:600; color:#1f5880; line-height:1.7;"></div>
+      <button class="btn" onclick="location.reload()" style="margin-top:20px;">🔄 重新复习</button>
     </div>
   </div>
 </div>
 
 <script>
-// ==========================================
-// Day 7 数据区
-// ==========================================
-const learnData = {
-  suffixes: [
-    { p: "-tion / -sion", en: "noun: action or state", img: "把一个动作变成名词，表示动作本身或结果。", origin: "源自拉丁语，常加在动词后。", ex: "education (教育), decision (决定)" },
-    { p: "-ment", en: "noun: result or state", img: "把一个动作变成名词，强调结果或状态。", origin: "源自拉丁语 -mentum。", ex: "development (发展), movement (运动)" },
-    { p: "-able / -ible", en: "adj: able to be", img: "能被...的，有某种能力的。", origin: "源自拉丁语 -abilis / -ibilis。", ex: "comfortable (舒适的), visible (可见的)" }
-  ],
-  roots: [
-    { r: "sci", en: "know", img: "画面是大脑里亮起一盏灯，突然“知道”了。", origin: "源自拉丁语 scire (知道)。", family: [{ w: "science", b: "sci(知) + ence(名词)", m: "n. 科学" },{ w: "conscious", b: "con(共同) + sci(知) + ous(形)", m: "adj. 有意识的" },{ w: "conscience", b: "con(共同) + sci(知) + ence(名)", m: "n. 良心" },{ w: "subconscious", b: "sub(在下) + conscious", m: "adj. 潜意识的" }] },
-    { r: "cred", en: "believe", img: "画面是你把心掏出来，交给另一个人（相信）。", origin: "源自拉丁语 credere (相信)。", family: [{ w: "credit", b: "cred(信) + it", m: "n. 信用 / 学分" },{ w: "incredible", b: "in(不) + cred(信) + ible(能)", m: "adj. 难以置信的" },{ w: "credible", b: "cred(信) + ible(能)", m: "adj. 可信的" },{ w: "credential", b: "cred(信) + ential", m: "n. 证书 / 凭证" }] },
-    { r: "sens / sent", en: "feel", img: "画面是用手触摸到一个东西，心里产生了感觉。", origin: "源自拉丁语 sentire (感觉)。", family: [{ w: "sense", b: "sens(感觉) + e", m: "n. 感觉" },{ w: "sensitive", b: "sens(感觉) + itive(形)", m: "adj. 敏感的" },{ w: "sentiment", b: "sent(感觉) + iment(名)", m: "n. 情绪 / 感情" },{ w: "consent", b: "con(共同) + sent(感觉)", m: "v./n. 同意" }] }
-  ]
-};
-
-const quizData = [
-  { q: "后缀 '-tion' 加在动词后，通常变成什么词性？", opts: ["A. 动词", "B. 名词", "C. 形容词", "D. 副词"], ans: 1, exp: "tion 是典型的名词后缀，如 education(教育)。" },
-  { q: "后缀 '-able' 的含义是？", opts: ["A. 充满...的", "B. 能够被...的", "C. 在...之前", "D. 没有...的"], ans: 1, exp: "able 表示 '能被...的'，如 visible(可见的)。" },
-  { q: "单词 development 中的 '-ment' 是什么词性后缀？", opts: ["A. 动词", "B. 名词", "C. 形容词", "D. 副词"], ans: 1, exp: "ment 表示结果或状态，是名词后缀。" },
-  { q: "以下哪个词是形容词？", opts: ["A. movement", "B. decision", "C. comfortable", "D. education"], ans: 2, exp: "comfortable 以 able 结尾，是形容词。" },
-  { q: "后缀 '-sion' 通常表示什么？", opts: ["A. 动作/结果的名词", "B. 形容词", "C. 动词", "D. 副词"], ans: 0, exp: "sion 也是名词后缀，如 decision(决定)。" },
-  { q: "词根 'sci' 的底层画面是？", opts: ["A. 看", "B. 知道", "C. 相信", "D. 感觉"], ans: 1, exp: "sci = 知道。science(科学) 就是“知道”的学问。" },
-  { q: "词根 'cred' 代表什么动作？", opts: ["A. 相信", "B. 知道", "C. 感觉", "D. 看"], ans: 0, exp: "cred = 相信。credit(信用) 就是别人相信你。" },
-  { q: "词根 'sens / sent' 的核心画面是？", opts: ["A. 相信", "B. 知道", "C. 感觉", "D. 写"], ans: 2, exp: "sens/sent = 感觉。sense(感觉) 就是直接的感觉。" },
-  { q: "单词 conscious (con + sci + ous) 的字面画面是？", opts: ["A. 共同知道 ➡️ 有意识的", "B. 不相信 ➡️ 怀疑", "C. 没感觉 ➡️ 冷漠", "D. 向前看 ➡️ 期待"], ans: 0, exp: "con(共同) + sci(知) ➡️ 完全知道 ➡️ 有意识的。" },
-  { q: "单词 incredible (in + cred + ible) 的字面画面是？", opts: ["A. 能被相信 ➡️ 可信的", "B. 不能相信 ➡️ 难以置信的", "C. 感觉不到 ➡️ 麻木的", "D. 知道一切 ➡️ 全知的"], ans: 1, exp: "in(不) + cred(信) + ible(能) ➡️ 难以置信的。" },
-  { q: "in + cred + ible = ?", opts: ["A. 可信的", "B. 难以置信的", "C. 信用", "D. 感觉"], ans: 1, exp: "in(不) + cred(信) + ible(能) ➡️ 难以置信的。" },
-  { q: "con + sci + ence = ?", opts: ["A. 科学", "B. 良心", "C. 潜意识", "D. 有意识的"], ans: 1, exp: "con(共同) + sci(知) + ence(名) ➡️ 良心。" },
-  { q: "sens + itive = ?", opts: ["A. 感觉", "B. 敏感的", "C. 同意", "D. 情绪"], ans: 1, exp: "sens(感觉) + itive(形) ➡️ 敏感的。" },
-  { q: "con + sent = ?", opts: ["A. 感觉", "B. 同意", "C. 相信", "D. 知道"], ans: 1, exp: "con(共同) + sent(感觉) ➡️ 感觉一致 ➡️ 同意。" },
-  { q: "sub + conscious = ?", opts: ["A. 有意识的", "B. 潜意识的", "C. 良心", "D. 科学"], ans: 1, exp: "sub(在下) + conscious(有意识的) ➡️ 潜意识的。" }
+const learnData = [
+  {
+    title: '名词后缀：-tion / -ment / -able',
+    en: 'noun suffixes',
+    img: '核心：这些后缀常把动词或形容词变成“名词/状态/可被…的”——理解它们就像看词的“职业牌”。',
+    origin: '例：action(行动), movement(运动), sensible(明智的)',
+    family: [
+      ['-tion', '动作/过程/状态', 'action, decision, attention'],
+      ['-ment', '动作/结果/状态', 'movement, agreement, treatment'],
+      ['-able', '可…的/能…的', 'reasonable, sensible, movable']
+    ]
+  },
+  {
+    title: '认知词根：sci / cred / sens',
+    en: 'knowledge & belief & feeling',
+    img: '你要学会用“画面”记忆：sci = 知道，cred = 相信，sens = 感觉。它们是看单词的“入口键”。',
+    origin: '例：science（科学），credit（信用/信任），sensitive（敏感的）',
+    family: [
+      ['sci-', '知道/学习', 'science, scientific, conscious'],
+      ['cred-', '相信/信任', 'credit, credible, credential'],
+      ['sens-', '感觉/感知', 'sense, sensitive, sensation']
+    ]
+  }
 ];
 
-// ==========================================
-// 渲染与错题本逻辑
-// ==========================================
+const quizData = [
+  { q: '单词 “decision” 里，-tion 说明它通常是一个什么词？', opts: ['动词','名词','形容词','副词'], ans: 1, exp: '-tion 常把动作或过程变为名词，如 decision(决定)、action(行动)。' },
+  { q: '“movement” 的核心意思最接近？', opts: ['运动/动作','书写工具','知识的过程','可理解的'], ans: 0, exp: 'movement = 运动，动作的结果/状态；-ment 常表示“动作、结果、状态”。' },
+  { q: '“reasonable” 中的 -able 表示什么？', opts: ['不可能','能够/可…的','全部','相反'], ans: 1, exp: 'reasonable = 合理的，可理解的；-able 常表示“可…的，能…的”。' },
+  { q: 'scientist 里的 sci- 主要表示什么？', opts: ['看见','相信','知道/研究','前进'], ans: 2, exp: 'sci- 跟 science(科学) 同源，核心意味是“知道、研究”。' },
+  { q: '“credible” 最可能表示？', opts: ['可信的','有感觉的','可移动的','无知的'], ans: 0, exp: 'cred- = 相信；credible = 可信的，可靠的。' },
+  { q: '“sensitive” 里 sens- 表示什么？', opts: ['走路','感觉/感知','分开','看见'], ans: 1, exp: 'sens- 是感觉，sensitive = 敏感的，善于感知的。' },
+  { q: '以下哪个单词最符合 “-ment” 的用法？', opts: ['payment','kindness','happy','impossible'], ans: 0, exp: 'payment(付款) 的 -ment 形成名词，表示“结果/行为/状态”。' },
+  { q: '“attention” 中的 -tion 说明它最像什么？', opts: ['过程/动作的名词','形容词的比较级','副词','连词'], ans: 0, exp: 'attention(注意) 是“注意”这一行为/状态的名词。' },
+  { q: '“sensible” 在语境里最可能是？', opts: ['明智的','看不见的','不可信的','无法移动的'], ans: 0, exp: 'sensible = 明智的，有感觉的；-ible/-able 常表“可…的，合理的”。' },
+  { q: '“credit” 既可作名词，也可作动词。它最常见的核心联想是什么？', opts: ['信任/信用','方向','很多','距离'], ans: 0, exp: 'credit 与 “信用、信任”相关；cred- 反复出现于 believe / trust 相关词。' },
+  { q: '“sensation” 里 sens- 带来的画面感最接近？', opts: ['心里有感觉','很远','不停运动','很难相信'], ans: 0, exp: 'sensation = 感觉、知觉。sens- 与 feeling / sense 直接相关。' },
+  { q: '“movable” 更接近哪个意思？', opts: ['可移动的','可信的','科学的','不易感知的'], ans: 0, exp: 'move + -able = 可移动的。-able 常表示“可…的”。' },
+  { q: '以下选项中，哪个词根和意思最匹配？', opts: ['cred- = 相信/信任','sci- = 方向/位置','sens- = 计算/图形','-ment = 工具名'], ans: 0, exp: 'cred- 是信任，sci- 是知道/研究，sens- 是感觉。' },
+  { q: '“agreement” 强调什么？', opts: ['同意、协议','批评、否定','运动、跑步','知识、研究'], ans: 0, exp: 'agreement = 协议/同意；-ment 常表示行为结果或状态。' },
+  { q: '“scientific” 最强的联想是？', opts: ['与科学、知识有关','与情感有关','与距离有关','与分开有关'], ans: 0, exp: 'scientific = 科学的；sci- 与知/学相关。' },
+  { q: '在词根记忆法里，最重要的原则是什么？', opts: ['每个词都要字面直译','抓住词根和后缀的“画面感”','只看前缀不看后缀','只背单词不要理解'], ans: 1, exp: '词根词缀的核心是“联系词义画面”，不是机械硬翻。' }
+];
+
 const learnContainer = document.getElementById('learnContainer');
-let learnHtml = '<h3 style="font-size:1rem; color:#1f5880; margin-bottom:8px;">🔠 后缀加工厂</h3>';
-learnData.suffixes.forEach(p => {
-  learnHtml += `<div class="learn-card"><span class="learn-title">${p.p}</span><span class="learn-en">${p.en}</span><div class="learn-img">🎬 ${p.img}</div><div class="learn-origin">📜 词源：${p.origin}</div><div class="learn-ex">📖 例：${p.ex}</div></div>`;
-});
-learnHtml += '<h3 style="font-size:1rem; color:#1f5880; margin:16px 0 8px;">🌳 词根引擎</h3>';
-learnData.roots.forEach((r, idx) => {
-  learnHtml += `<div class="learn-card"><span class="learn-title">${r.r}</span><span class="learn-en">${r.en}</span><div class="learn-img">🎬 ${r.img}</div><div class="learn-origin">📜 词源：${r.origin}</div><button class="family-toggle" onclick="toggleFamily(${idx})">👉 展开家族成员 (${r.family.length})</button><ul class="family-list" id="family-${idx}">`;
-  r.family.forEach(f => { learnHtml += `<li><span class="fam-word">${f.w}</span><span class="fam-break">${f.b}</span><span class="fam-mean">${f.m}</span></li>`; });
-  learnHtml += `</ul></div>`;
-});
-learnContainer.innerHTML = learnHtml;
-
-function toggleFamily(idx) { document.getElementById(`family-${idx}`).classList.toggle('open'); }
-
-let wrongAnswers = []; 
-let retrying = false;
-let retryIndices = [];
-let correctCount = 0;
-let answeredCount = 0;
-
 const quizContainer = document.getElementById('quizContainer');
+const scoreDisplay = document.getElementById('scoreDisplay');
+const progressText = document.getElementById('progressText');
+const wrongBook = document.getElementById('wrongBook');
+const wrongList = document.getElementById('wrongList');
+const showWrongBtn = document.getElementById('showWrongBtn');
+const finalScore = document.getElementById('finalScore');
+const comment = document.getElementById('comment');
 
-function renderQuiz(indices) {
-  quizContainer.innerHTML = '';
-  indices.forEach((realIdx, displayIdx) => {
-    const q = quizData[realIdx];
-    let html = `<div class="quiz-card" id="qcard-${displayIdx}"><div class="quiz-question">${displayIdx+1}. ${q.q}</div><div class="quiz-options">`;
-    q.opts.forEach((opt, oi) => {
-      html += `<div class="quiz-opt" onclick="checkAnswer(${realIdx}, ${oi}, this, ${displayIdx})">${opt}</div>`;
-    });
-    html += `</div><div class="quiz-explain" id="exp-${displayIdx}">💡 ${q.exp}</div></div>`;
-    quizContainer.innerHTML += html;
+let currentPage = 0;
+let score = 0;
+let answered = [];
+let wrongListData = [];
+
+function goToPage(pageIndex) {
+  const pages = document.querySelectorAll('.page');
+  pages.forEach((page, index) => {
+    page.classList.toggle('active', index === pageIndex);
+  });
+
+  const steps = document.querySelectorAll('.step');
+  steps.forEach((step, index) => {
+    step.classList.toggle('active', index === pageIndex);
+    step.classList.toggle('done', index < pageIndex);
+  });
+
+  currentPage = pageIndex;
+  if (pageIndex === 1) {
+    renderQuiz();
+  }
+}
+
+function renderLearn() {
+  learnData.forEach((item) => {
+    const card = document.createElement('div');
+    card.className = 'learn-card';
+    card.innerHTML = `
+      <div class="learn-title">${item.title}<span class="learn-en">${item.en}</span></div>
+      <div class="learn-img">${item.img}</div>
+      <div class="learn-origin">${item.origin}</div>
+      <button class="family-toggle" onclick="toggleFamily(this)">📚 查看词族扩展</button>
+      <ul class="family-list">
+        ${item.family.map(([word, meaning, examples]) => `
+          <li>
+            <span class="fam-word">${word}</span>
+            <span class="fam-break">${meaning}</span>
+            <span class="fam-mean">${examples}</span>
+          </li>
+        `).join('')}
+      </ul>
+    `;
+    learnContainer.appendChild(card);
   });
 }
 
-function initQuiz() {
-  wrongAnswers = [];
-  retrying = false;
-  correctCount = 0;
-  answeredCount = 0;
-  const indices = quizData.map((_, i) => i);
-  renderQuiz(indices);
-  document.getElementById('scoreDisplay').innerText = '0';
-  document.getElementById('progressText').innerText = '进度: 0%';
-  document.getElementById('wrongBook').classList.remove('show');
-  document.getElementById('showWrongBtn').style.display = 'none';
-  document.getElementById('btn-finish').style.display = 'none';
+function toggleFamily(button) {
+  const list = button.nextElementSibling;
+  const isOpen = list.classList.toggle('open');
+  button.textContent = isOpen ? '📚 收起词族扩展' : '📚 查看词族扩展';
 }
 
-function checkAnswer(realIdx, oIdx, el, displayIdx) {
-  const q = quizData[realIdx];
-  const parent = el.parentElement;
-  const card = document.getElementById(`qcard-${displayIdx}`);
-  Array.from(parent.children).forEach(c => c.style.pointerEvents = 'none');
-  
-  if(oIdx === q.ans) {
-    el.classList.add('correct');
-    card.classList.add('feedback-ok');
-    correctCount++;
+function renderQuiz() {
+  quizContainer.innerHTML = '';
+  quizData.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.innerHTML = `
+      <div class="quiz-question">${index + 1}. ${item.q}</div>
+      <div class="quiz-options">
+        ${item.opts.map((opt, optIndex) => `
+          <button class="quiz-opt" data-index="${index}" data-opt="${optIndex}" onclick="handleAnswer(this, ${index}, ${optIndex}, ${item.ans})">${opt}</button>
+        `).join('')}
+      </div>
+      <div class="quiz-explain" id="exp-${index}">${item.exp}</div>
+    `;
+    quizContainer.appendChild(card);
+  });
+}
+
+function handleAnswer(button, qIndex, chosenIndex, correctIndex) {
+  if (answered.includes(qIndex)) return;
+  answered.push(qIndex);
+
+  const buttons = document.querySelectorAll(`.quiz-opt[data-index="${qIndex}"]`);
+  buttons.forEach((btn) => {
+    const isCorrect = Number(btn.dataset.opt) === correctIndex;
+    btn.disabled = true;
+    if (isCorrect) btn.classList.add('correct');
+    if (Number(btn.dataset.opt) === chosenIndex && chosenIndex !== correctIndex) {
+      btn.classList.add('wrong');
+      btn.parentElement.parentElement.classList.add('feedback-no');
+    }
+    if (Number(btn.dataset.opt) === correctIndex) {
+      btn.parentElement.parentElement.classList.add('feedback-ok');
+    }
+  });
+
+  const card = button.closest('.quiz-card');
+  const exp = card.querySelector('.quiz-explain');
+  exp.textContent = quizData[qIndex].exp;
+  exp.classList.add('show');
+
+  if (chosenIndex === correctIndex) {
+    score += 1;
   } else {
-    el.classList.add('wrong');
-    parent.children[q.ans].classList.add('correct');
-    card.classList.add('feedback-no');
-    if(!wrongAnswers.find(w => w.idx === realIdx)) {
-      wrongAnswers.push({ idx: realIdx, q: q.q, opts: q.opts, ans: q.ans, exp: q.exp });
-    }
+    wrongListData.push({
+      q: quizData[qIndex].q,
+      a: quizData[qIndex].opts[correctIndex],
+      e: quizData[qIndex].exp
+    });
   }
-  
-  document.getElementById(`exp-${displayIdx}`).classList.add('show');
-  answeredCount++;
-  document.getElementById('scoreDisplay').innerText = correctCount;
-  
-  const total = retrying ? retryIndices.length : quizData.length;
-  document.getElementById('progressText').innerText = `进度: ${Math.round((answeredCount/total)*100)}%`;
-  
-  if(answeredCount === total) {
-    document.getElementById('showWrongBtn').style.display = 'block';
-    if(retrying) {
-      document.getElementById('btn-finish').style.display = 'block';
+
+  updateScore();
+  checkFinish();
+}
+
+function updateScore() {
+  scoreDisplay.textContent = score;
+  const percent = Math.round((answered.length / quizData.length) * 100);
+  progressText.textContent = `进度: ${percent}%`;
+}
+
+function checkFinish() {
+  if (answered.length === quizData.length) {
+    const finalPct = Math.round((score / quizData.length) * 100);
+    finalScore.textContent = `${score}`;
+    let message = '基础很稳，继续保持！';
+    if (finalPct >= 90) message = '太强了，词根词缀都被你“看见”了！';
+    else if (finalPct >= 75) message = '表现不错，错题本再过一遍就更稳了。';
+    else if (finalPct >= 60) message = '基础已经扎实，继续把词根画面串起来。';
+    else if (finalPct >= 40) message = '别急，重做错题比简单刷题更有用。';
+    else message = '先别灰心，抓住“画面感”后会快很多。';
+    comment.textContent = `${message} 你本轮得分 ${score} / ${quizData.length}。`;
+
+    if (wrongListData.length > 0) {
+      showWrongBtn.style.display = 'block';
     }
-    if(wrongAnswers.length === 0) {
-      document.getElementById('showWrongBtn').innerText = '🎉 全对！没有错题';
-      document.getElementById('showWrongBtn').style.background = '#1a7a3a';
-    } else {
-      document.getElementById('showWrongBtn').innerText = `📕 查看错题本 (${wrongAnswers.length}题)`;
-      document.getElementById('showWrongBtn').style.background = '#b13e2e';
-    }
+    setTimeout(() => {
+      goToPage(2);
+    }, 500);
   }
 }
 
 function showWrongBook() {
-  const book = document.getElementById('wrongBook');
-  const list = document.getElementById('wrongList');
-  list.innerHTML = '';
-  if(wrongAnswers.length === 0) {
-    list.innerHTML = '<p style="color:#1a7a3a; font-weight:600;">🎉 恭喜你，没有错题！</p>';
-  } else {
-    wrongAnswers.forEach(w => {
-      const correctLetter = String.fromCharCode(65 + w.ans);
-      list.innerHTML += `<div class="wrong-item">
-        <div class="q-text">${w.q}</div>
-        <div class="a-text">✅ 正确答案：${correctLetter}. ${w.opts[w.ans].replace(/^[A-D]\.\s*/, '')}</div>
-        <div class="e-text">💡 ${w.exp}</div>
-      </div>`;
-    });
+  wrongBook.classList.add('show');
+  wrongList.innerHTML = '';
+
+  if (wrongListData.length === 0) {
+    wrongList.innerHTML = '<div class="wrong-item"><div class="q-text">太棒了！本轮没有错题。</div></div>';
+    return;
   }
-  book.classList.add('show');
+
+  wrongListData.forEach((item) => {
+    const div = document.createElement('div');
+    div.className = 'wrong-item';
+    div.innerHTML = `
+      <div class="q-text">Q：${item.q}</div>
+      <div class="a-text">正确答案：${item.a}</div>
+      <div class="e-text">解释：${item.e}</div>
+    `;
+    wrongList.appendChild(div);
+  });
 }
 
 function retryWrong() {
-  if(wrongAnswers.length === 0) return;
-  retrying = true;
-  retryIndices = wrongAnswers.map(w => w.idx);
-  wrongAnswers = [];
-  correctCount = 0;
-  answeredCount = 0;
-  
-  document.getElementById('wrongBook').classList.remove('show');
-  document.getElementById('showWrongBtn').style.display = 'none';
-  document.getElementById('btn-finish').style.display = 'none';
-  document.getElementById('scoreDisplay').innerText = '0';
-  document.getElementById('progressText').innerText = '进度: 0%';
-  
-  renderQuiz(retryIndices);
-}
+  if (wrongListData.length === 0) {
+    alert('本轮没有错题，继续冲刺吧！');
+    return;
+  }
 
-function goToPage(pageIdx) {
-  document.querySelectorAll('.page').forEach((p, i) => p.classList.toggle('active', i === pageIdx));
-  document.querySelectorAll('.step').forEach((s, i) => {
-    s.classList.remove('active', 'done');
-    if(i < pageIdx) s.classList.add('done');
-    if(i === pageIdx) s.classList.add('active');
+  const retryIndexes = [];
+  quizData.forEach((item, i) => {
+    const hasMistake = wrongListData.some((w) => w.q === item.q);
+    if (hasMistake) retryIndexes.push(i);
   });
-  window.scrollTo(0, 0);
+
+  const questions = document.querySelectorAll('.quiz-card');
+  questions.forEach((card, idx) => {
+    const isRetry = retryIndexes.includes(idx);
+    card.style.display = isRetry ? 'block' : 'none';
+  });
+
+  wrongBook.classList.remove('show');
+  showWrongBtn.style.display = 'none';
+  const allBtns = document.querySelectorAll('.quiz-opt');
+  allBtns.forEach((btn) => {
+    const qIndex = Number(btn.dataset.index);
+    if (!retryIndexes.includes(qIndex)) {
+      btn.disabled = true;
+    }
+  });
+
+  const retryPrompt = document.createElement('div');
+  retryPrompt.className = 'quiz-card';
+  retryPrompt.innerHTML = '<div class="quiz-question">💡 错题重练：请重新做刚才的错题，��化画面记忆。</div>';
+  quizContainer.prepend(retryPrompt);
 }
 
-// 初始化
-initQuiz();
+renderLearn();
+renderQuiz();
 </script>
 </body>
 </html>
