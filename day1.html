@@ -1,135 +1,31 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>Day 1 · 基础营</title>
-  <style>
-    /* 复用之前的样式，确保单独打开也好看 */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
-    .container { max-width: 820px; margin: 0 auto; }
-    h1 { font-size: 1.4rem; color: #0b2b4a; border-left: 6px solid #2a7faa; padding-left: 14px; margin-bottom: 14px; }
-    .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.05); }
-    .card-title { font-weight: 700; font-size: 1.2rem; color: #134b6b; margin-bottom: 14px; border-bottom: 2px solid #e3edf5; padding-bottom: 8px; }
-    
-    .learn-card { background: #fafdff; border: 1px solid #e3ecf5; border-radius: 12px; padding: 14px; margin-bottom: 12px; }
-    .learn-title { font-size: 1.15rem; font-weight: 700; color: #b13e2e; }
-    .learn-en { font-size: 0.85rem; color: #1f5880; font-weight: 600; background: #e3edf5; display: inline-block; padding: 2px 8px; border-radius: 6px; margin-left: 8px; }
-    .learn-img { font-size: 0.9rem; color: #5c4328; margin: 8px 0; background: #fdfaf2; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #d48c5c; }
-    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; }
-    .family-list { display: none; list-style: none; padding: 0; margin-top: 10px; border-top: 1px dashed #d0dfec; padding-top: 10px; }
-    .family-list.open { display: block; }
-    .family-list li { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dotted #e0eaf2; }
-    .fam-word { font-weight: 600; color: #b13e2e; width: 120px; }
-    .fam-break { color: #666; flex: 1; font-size: 0.82rem; margin-left: 8px; }
-    
-    .quiz-card { background: #f8fbff; border: 1px solid #d5e4f1; border-radius: 16px; padding: 16px; margin-bottom: 14px; }
-    .quiz-question { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; }
-    .quiz-opt { background: white; border: 1px solid #c9dae8; padding: 10px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; margin-bottom: 8px; }
-    .quiz-opt.correct { background: #d4edda; border-color: #28a745; }
-    .quiz-opt.wrong { background: #f8d7da; border-color: #dc3545; }
-    .quiz-explain { display: none; margin-top: 10px; font-size: 0.85rem; color: #1a4d6b; background: #e3edf5; padding: 8px; border-radius: 8px; }
-    .quiz-explain.show { display: block; }
-    .score-board { background: #e3edf5; padding: 8px 16px; border-radius: 12px; font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 16px; }
-    .btn { background: #1f5880; color: white; border: none; padding: 12px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; margin-top: 16px; }
-    .btn-next { background: #1a7a3a; }
-  </style>
-</head>
-<body>
-<div class="container">
-  <h1>Day 1 · 基础营</h1>
-  <div class="card">
-    <div class="card-title">1. 认零件 (前缀)</div>
-    <p style="font-size:0.8rem; color:#666; margin:0 0 12px; line-height:1.6;">⚠️ 词根/前缀拆分是帮助记忆的“画面法”，不等于绝对严谨的历史还原；重点先抓“最常见的含义”和“词家族联想”。</p>
-    <div id="learnContainer"></div>
-    <button class="btn" onclick="switchTab('quiz')">✅ 学完了，去刷题 (15题)</button>
-  </div>
-  <div class="card" id="quizCard" style="display:none;">
-    <div class="card-title">2. 刷题库</div>
-    <div class="score-board"><span>📊 得分: <strong id="scoreDisplay">0</strong> / 15</span><span id="progressText">进度: 0%</span></div>
-    <div id="quizContainer"></div>
-    <button class="btn btn-next" id="btnFinish" style="display:none;" onclick="location.reload()">🏆 完成 Day 1</button>
-  </div>
-</div>
-
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Day 1 · 常见前缀与词根</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:16px;background:#f0f5fb;color:#1a2a3a;font-family:system-ui,-apple-system,sans-serif}.wrap{max-width:820px;margin:auto}.panel{background:#fff;border:1px solid #e6eef6;border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 4px 14px #0014220d}h1,h2{color:#134b6b;margin:0 0 14px}h1{font-size:1.35rem}.note{font-size:.88rem;color:#596d7d;line-height:1.65}.unit{padding:12px;background:#f8fbff;border:1px solid #d5e4f1;border-radius:12px;margin:10px 0}.unit strong{color:#b13e2e}.examples{color:#32556c;line-height:1.7;margin-top:6px}.question{padding:14px;background:#f8fbff;border:1px solid #d5e4f1;border-radius:14px;margin:12px 0}.qtitle{font-weight:650;margin-bottom:10px;line-height:1.5}.options{display:grid;gap:7px}.opt,button{font:inherit}.opt{padding:10px 12px;border:1px solid #c9dae8;background:#fff;border-radius:9px;text-align:left;cursor:pointer}.opt:hover{background:#e6f0f8}.opt.correct{background:#d4edda;border-color:#28a745}.opt.wrong{background:#f8d7da;border-color:#dc3545}.explain{display:none;margin-top:9px;padding:9px;background:#e3edf5;border-radius:8px;font-size:.88rem}.explain.show{display:block}.score{display:flex;justify-content:space-between;background:#e3edf5;padding:10px;border-radius:10px;font-weight:600}.btn{border:0;border-radius:30px;background:#1f5880;color:white;padding:11px 16px;cursor:pointer;width:100%;margin-top:12px}.finish{display:none;text-align:center;padding:15px}.finish.show{display:block}
+</style></head>
+<body><main class="wrap"><section class="panel"><h1>Day 1｜常见前缀与词根</h1><p class="note">学习目标：认识 in-/im-、re-、pre-，以及 scrib/script（写）、spect/spic（看）、tract（拉/拖）。词根词缀有助于记忆，但不是每个单词都能靠逐段直译来确定意思；请同时记例词和实际词义。</p>
+<div id="study"></div><button class="btn" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">开始15题练习</button></section>
+<section class="panel" id="quiz"><h2>自测（15题）</h2><div class="score"><span>答对：<b id="score">0</b> / 15</span><span id="progress">进度：0%</span></div><div id="questions"></div><div class="finish" id="finish">完成！本轮得分：<b id="finalScore"></b> / 15 <button class="btn" onclick="location.reload()">再练一次</button></div></section></main>
 <script>
-// ================== Day 1 专属数据 ==================
-const learnData = {
-  prefixes: [
-    { p: "in- / im-", en: "not / in", img: "否定：不；方向：向内、进入", origin: "源自拉丁语 in-；本课程中用作“否定/向内”的助记拆分，不是所有词都必须严格按字面拆解。", ex: "invisible, import" },
-    { p: "re-", en: "again / back", img: "向后 / 再次", origin: "源自拉丁语 re-。", ex: "return, review" },
-    { p: "pre-", en: "before / in front", img: "在前 / 预先", origin: "源自拉丁语 prae。", ex: "predict, prepare" }
-  ],
-  roots: [
-    { r: "scrib / script", en: "write", img: "古罗马人在蜡板上 '划' 出痕迹，画面是 '写'。", origin: "源自拉丁语 scribere。", family: [{w:"subscribe",b:"sub(在下)+scrib",m:"v. 订阅"},{w:"prescribe",b:"pre(预先)+scrib",m:"v. 开处方"},{w:"describe",b:"de(向下)+scrib",m:"v. 描述"},{w:"inscribe",b:"in(向内)+scrib",m:"v. 刻写"}] },
-    { r: "spect / spic", en: "look / see", img: "目光向某个方向投射出去， '看'。", origin: "源自拉丁语 specere。", family: [{w:"inspect",b:"in(向内)+spect",m:"v. 检查"},{w:"respect",b:"re(再次)+spect",m:"v. 尊敬"},{w:"expect",b:"ex(向外)+pect(看)",m:"v. 期待"},{w:"suspect",b:"sus(下面? 近似‘向下’)+pect",m:"v. 怀疑"}] },
-    { r: "tract", en: "pull / draw", img: "磁铁把东西 '拉' 过来。", origin: "源自拉丁语 trahere。", family: [{w:"attract",b:"at(朝向)+tract",m:"v. 吸引"},{w:"distract",b:"dis(分开)+tract",m:"v. 分心"},{w:"extract",b:"ex(向外)+tract",m:"v. 提取"},{w:"contract",b:"con(共同)+tract",m:"v. 合同/收缩"}] }
-  ]
-};
-
-const quizData = [
-  { q: "前缀 're-' 的核心英文含义是？", opts: ["A. not", "B. again / back", "C. before", "D. under"], ans: 1, exp: "re- = 向后/再次。" },
-  { q: "前缀 'pre-' 的画面感是？", opts: ["A. 站在前面/预先", "B. 在下面", "C. 共同", "D. 向外"], ans: 0, exp: "pre- 站在最前面。" },
-  { q: "单词 invisible 中的前缀 'in-' 的意思是？", opts: ["A. 向内", "B. 否定 (不)", "C. 进入", "D. 强调"], ans: 1, exp: "in(不) + vis(看) ➡️ 看不见的。" },
-  { q: "单词 import 中的 'im-' 代表什么画面？", opts: ["A. 不", "B. 向内 / 进入", "C. 在外", "D. 离开"], ans: 1, exp: "im(向内) + port(带) ➡️ 进口。" },
-  { q: "词根 'scrib / script' 的底层画面是？", opts: ["A. 看", "B. 说", "C. 写", "D. 拉"], ans: 2, exp: "scrib = 写。" },
-  { q: "词根 'spect / spic' 代表什么动作？", opts: ["A. 写", "B. 看", "C. 拿", "D. 建"], ans: 1, exp: "spect = 看。" },
-  { q: "词根 'tract' 的核心画面是？", opts: ["A. 写", "B. 看", "C. 拉/拖", "D. 转"], ans: 2, exp: "tract = 拉。" },
-  { q: "in + spect = ?", opts: ["A. 检查", "B. 尊敬", "C. 描述", "D. 预测"], ans: 0, exp: "in(向内) + spect(看) ➡️ 检查。" },
-  { q: "dis + tract = ?", opts: ["A. 吸引", "B. 分心", "C. 提取", "D. 合同"], ans: 1, exp: "dis(分开) + tract(拉) ➡️ 分心。" },
-  { q: "pre + scrib + e = ?", opts: ["A. 订阅", "B. 描述", "C. 开处方", "D. 刻写"], ans: 2, exp: "pre(预先) + scrib(写) ➡️ 开处方。" },
-  { q: "sub + scrib + e = ?", opts: ["A. 订阅", "B. 描述", "C. 开处方", "D. 刻写"], ans: 0, exp: "sub(在下) + scrib(写) ➡️ 订阅。" },
-  { q: "re + spect = ?", opts: ["A. 检查", "B. 尊敬", "C. 描述", "D. 预测"], ans: 1, exp: "re(再次) + spect(看) ➡️ 尊敬。" },
-  { q: "ex + tract = ?", opts: ["A. 吸引", "B. 分心", "C. 提取", "D. 合同"], ans: 2, exp: "ex(向外) + tract(拉) ➡️ 提取。" },
-  { q: "con + tract = ?", opts: ["A. 吸引", "B. 分心", "C. 提取", "D. 合同/收缩"], ans: 3, exp: "con(共同) + tract(拉) ➡️ 合同。" },
-  { q: "de + scrib + e = ?", opts: ["A. 订阅", "B. 描述", "C. 开处方", "D. 刻写"], ans: 1, exp: "de(向下) + scrib(写) ➡️ 描述。" }
-];
-
-// ================== 渲染逻辑 ==================
-const learnContainer = document.getElementById('learnContainer');
-let html = '<h3>🔠 前缀</h3>';
-learnData.prefixes.forEach(p => {
-  html += `<div class="learn-card"><span class="learn-title">${p.p}</span><span class="learn-en">${p.en}</span><div class="learn-img">🎬 ${p.img}</div><div style="font-size:0.8rem; color:#888;">📜 ${p.origin}</div><div style="font-size:0.8rem; color:#555; margin-top:6px;">📖 例：${p.ex}</div></div>`;
-});
-html += '<h3 style="margin-top:16px;">🌳 词根</h3>';
-learnData.roots.forEach((r, idx) => {
-  html += `<div class="learn-card"><span class="learn-title">${r.r}</span><span class="learn-en">${r.en}</span><div class="learn-img">🎬 ${r.img}</div><div style="font-size:0.8rem; color:#888;">📜 ${r.origin}</div><button class="family-toggle" onclick="toggleFamily(${idx})">👉 展开家族成员 (${r.family.length})</button><ul class="family-list" id="family-${idx}">`;
-  r.family.forEach(f => { html += `<li><span class="fam-word">${f.w}</span><span class="fam-break">${f.b}</span><span>${f.m}</span></li>`; });
-  html += `</ul></div>`;
-});
-learnContainer.innerHTML = html;
-
-function toggleFamily(idx) { document.getElementById(`family-${idx}`).classList.toggle('open'); }
-
-function switchTab(tab) {
-  document.getElementById('quizCard').style.display = 'block';
-  document.getElementById('quizCard').scrollIntoView({ behavior: 'smooth' });
-}
-
-let correctCount = 0, answeredCount = 0;
-const quizContainer = document.getElementById('quizContainer');
-quizData.forEach((q, idx) => {
-  let html = `<div class="quiz-card" id="qcard-${idx}"><div class="quiz-question">${idx+1}. ${q.q}</div><div>`;
-  q.opts.forEach((opt, oi) => {
-    html += `<div class="quiz-opt" onclick="checkAnswer(${idx}, ${oi}, this)">${opt}</div>`;
-  });
-  html += `</div><div class="quiz-explain" id="exp-${idx}">💡 ${q.exp}</div></div>`;
-  quizContainer.innerHTML += html;
-});
-
-function checkAnswer(qIdx, oIdx, el) {
-  const q = quizData[qIdx];
-  const parent = el.parentElement;
-  Array.from(parent.children).forEach(c => c.style.pointerEvents = 'none');
-  if(oIdx === q.ans) { el.classList.add('correct'); correctCount++; } 
-  else { el.classList.add('wrong'); parent.children[q.ans].classList.add('correct'); }
-  document.getElementById(`exp-${qIdx}`).classList.add('show');
-  answeredCount++;
-  document.getElementById('scoreDisplay').innerText = correctCount;
-  document.getElementById('progressText').innerText = `进度: ${Math.round((answeredCount/quizData.length)*100)}%`;
-  if(answeredCount === quizData.length) document.getElementById('btnFinish').style.display = 'block';
-}
-</script>
-</body>
-</html>
+const units=[['前缀 in- / im-','常见义：not（不）；也可表示 in/into（向内、进入）。在 import 里 im- 是 in- 的拼写变体。','invisible（看不见的）；import（进口）'],['前缀 re-','常见义：again（再次）或 back（向回）。','rewrite（重写）；return（返回）'],['前缀 pre-','常见义：before（在前、预先）。','preview（预览）；preheat（预热）'],['词根 scrib / script','常见义：write（写）。同源词的拼写会变化。','describe（描述）；prescription（处方）；manuscript（手稿）'],['词根 spect / spic','常见义：look / see（看）。','inspect（检查）；spectator（观众）；visible（可见的，相关词根形式不同）'],['词根 tract','常见义：pull / draw（拉、拖）。','attract（吸引）；extract（提取）；contract（合同；收缩）']];
+document.getElementById('study').innerHTML=units.map(([a,b,c])=>`<div class="unit"><strong>${a}</strong><div>${b}</div><div class="examples">例词：${c}</div></div>`).join('');
+const quiz=[
+{q:'前缀 re- 在 rewrite 中最接近哪种意思？',o:['向前','再次','不','在下面'],a:1,e:'rewrite = write again（重写）。'},
+{q:'pre- 常表示什么？',o:['在前/预先','向外','共同','错误地'],a:0,e:'如 preview（预览）、preheat（预热）。'},
+{q:'invisible 中的 in- 表示什么？',o:['进入','不/无','再次','在前'],a:1,e:'invisible = not visible（看不见的）。in- 也有“进入”义，要看具体单词。'},
+{q:'import 中 im- 的含义最接近什么？',o:['不','向外','向内/进入','再次'],a:2,e:'import 是“进口”；im- 是 in- 在 p 前的拼写变体。'},
+{q:'scrib / script 常与哪个意思相关？',o:['看','写','拉','说'],a:1,e:'如 describe（描述）、manuscript（手稿）。'},
+{q:'inspect 的常见意思是什么？',o:['检查','吸引','返回','处方'],a:0,e:'inspect = examine/look at carefully（检查）。把 in- + spect 当作助记即可。'},
+{q:'tract 常与哪个意思相关？',o:['写','看','拉/拖','听'],a:2,e:'如 attract（吸引）、extract（提取）。'},
+{q:'extract 的意思是？',o:['分心','提取','尊敬','预览'],a:1,e:'extract 常指取出、提取。词根拆分是记忆线索。'},
+{q:'prescription 通常指什么？',o:['处方','观众','合同','回顾'],a:0,e:'prescription = 处方；prescribe 是“开处方”。'},
+{q:'manuscript 的意思是？',o:['说明书','手稿','进口商品','检查'],a:1,e:'manuscript 指手稿；manu- 与“手”有关，script 与“写”有关。'},
+{q:'spectator 是什么人？',o:['写作者','观众','进口商','医生'],a:1,e:'spectator = 观看比赛或活动的人，即观众。'},
+{q:'return 中 re- 最适合联想到什么？',o:['预先','返回','否定','拉'],a:1,e:'return 常表示返回；re- 在词中常有 back 的意思。'},
+{q:'attract 常见意思是？',o:['吸引','提取','描述','预热'],a:0,e:'attract = 吸引。词源拆分可辅助记忆，但应优先记词义。'},
+{q:'describe 的意思是？',o:['订阅','描述','检查','返回'],a:1,e:'describe = 描述。不要把每个词缀的画面当作现代词义的逐字翻译。'},
+{q:'in- / im- 在不同单词中可能表示什么？',o:['只表示“不”','只表示“向内”','可能表示“不”，也可能表示“向内/进入”','只表示“再次”'],a:2,e:'例如 invisible 的 in- 表示“不”，import 的 im- 表示“向内/进入”。'}];
+let score=0,done=0;const letters=['A','B','C','D'];const root=document.getElementById('questions');quiz.forEach((q,i)=>{const card=document.createElement('div');card.className='question';card.innerHTML=`<div class="qtitle">${i+1}. ${q.q}</div><div class="options"></div><div class="explain">💡 ${q.e}</div>`;const opts=card.querySelector('.options');q.o.forEach((text,j)=>{const b=document.createElement('button');b.className='opt';b.textContent=`${letters[j]}. ${text}`;b.onclick=()=>{[...opts.children].forEach(x=>x.disabled=true);if(j===q.a){b.classList.add('correct');score++}else{b.classList.add('wrong');opts.children[q.a].classList.add('correct')}card.querySelector('.explain').classList.add('show');done++;document.getElementById('score').textContent=score;document.getElementById('progress').textContent=`进度：${Math.round(done/quiz.length*100)}%`;if(done===quiz.length){document.getElementById('finalScore').textContent=score;document.getElementById('finish').classList.add('show')}};opts.appendChild(b)});root.appendChild(card)});
+</script></body></html>
