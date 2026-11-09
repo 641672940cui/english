@@ -1,25 +1,233 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Day 2 · 方向与动作</title><style>
-*{box-sizing:border-box}body{margin:0;padding:16px;background:#f0f5fb;color:#1a2a3a;font-family:system-ui,-apple-system,sans-serif}.wrap{max-width:820px;margin:auto}.panel{background:#fff;border:1px solid #e6eef6;border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 4px 14px #0014220d}h1,h2{color:#134b6b;margin:0 0 14px}h1{font-size:1.35rem}.note{font-size:.88rem;color:#596d7d;line-height:1.65}.unit{padding:12px;background:#f8fbff;border:1px solid #d5e4f1;border-radius:12px;margin:10px 0}.unit strong{color:#b13e2e}.examples{color:#32556c;line-height:1.7;margin-top:6px}.question{padding:14px;background:#f8fbff;border:1px solid #d5e4f1;border-radius:14px;margin:12px 0}.qtitle{font-weight:650;margin-bottom:10px;line-height:1.5}.options{display:grid;gap:7px}.opt{font:inherit;padding:10px 12px;border:1px solid #c9dae8;background:#fff;border-radius:9px;text-align:left;cursor:pointer}.opt:hover{background:#e6f0f8}.opt.correct{background:#d4edda;border-color:#28a745}.opt.wrong{background:#f8d7da;border-color:#dc3545}.explain{display:none;margin-top:9px;padding:9px;background:#e3edf5;border-radius:8px;font-size:.88rem}.explain.show{display:block}.score{display:flex;justify-content:space-between;background:#e3edf5;padding:10px;border-radius:10px;font-weight:600}.btn{border:0;border-radius:30px;background:#1f5880;color:white;padding:11px 16px;cursor:pointer;width:100%;margin-top:12px}.finish{display:none;text-align:center;padding:15px}.finish.show{display:block}
-</style></head><body><main class="wrap"><section class="panel"><h1>Day 2｜方向与动作</h1><p class="note">学习目标：认识 pro-、sub-、trans-，以及 dict（说）、duc/duct（引导）、port（携带）。拆分只作记忆提示；个别词的现代意思并非词缀含义的简单相加。</p><div id="study"></div><button class="btn" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">开始15题练习</button></section><section class="panel" id="quiz"><h2>自测（15题）</h2><div class="score"><span>答对：<b id="score">0</b> / 15</span><span id="progress">进度：0%</span></div><div id="questions"></div><div class="finish" id="finish">完成！本轮得分：<b id="finalScore"></b> / 15 <button class="btn" onclick="location.reload()">再练一次</button></div></section></main>
-<script>
-const units=[['前缀 pro-','常见联想：向前、向前推进；不同单词中的词义可能发展变化。','progress（进步）；promote（促进/提升）'],['前缀 sub-','常见义：在下方、次级；也可表示支撑等相关含义。','submarine（潜水艇）；subway（地铁）'],['前缀 trans-','常见义：跨越、从一处到另一处。','transport（运输）；translate（翻译）'],['词根 dict','与说、讲有关。','predict（预测）；contradict（反驳）'],['词根 duc / duct','与引导、带领有关。','conduct（引导/指挥）；introduce（介绍）'],['词根 port','与携带、运输有关。','import（进口）；export（出口）；support（支持/支撑）']];
-document.getElementById('study').innerHTML=units.map(([a,b,c])=>`<div class="unit"><strong>${a}</strong><div>${b}</div><div class="examples">例词：${c}</div></div>`).join('');
-const quiz=[
-{q:'pro- 在本课中最常见的方向联想是？',o:['向后','向前/向前推进','在下面','跨越'],a:1,e:'如 progress（进步）、promote（促进）。'},
-{q:'sub- 常见的空间意思是什么？',o:['在下方','在两者之间','向外','再次'],a:0,e:'如 submarine（潜水艇，sub- 有“在下方”的联想）。'},
-{q:'trans- 常见的意思是什么？',o:['否定','向前','跨越/从一处到另一处','同伴'],a:2,e:'如 transport（运输）、translate（翻译）。'},
-{q:'词根 dict 常与什么意思有关？',o:['写','说/讲','携带','建造'],a:1,e:'dict 来自与“说”相关的拉丁词根；predict 是“预先说/预测”的助记。'},
-{q:'词根 duc / duct 常与什么意思有关？',o:['看','引导/带领','压','写'],a:1,e:'如 conduct（指挥/引导）、introduce（介绍）。'},
-{q:'port 在 import、export 等词中常与什么意思有关？',o:['携带/运输','说','判断','转动'],a:0,e:'port 来自与携带有关的词根。'},
-{q:'predict 的常见意思是什么？',o:['生产','预测','反驳','减少'],a:1,e:'predict = 预测；pre- + dict 的拆分只作记忆提示。'},
-{q:'contradict 的常见意思是什么？',o:['引导','携带','反驳/与……矛盾','翻译'],a:2,e:'contradict = 反驳、与……矛盾。'},
-{q:'conduct 在 “She conducted the meeting” 中是什么意思？',o:['主持/引导','进口','预测','地下'],a:0,e:'conduct 可表示主持、指挥或引导。'},
-{q:'introduce 的常见意思是什么？',o:['减少','介绍/引入','预测','反对'],a:1,e:'introduce = 介绍、引入。intro- 可联想“向内”，duc 与引导相关。'},
-{q:'export 的意思是什么？',o:['进口','出口','支持','潜水艇'],a:1,e:'export = 出口；ex- 常与“向外”相关，port 与携带相关。'},
-{q:'transport 的意思是什么？',o:['运输','反驳','支持','减少'],a:0,e:'transport = 运输、运送。'},
-{q:'support 的常见意思是哪一项？',o:['预测','支持/支撑','翻译','反驳'],a:1,e:'support 常表示支持、支撑；不要把它硬解为“sub + port”的字面相加。'},
-{q:'education 最适合记作哪一类词？',o:['由 e+duc 简单直译出来的“向外引导”','表示教育/培养的词；拆分只可作词源联想','表示进口的词','表示反驳的词'],a:1,e:'education 的历史词源与拉丁语 educare（养育、培养）相关；不宜把现代词义简化为 e + duc 的直译。'},
-{q:'sub- 在 submarine 中的意思最接近什么？',o:['向前','在下方','在两者之间','向外'],a:1,e:'submarine 是潜水艇；sub- 的“在下方”联想有帮助，但整词仍应记住其词义。'}];
-let score=0,done=0;const letters=['A','B','C','D'];const root=document.getElementById('questions');quiz.forEach((q,i)=>{const card=document.createElement('div');card.className='question';card.innerHTML=`<div class="qtitle">${i+1}. ${q.q}</div><div class="options"></div><div class="explain">💡 ${q.e}</div>`;const opts=card.querySelector('.options');q.o.forEach((text,j)=>{const b=document.createElement('button');b.className='opt';b.textContent=`${letters[j]}. ${text}`;b.onclick=()=>{[...opts.children].forEach(x=>x.disabled=true);if(j===q.a){b.classList.add('correct');score++}else{b.classList.add('wrong');opts.children[q.a].classList.add('correct')}card.querySelector('.explain').classList.add('show');done++;document.getElementById('score').textContent=score;document.getElementById('progress').textContent=`进度：${Math.round(done/quiz.length*100)}%`;if(done===quiz.length){document.getElementById('finalScore').textContent=score;document.getElementById('finish').classList.add('show')}};opts.appendChild(b)});root.appendChild(card)});
-</script></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Day 2 · 方向与动作</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
+    .container { max-width: 820px; margin: 0 auto; }
+    h1 { font-size: 1.4rem; color: #0b2b4a; border-left: 6px solid #2a7faa; padding-left: 14px; margin-bottom: 14px; }
+    .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.05); }
+    .card-title { font-weight: 700; font-size: 1.2rem; color: #134b6b; margin-bottom: 14px; border-bottom: 2px solid #e3edf5; padding-bottom: 8px; }
+    .outline { background: #f4f9ff; border: 1px solid #d7e8f5; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; }
+    .outline-title { font-weight: 700; color: #0c5879; margin-bottom: 6px; }
+    .outline-list { list-style: disc; padding-left: 18px; color: #45627c; font-size: 0.9rem; line-height: 1.7; }
+    .learn-card { background: #fafdff; border: 1px solid #e3ecf5; border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+    .learn-title { font-size: 1.15rem; font-weight: 700; color: #b13e2e; }
+    .learn-en { font-size: 0.85rem; color: #1f5880; font-weight: 600; background: #e3edf5; display: inline-block; padding: 2px 8px; border-radius: 6px; margin-left: 8px; }
+    .learn-img { font-size: 0.9rem; color: #5c4328; margin: 8px 0; background: #fdfaf2; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #d48c5c; }
+    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; }
+    .family-list { display: none; list-style: none; padding: 0; margin-top: 10px; border-top: 1px dashed #d0dfec; padding-top: 10px; }
+    .family-list.open { display: block; }
+    .family-list li { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dotted #e0eaf2; }
+    .fam-word { font-weight: 600; color: #b13e2e; width: 120px; }
+    .fam-break { color: #666; flex: 1; font-size: 0.82rem; margin-left: 8px; }
+    .fam-mean { color: #1a4d6b; text-align: right; font-size: 0.85rem; width: 90px; }
+    .quiz-card { background: #f8fbff; border: 1px solid #d5e4f1; border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+    .quiz-question { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; }
+    .quiz-opt { background: white; border: 1px solid #c9dae8; padding: 10px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; margin-bottom: 8px; }
+    .quiz-opt.correct { background: #d4edda; border-color: #28a745; }
+    .quiz-opt.wrong { background: #f8d7da; border-color: #dc3545; }
+    .quiz-explain { display: none; margin-top: 10px; font-size: 0.85rem; color: #1a4d6b; background: #e3edf5; padding: 8px; border-radius: 8px; }
+    .quiz-explain.show { display: block; }
+    .score-board { background: #e3edf5; padding: 8px 16px; border-radius: 12px; font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 16px; }
+    .btn { background: #1f5880; color: white; border: none; padding: 12px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; margin-top: 16px; }
+    .btn-next { background: #1a7a3a; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Day 2 · 方向与动作</h1>
+    <div class="card">
+      <div class="card-title">1. 认零件（前缀 + 词根）</div>
+      <div class="outline">
+        <div class="outline-title">中学词根大纲定位</div>
+        <ul class="outline-list">
+          <li>前缀：pro-（向前）；sub-（在下方/次级）；trans-（跨越/转移）</li>
+          <li>词根：dict（说）；duc/duct（引导/带领）；port（携带/运送）</li>
+          <li>说明：词根词缀是帮助记忆的线索，现代单词词义要以整体词为准</li>
+        </ul>
+      </div>
+      <div id="learnContainer"></div>
+      <button class="btn" onclick="switchTab('quiz')">✅ 学完了，去刷题 (15题)</button>
+    </div>
+    <div class="card" id="quizCard" style="display:none;">
+      <div class="card-title">2. 刷题库</div>
+      <div class="score-board"><span>📊 得分: <strong id="scoreDisplay">0</strong> / 15</span><span id="progressText">进度: 0%</span></div>
+      <div id="quizContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    const learnData = [
+      {
+        title: 'pro-',
+        en: 'forward / before',
+        img: 'progress（进步）；promote（提升）；project（工程/计划）',
+        family: [
+          { word: 'pro-', mean: '向前；在前' },
+          { word: 'progress', mean: '进步' },
+          { word: 'promote', mean: '提升/促进' },
+          { word: 'project', mean: '项目；投射' }
+        ]
+      },
+      {
+        title: 'sub-',
+        en: 'under / below',
+        img: 'subway（地铁）；submarine（潜水艇）；subject（主题/主语）',
+        family: [
+          { word: 'sub-', mean: '在下方/次级' },
+          { word: 'subway', mean: '地铁' },
+          { word: 'submarine', mean: '潜水艇' },
+          { word: 'subject', mean: '主题，主语' }
+        ]
+      },
+      {
+        title: 'trans-',
+        en: 'across / over / through',
+        img: 'transport（运输）；translate（翻译）；transfer（转移）',
+        family: [
+          { word: 'trans-', mean: '跨越；转移' },
+          { word: 'transport', mean: '运输' },
+          { word: 'translate', mean: '翻译' },
+          { word: 'transfer', mean: '转移' }
+        ]
+      },
+      {
+        title: 'dict',
+        en: 'say / speak',
+        img: 'predict（预测）；contradict（反驳）；dictionary（字典）',
+        family: [
+          { word: 'dict', mean: '说；讲' },
+          { word: 'predict', mean: '预测' },
+          { word: 'contradict', mean: '反驳' },
+          { word: 'dictionary', mean: '字典' }
+        ]
+      },
+      {
+        title: 'duc / duct',
+        en: 'lead / bring',
+        img: 'conduct（引导/指挥）；introduce（介绍）；produce（生产）',
+        family: [
+          { word: 'duc', mean: '引导' },
+          { word: 'duct', mean: '带导；导管' },
+          { word: 'conduct', mean: '引导/指挥' },
+          { word: 'introduce', mean: '介绍' }
+        ]
+      },
+      {
+        title: 'port',
+        en: 'carry / bring',
+        img: 'import（进口）；export（出口）；support（支持）',
+        family: [
+          { word: 'port', mean: '搬运；带来' },
+          { word: 'import', mean: '进口' },
+          { word: 'export', mean: '出口' },
+          { word: 'support', mean: '支持' }
+        ]
+      }
+    ];
+
+    const questions = [
+      { q: 'pro- 在本课中最常见的方向联想是？', options: ['向后', '向前/向前推进', '在下面', '跨越'], answer: 1, explain: '如 progress（进步）、promote（促进）。' },
+      { q: 'sub- 常见的空间意思是什么？', options: ['在下方', '在两者之间', '向外', '再次'], answer: 0, explain: '如 subway、submarine。' },
+      { q: 'trans- 常见的意思是什么？', options: ['否定', '向前', '跨越/从一处到另一处', '同伴'], answer: 2, explain: '如 transport、transfer。' },
+      { q: '词根 dict 常与什么意思有关？', options: ['写', '说/讲', '携带', '建造'], answer: 1, explain: '如 predict、dictionary。' },
+      { q: '词根 duc / duct 常与什么意思有关？', options: ['看', '引导/带领', '压', '写'], answer: 1, explain: '如 conduct、introduce。' },
+      { q: 'port 在 import、export 等词中常与什么意思有关？', options: ['携带/运输', '说', '判断', '转动'], answer: 0, explain: 'port 让我们联想到“带来/搬运”。' },
+      { q: 'predict 的常见意思是什么？', options: ['生产', '预测', '反驳', '减少'], answer: 1, explain: 'predict = 预测。' },
+      { q: 'contradict 的常见意思是什么？', options: ['引导', '携带', '反驳/与……矛盾', '翻译'], answer: 2, explain: 'contradict = 反驳。' },
+      { q: 'conduct 在 “She conducted the meeting” 中是什么意思？', options: ['主持/引导', '进口', '预测', '地下'], answer: 0, explain: 'conduct 可表示主持、指挥。' },
+      { q: 'introduce 的常见意思是什么？', options: ['减少', '介绍/引入', '预测', '反对'], answer: 1, explain: 'introduce = 介绍。' },
+      { q: 'export 的意思是什么？', options: ['进口', '出口', '支持', '潜水艇'], answer: 1, explain: 'export = 出口。' },
+      { q: 'transport 的意思是什么？', options: ['运输', '反驳', '支持', '减少'], answer: 0, explain: 'transport = 运输。' },
+      { q: 'support 的常见意思是哪一项？', options: ['预测', '支持/支撑', '翻译', '反驳'], answer: 1, explain: 'support = 支持、支撑。' },
+      { q: 'education 最适合记作哪一类词？', options: ['由拆分直译得到的词', '表示教育/培养的词，拆分只作联想', '表示进口的词', '表示反驳的词'], answer: 1, explain: '要以整体词义为主，词根只是联想。' },
+      { q: 'sub- 在 submarine 中的意思最接近什么？', options: ['向前', '在下方', '在两者之间', '向外'], answer: 1, explain: 'submarine 是潜水艇。' }
+    ];
+
+    function renderLearn() {
+      const container = document.getElementById('learnContainer');
+      container.innerHTML = learnData.map(item => `
+        <div class="learn-card">
+          <div class="learn-title">${item.title}<span class="learn-en">${item.en}</span></div>
+          <div class="learn-img">${item.img}</div>
+          <button class="family-toggle" onclick="toggleFamily(this)">📚 词族 / 词根速记</button>
+          <ul class="family-list">
+            ${item.family.map(f => `
+              <li>
+                <span class="fam-word">${f.word}</span>
+                <span class="fam-break">${f.word.includes('-') ? '词缀' : '词根'}</span>
+                <span class="fam-mean">${f.mean}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `).join('');
+    }
+
+    function toggleFamily(button) {
+      const list = button.nextElementSibling;
+      list.classList.toggle('open');
+    }
+
+    function switchTab(tab) {
+      const quizCard = document.getElementById('quizCard');
+      if (tab === 'quiz') {
+        quizCard.style.display = 'block';
+        quizCard.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function renderQuiz() {
+      const container = document.getElementById('quizContainer');
+      let score = 0;
+      let answered = 0;
+
+      questions.forEach((q, index) => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.innerHTML = `
+          <div class="quiz-question">${index + 1}. ${q.q}</div>
+          <div class="quiz-options"></div>
+          <div class="quiz-explain">💡 ${q.explain}</div>
+        `;
+
+        const optionWrap = card.querySelector('.quiz-options');
+        q.options.forEach((opt, optIndex) => {
+          const button = document.createElement('button');
+          button.className = 'quiz-opt';
+          button.textContent = `${String.fromCharCode(65 + optIndex)}. ${opt}`;
+          button.onclick = () => {
+            if (button.dataset.locked) return;
+            button.dataset.locked = 'true';
+            const allButtons = [...optionWrap.querySelectorAll('.quiz-opt')];
+            allButtons.forEach(btn => btn.disabled = true);
+
+            if (optIndex === q.answer) {
+              button.classList.add('correct');
+              score += 1;
+            } else {
+              button.classList.add('wrong');
+              allButtons[q.answer].classList.add('correct');
+            }
+
+            card.querySelector('.quiz-explain').classList.add('show');
+            answered += 1;
+            document.getElementById('scoreDisplay').textContent = score;
+            document.getElementById('progressText').textContent = `进度: ${Math.round((answered / questions.length) * 100)}%`;
+          };
+          optionWrap.appendChild(button);
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    renderLearn();
+    renderQuiz();
+  </script>
+</body>
+</html>

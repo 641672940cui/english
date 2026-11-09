@@ -1,25 +1,222 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Day 5 · 常见前缀与词根</title><style>
-*{box-sizing:border-box}body{margin:0;padding:16px;background:#f0f5fb;color:#1a2a3a;font-family:system-ui,-apple-system,sans-serif}.wrap{max-width:820px;margin:auto}.panel{background:#fff;border:1px solid #e6eef6;border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 4px 14px #0014220d}h1,h2{color:#134b6b;margin:0 0 14px}h1{font-size:1.35rem}.note{font-size:.88rem;color:#596d7d;line-height:1.65}.unit{padding:12px;background:#f8fbff;border:1px solid #d5e4f1;border-radius:12px;margin:10px 0}.unit strong{color:#b13e2e}.examples{color:#32556c;line-height:1.7;margin-top:6px}.question{padding:14px;background:#f8fbff;border:1px solid #d5e4f1;border-radius:14px;margin:12px 0}.qtitle{font-weight:650;margin-bottom:10px;line-height:1.5}.options{display:grid;gap:7px}.opt{font:inherit;padding:10px 12px;border:1px solid #c9dae8;background:#fff;border-radius:9px;text-align:left;cursor:pointer}.opt:hover{background:#e6f0f8}.opt.correct{background:#d4edda;border-color:#28a745}.opt.wrong{background:#f8d7da;border-color:#dc3545}.explain{display:none;margin-top:9px;padding:9px;background:#e3edf5;border-radius:8px;font-size:.88rem}.explain.show{display:block}.score{display:flex;justify-content:space-between;background:#e3edf5;padding:10px;border-radius:10px;font-weight:600}.btn{border:0;border-radius:30px;background:#1f5880;color:white;padding:11px 16px;cursor:pointer;width:100%;margin-top:12px}.finish{display:none;text-align:center;padding:15px}.finish.show{display:block}
-</style></head><body><main class="wrap"><section class="panel"><h1>Day 5｜常见前缀与词根</h1><p class="note">学习目标：认识 inter-、super-、ex-，以及 press（压）、mit/miss（送、放出）。前缀、词根拆分用于记忆；词义要结合实际用法学习，避免机械逐字翻译。</p><div id="study"></div><button class="btn" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">开始15题练习</button></section><section class="panel" id="quiz"><h2>自测（15题）</h2><div class="score"><span>答对：<b id="score">0</b> / 15</span><span id="progress">进度：0%</span></div><div id="questions"></div><div class="finish" id="finish">完成！本轮得分：<b id="finalScore"></b> / 15 <button class="btn" onclick="location.reload()">再练一次</button></div></section></main>
-<script>
-const units=[['前缀 inter-','常见义：在……之间、相互。','international（国际的）；interact（互动）'],['前缀 super-','常见义：在上方、超越；具体词义由整词决定。','supernatural（超自然的）；superhuman（超人的）'],['前缀 ex-','常见义：向外、出；置于身份词前可表示前任。','export（出口）；ex-president（前总统）'],['词根 press','与压、挤压有关。','pressure（压力）；compress（压缩）；express（表达）'],['词根 mit / miss','来自与送出、放出有关的拉丁词根，词形随构词变化。','transmit（传输）；admit（承认/准许进入）；dismiss（解散/解雇）']];
-document.getElementById('study').innerHTML=units.map(([a,b,c])=>`<div class="unit"><strong>${a}</strong><div>${b}</div><div class="examples">例词：${c}</div></div>`).join('');
-const quiz=[
-{q:'inter- 常表示什么？',o:['在下面','在……之间/相互','向外','超越'],a:1,e:'如 international（国际的）、interact（互动）。'},
-{q:'super- 的常见方向联想是什么？',o:['在下方','在……之间','在上方/超越','向外'],a:2,e:'super- 常表示在上方、超越；要结合具体单词判断。'},
-{q:'export 中 ex- 的意思最接近什么？',o:['向外/出','向内','向后','之间'],a:0,e:'export = 出口；ex- 常有向外、出的意思。'},
-{q:'ex-president 中 ex- 表示什么？',o:['在职的','前任的','超越的','内部的'],a:1,e:'ex-president = 前总统。'},
-{q:'press 常与什么意思有关？',o:['说','压/挤压','携带','跟随'],a:1,e:'如 pressure（压力）、compress（压缩）。'},
-{q:'mit / miss 常与什么意思有关？',o:['送出/放出','压','建造','转'],a:0,e:'如 transmit（传输）、dismiss（解散）。'},
-{q:'pressure 的意思是？',o:['压力','前任','互动','任务'],a:0,e:'pressure = 压力。'},
-{q:'compress 的意思是？',o:['表达','压缩','允许','传输'],a:1,e:'compress = 压缩。'},
-{q:'transmit 的意思是？',o:['提交','传输','解雇','承认'],a:1,e:'transmit = 传输、传送。'},
-{q:'dismiss 的常见意思是？',o:['解散/解雇','允许','印象','超自然'],a:0,e:'dismiss = 解散、解雇；也可表示不予考虑。'},
-{q:'admit 常见意思包括哪一项？',o:['压缩','承认/准许进入','出口','互动'],a:1,e:'admit = 承认；也可表示准许进入。'},
-{q:'permit 的意思是？',o:['允许/许可证','解散','压力','前总统'],a:0,e:'permit 可作动词“允许”，也可作名词“许可证”。'},
-{q:'international 表示什么？',o:['国内的','国际的','超自然的','前任的'],a:1,e:'international = 国际的，inter- 有“之间”的联想。'},
-{q:'express 除“表达”外，还可以表示什么？',o:['挤出/明确表达','允许','向下','在……之间'],a:0,e:'express 有表达、明确说出等常见义；词根拆分仅作记忆提示。'},
-{q:'哪一组“前缀/词根—常见义”匹配正确？',o:['inter-—向外；press—携带','ex-—之间；mit—压','super-—超越；press—压','mit—建造；inter-—向下'],a:2,e:'super- 常有“上方/超越”义；press 与“压”相关。'}];
-let score=0,done=0;const letters=['A','B','C','D'];const root=document.getElementById('questions');quiz.forEach((q,i)=>{const card=document.createElement('div');card.className='question';card.innerHTML=`<div class="qtitle">${i+1}. ${q.q}</div><div class="options"></div><div class="explain">💡 ${q.e}</div>`;const opts=card.querySelector('.options');q.o.forEach((text,j)=>{const b=document.createElement('button');b.className='opt';b.textContent=`${letters[j]}. ${text}`;b.onclick=()=>{[...opts.children].forEach(x=>x.disabled=true);if(j===q.a){b.classList.add('correct');score++}else{b.classList.add('wrong');opts.children[q.a].classList.add('correct')}card.querySelector('.explain').classList.add('show');done++;document.getElementById('score').textContent=score;document.getElementById('progress').textContent=`进度：${Math.round(done/quiz.length*100)}%`;if(done===quiz.length){document.getElementById('finalScore').textContent=score;document.getElementById('finish').classList.add('show')}};opts.appendChild(b)});root.appendChild(card)});
-</script></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Day 5 · 方位拓展与施压</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
+    .container { max-width: 820px; margin: 0 auto; }
+    h1 { font-size: 1.4rem; color: #0b2b4a; border-left: 6px solid #2a7faa; padding-left: 14px; margin-bottom: 14px; }
+    .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.05); }
+    .card-title { font-weight: 700; font-size: 1.2rem; color: #134b6b; margin-bottom: 14px; border-bottom: 2px solid #e3edf5; padding-bottom: 8px; }
+    .outline { background: #f4f9ff; border: 1px solid #d7e8f5; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; }
+    .outline-title { font-weight: 700; color: #0c5879; margin-bottom: 6px; }
+    .outline-list { list-style: disc; padding-left: 18px; color: #45627c; font-size: 0.9rem; line-height: 1.7; }
+    .learn-card { background: #fafdff; border: 1px solid #e3ecf5; border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+    .learn-title { font-size: 1.15rem; font-weight: 700; color: #b13e2e; }
+    .learn-en { font-size: 0.85rem; color: #1f5880; font-weight: 600; background: #e3edf5; display: inline-block; padding: 2px 8px; border-radius: 6px; margin-left: 8px; }
+    .learn-img { font-size: 0.9rem; color: #5c4328; margin: 8px 0; background: #fdfaf2; padding: 8px 10px; border-radius: 8px; border-left: 3px solid #d48c5c; }
+    .family-toggle { display: block; width: 100%; background: #e3edf5; border: none; padding: 8px; border-radius: 8px; font-size: 0.85rem; color: #1f5880; font-weight: 600; cursor: pointer; margin-top: 10px; }
+    .family-list { display: none; list-style: none; padding: 0; margin-top: 10px; border-top: 1px dashed #d0dfec; padding-top: 10px; }
+    .family-list.open { display: block; }
+    .family-list li { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 6px 0; border-bottom: 1px dotted #e0eaf2; }
+    .fam-word { font-weight: 600; color: #b13e2e; width: 120px; }
+    .fam-break { color: #666; flex: 1; font-size: 0.82rem; margin-left: 8px; }
+    .fam-mean { color: #1a4d6b; text-align: right; font-size: 0.85rem; width: 90px; }
+    .quiz-card { background: #f8fbff; border: 1px solid #d5e4f1; border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+    .quiz-question { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; }
+    .quiz-opt { background: white; border: 1px solid #c9dae8; padding: 10px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; margin-bottom: 8px; }
+    .quiz-opt.correct { background: #d4edda; border-color: #28a745; }
+    .quiz-opt.wrong { background: #f8d7da; border-color: #dc3545; }
+    .quiz-explain { display: none; margin-top: 10px; font-size: 0.85rem; color: #1a4d6b; background: #e3edf5; padding: 8px; border-radius: 8px; }
+    .quiz-explain.show { display: block; }
+    .score-board { background: #e3edf5; padding: 8px 16px; border-radius: 12px; font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 16px; }
+    .btn { background: #1f5880; color: white; border: none; padding: 12px; border-radius: 40px; font-size: 1rem; font-weight: 600; cursor: pointer; width: 100%; margin-top: 16px; }
+    .btn-next { background: #1a7a3a; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Day 5 · 方位拓展与施压</h1>
+    <div class="card">
+      <div class="card-title">1. 认零件（前缀 + 词根）</div>
+      <div class="outline">
+        <div class="outline-title">中学词根大纲定位</div>
+        <ul class="outline-list">
+          <li>前缀：inter-（相互/在……之间）；super-（上方/超越）；ex-（向外/前任）</li>
+          <li>词根：press（压）；mit/miss（送出/放出）</li>
+          <li>重点：复习全部常见词根词缀，强化识别和实际运用</li>
+        </ul>
+      </div>
+      <div id="learnContainer"></div>
+      <button class="btn" onclick="switchTab('quiz')">✅ 学完了，去刷题 (15题)</button>
+    </div>
+    <div class="card" id="quizCard" style="display:none;">
+      <div class="card-title">2. 刷题库</div>
+      <div class="score-board"><span>📊 得分: <strong id="scoreDisplay">0</strong> / 15</span><span id="progressText">进度: 0%</span></div>
+      <div id="quizContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    const learnData = [
+      {
+        title: 'inter-',
+        en: 'between / among',
+        img: 'international（国际的）；interact（互动）；interview（采访）',
+        family: [
+          { word: 'inter-', mean: '在……之间；相互' },
+          { word: 'international', mean: '国际的' },
+          { word: 'interact', mean: '互动' },
+          { word: 'interview', mean: '采访' }
+        ]
+      },
+      {
+        title: 'super-',
+        en: 'above / beyond',
+        img: 'superpower（超能力）；supermarket（超市）；superior（上等的）',
+        family: [
+          { word: 'super-', mean: '在上方；超越' },
+          { word: 'superpower', mean: '超能力' },
+          { word: 'supermarket', mean: '超市' },
+          { word: 'superior', mean: '上等的' }
+        ]
+      },
+      {
+        title: 'ex-',
+        en: 'out / former',
+        img: 'export（出口）；ex-president（前总统）；exit（退出）',
+        family: [
+          { word: 'ex-', mean: '向外；前任的' },
+          { word: 'export', mean: '出口' },
+          { word: 'exit', mean: '退出' },
+          { word: 'ex-president', mean: '前总统' }
+        ]
+      },
+      {
+        title: 'press',
+        en: 'press / push',
+        img: 'pressure（压力）；compress（压缩）；express（表达）',
+        family: [
+          { word: 'press', mean: '压；挤压' },
+          { word: 'pressure', mean: '压力' },
+          { word: 'compress', mean: '压缩' },
+          { word: 'express', mean: '表达' }
+        ]
+      },
+      {
+        title: 'mit / miss',
+        en: 'send / let go',
+        img: 'transmit（传输）；admit（承认/准许进入）；dismiss（解散/解雇）',
+        family: [
+          { word: 'mit', mean: '送出' },
+          { word: 'miss', mean: '送出；放出' },
+          { word: 'transmit', mean: '传输' },
+          { word: 'dismiss', mean: '解散' }
+        ]
+      }
+    ];
+
+    const questions = [
+      { q: 'inter- 常表示什么？', options: ['在下面', '在……之间/相互', '向外', '超越'], answer: 1, explain: '如 international、interact。' },
+      { q: 'super- 的常见方向联想是什么？', options: ['在下方', '在……之间', '在上方/超越', '向外'], answer: 2, explain: 'super- 常表示“上方、超越”。' },
+      { q: 'export 中 ex- 的意思最接近什么？', options: ['向外/出', '向内', '向后', '之间'], answer: 0, explain: 'export = 出口。' },
+      { q: 'ex-president 中 ex- 表示什么？', options: ['在职的', '前任的', '超越的', '内部的'], answer: 1, explain: 'ex-president = 前总统。' },
+      { q: 'press 常与什么意思有关？', options: ['说', '压/挤压', '携带', '跟随'], answer: 1, explain: '如 pressure、compress。' },
+      { q: 'mit / miss 常与什么意思有关？', options: ['送出/放出', '压', '建造', '转'], answer: 0, explain: '如 transmit、dismiss。' },
+      { q: 'pressure 的意思是？', options: ['压力', '前任', '互动', '任务'], answer: 0, explain: 'pressure = 压力。' },
+      { q: 'compress 的意思是？', options: ['表达', '压缩', '允许', '传输'], answer: 1, explain: 'compress = 压缩。' },
+      { q: 'transmit 的意思是？', options: ['提交', '传输', '解雇', '承认'], answer: 1, explain: 'transmit = 传输。' },
+      { q: 'dismiss 的常见意思是？', options: ['解散/解雇', '允许', '印象', '超自然'], answer: 0, explain: 'dismiss = 解散、解雇。' },
+      { q: 'admit 常见意思包括哪一项？', options: ['压缩', '承认/准许进入', '出口', '互动'], answer: 1, explain: 'admit = 承认；也可表示准许进入。' },
+      { q: 'international 表示什么？', options: ['国内的', '国际的', '超自然的', '前任的'], answer: 1, explain: 'international = 国际的。' },
+      { q: 'express 除“表达”外，还可以表示什么？', options: ['挤出/明确表达', '允许', '向下', '在……之间'], answer: 0, explain: 'express = 明确表达。' },
+      { q: '哪一组“前缀/词根—常见义”匹配正确？', options: ['inter-—向外；press—携带', 'ex-—之间；mit—压', 'super-—超越；press—压', 'mit—建造；inter-—向下'], answer: 2, explain: 'super- 表示超越；press 与“压”有关。' },
+      { q: 'superpower 的意思最接近什么？', options: ['超能力', '前任', '国际', '平衡'], answer: 0, explain: 'superpower = 超能力。' }
+    ];
+
+    function renderLearn() {
+      const container = document.getElementById('learnContainer');
+      container.innerHTML = learnData.map(item => `
+        <div class="learn-card">
+          <div class="learn-title">${item.title}<span class="learn-en">${item.en}</span></div>
+          <div class="learn-img">${item.img}</div>
+          <button class="family-toggle" onclick="toggleFamily(this)">📚 词族 / 词根速记</button>
+          <ul class="family-list">
+            ${item.family.map(f => `
+              <li>
+                <span class="fam-word">${f.word}</span>
+                <span class="fam-break">${f.word.includes('-') ? '词缀' : '词根'}</span>
+                <span class="fam-mean">${f.mean}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `).join('');
+    }
+
+    function toggleFamily(button) {
+      const list = button.nextElementSibling;
+      list.classList.toggle('open');
+    }
+
+    function switchTab(tab) {
+      const quizCard = document.getElementById('quizCard');
+      if (tab === 'quiz') {
+        quizCard.style.display = 'block';
+        quizCard.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function renderQuiz() {
+      const container = document.getElementById('quizContainer');
+      let score = 0;
+      let answered = 0;
+
+      questions.forEach((q, index) => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.innerHTML = `
+          <div class="quiz-question">${index + 1}. ${q.q}</div>
+          <div class="quiz-options"></div>
+          <div class="quiz-explain">💡 ${q.explain}</div>
+        `;
+
+        const optionWrap = card.querySelector('.quiz-options');
+        q.options.forEach((opt, optIndex) => {
+          const button = document.createElement('button');
+          button.className = 'quiz-opt';
+          button.textContent = `${String.fromCharCode(65 + optIndex)}. ${opt}`;
+          button.onclick = () => {
+            if (button.dataset.locked) return;
+            button.dataset.locked = 'true';
+            const allButtons = [...optionWrap.querySelectorAll('.quiz-opt')];
+            allButtons.forEach(btn => btn.disabled = true);
+
+            if (optIndex === q.answer) {
+              button.classList.add('correct');
+              score += 1;
+            } else {
+              button.classList.add('wrong');
+              allButtons[q.answer].classList.add('correct');
+            }
+
+            card.querySelector('.quiz-explain').classList.add('show');
+            answered += 1;
+            document.getElementById('scoreDisplay').textContent = score;
+            document.getElementById('progressText').textContent = `进度: ${Math.round((answered / questions.length) * 100)}%`;
+          };
+          optionWrap.appendChild(button);
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    renderLearn();
+    renderQuiz();
+  </script>
+</body>
+</html>
