@@ -5,7 +5,427 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>Day 6 · 基础营大考 (修正版)</title>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Day 6 · 基础营复习</title>
+  <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f0f5fb;
+      padding: 14px 10px 30px;
+      color: #1a2a3a;
+    }
+
+    .container { max-width: 820px; margin: 0 auto; }
+
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      background: white;
+      padding: 10px 16px;
+      border-radius: 40px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e0eaf2;
+    }
+
+    .step { font-size: 0.85rem; font-weight: 600; color: #a0b5c8; }
+    .step.active { color: #1f5880; }
+    .step.done { color: #1a7a3a; }
+
+    .page {
+      display: none;
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 6px 18px rgba(0, 20, 30, 0.08);
+      border: 1px solid #e6eef6;
+    }
+
+    .page.active { display: block; }
+
+    h2 {
+      font-size: 1.2rem;
+      color: #134b6b;
+      margin-bottom: 14px;
+      border-bottom: 2px solid #e3edf5;
+      padding-bottom: 8px;
+    }
+
+    .intro-card {
+      background: #fafdff;
+      border: 1px solid #e3ecf5;
+      border-radius: 12px;
+      padding: 20px;
+      line-height: 1.8;
+      color: #4c6275;
+    }
+
+    .intro-card strong { color: #1f5880; }
+
+    .note {
+      font-size: 0.86rem;
+      color: #6d8191;
+      margin-top: 12px;
+      line-height: 1.65;
+    }
+
+    .score-board {
+      background: #e3edf5;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1f5880;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .quiz-card {
+      background: #f8fbff;
+      border: 1px solid #d5e4f1;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .quiz-question {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.55;
+    }
+
+    .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+
+    .quiz-opt {
+      background: white;
+      border: 1px solid #c9dae8;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      text-align: left;
+      transition: 0.2s;
+    }
+
+    .quiz-opt:hover:not(:disabled) { background: #e6f0f8; }
+    .quiz-opt:disabled { cursor: default; opacity: 1; }
+
+    .quiz-opt.correct {
+      background: #d4edda;
+      border-color: #28a745;
+      color: #155724;
+      font-weight: 700;
+    }
+
+    .quiz-opt.wrong {
+      background: #f8d7da;
+      border-color: #dc3545;
+      color: #721c24;
+      font-weight: 700;
+    }
+
+    .quiz-explain {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.86rem;
+      color: #1a4d6b;
+      background: #e3edf5;
+      padding: 9px 12px;
+      border-radius: 8px;
+      line-height: 1.6;
+    }
+
+    .quiz-explain.show { display: block; }
+
+    .btn {
+      background: #1f5880;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+      width: 100%;
+    }
+
+    .btn:hover { background: #13466a; }
+    .btn-green { background: #1a7a3a; }
+    .btn-green:hover { background: #14632f; }
+
+    .finish-msg { text-align: center; padding: 24px 10px; }
+    .finish-msg h3 { color: #1a7a3a; font-size: 1.3rem; margin-bottom: 10px; }
+    .final-score { color: #1a7a3a; font-size: 1.5rem; font-weight: 700; }
+    .comment { margin: 12px 0; color: #1f5880; line-height: 1.6; }
+
+    @media (max-width: 520px) {
+      .progress-bar { padding: 9px 10px; }
+      .step { font-size: 0.76rem; }
+      .page { padding: 15px; }
+      .score-board { font-size: 0.82rem; padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="progress-bar">
+    <span class="step active" id="step-0">1. 考前须知</span>
+    <span class="step" id="step-1">2. 综合复习（20题）</span>
+    <span class="step" id="step-2">🏆 结算</span>
+  </div>
+
+  <div class="page active" id="page-0">
+    <h2>Day 6：Day 1–5 综合复习</h2>
+    <div class="intro-card">
+      <strong>本次复习范围：</strong>前缀与词根的常见含义、常见单词及基础辨析。<br>
+      共 <strong>20 道选择题</strong>，题目覆盖 Day 1–5 学过的内容。<br>
+      作答后会显示正确答案和简要解释。
+      <p class="note">
+        提醒：词根词缀通常是记忆和理解单词的线索。具体词义应以常用词义和语境为准，不要把每个词都机械地按部件直译。
+      </p>
+    </div>
+    <button class="btn btn-green" onclick="goToPage(1)">开始复习</button>
+  </div>
+
+  <div class="page" id="page-1">
+    <h2>综合复习（20题）</h2>
+    <div class="score-board">
+      <span>📊 已答对：<strong id="scoreDisplay">0</strong> / 20</span>
+      <span id="progressText">进度：0%</span>
+    </div>
+    <div id="quizContainer"></div>
+    <button class="btn btn-green" id="btn-finish" onclick="goToPage(2)" style="display:none;">
+      🏆 完成练习，查看成绩
+    </button>
+  </div>
+
+  <div class="page" id="page-2">
+    <div class="finish-msg">
+      <h3>Day 6 复习完成！</h3>
+      <p>最终得分：<span class="final-score" id="finalScore">0</span> / 20</p>
+      <p class="comment" id="comment"></p>
+      <button class="btn" onclick="location.reload()">🔄 再练一次</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const quizData = [
+  {
+    q: "前缀 trans- 在 transport 中最适合联想到什么？",
+    opts: ["A. 跨越、从一处到另一处", "B. 向内", "C. 再次", "D. 错误地"],
+    ans: 0,
+    exp: "trans- 常有“跨越、从一处到另一处”的意思；transport 是“运输、运送”。"
+  },
+  {
+    q: "前缀 mis- 在 misunderstand 中表示什么？",
+    opts: ["A. 在下面", "B. 错误地", "C. 超越", "D. 向外"],
+    ans: 1,
+    exp: "mis- 常表示“错误地”；misunderstand 是“误解”。"
+  },
+  {
+    q: "anti- 的常见意思是什么？",
+    opts: ["A. 共同", "B. 再次", "C. 反对、对抗", "D. 向内"],
+    ans: 2,
+    exp: "anti- 常表示“反对、对抗”，如 antiwar（反战的）。"
+  },
+  {
+    q: "super- 在常见词汇中可以表示什么？",
+    opts: ["A. 在下面", "B. 在两者之间", "C. 错误地", "D. 在上方、超越"],
+    ans: 3,
+    exp: "super- 常有“在上方、超越”的意思；具体单词仍需结合语境理解。"
+  },
+  {
+    q: "co- / con- 常表示什么？",
+    opts: ["A. 分开", "B. 共同、一起", "C. 向外", "D. 之前"],
+    ans: 1,
+    exp: "co- / con- 常有“共同、一起”的意思，如 cooperate（合作）。"
+  },
+  {
+    q: "词根 struct 常与什么含义有关？",
+    opts: ["A. 建造、构筑", "B. 说", "C. 看", "D. 携带"],
+    ans: 0,
+    exp: "struct 与建造、构筑相关，如 structure（结构）、construct（建造）。"
+  },
+  {
+    q: "词根 vert / vers 常与什么含义有关？",
+    opts: ["A. 压", "B. 写", "C. 转、转向", "D. 跟随"],
+    ans: 2,
+    exp: "vert / vers 与“转”有关，如 reverse（反转）、convert（转换）。"
+  },
+  {
+    q: "词根 mit / miss 常与什么含义有关？",
+    opts: ["A. 建造", "B. 看", "C. 说", "D. 送出、放出"],
+    ans: 3,
+    exp: "mit / miss 来自与“送出、放出”有关的词根，如 transmit（传输）。"
+  },
+  {
+    q: "词根 sequ 常与什么含义有关？",
+    opts: ["A. 跟随", "B. 压", "C. 写", "D. 携带"],
+    ans: 0,
+    exp: "sequ 与“跟随”有关，如 sequence（顺序）、subsequent（随后的）。"
+  },
+  {
+    q: "词根 press 常与什么含义有关？",
+    opts: ["A. 看", "B. 压、挤压", "C. 说", "D. 建造"],
+    ans: 1,
+    exp: "press 与压、挤压有关，如 pressure（压力）、compress（压缩）。"
+  },
+  {
+    q: "port 在 import / export 中常与什么含义有关？",
+    opts: ["A. 书写", "B. 判断", "C. 携带、运送", "D. 转动"],
+    ans: 2,
+    exp: "port 与携带、运送有关：import 是进口，export 是出口。"
+  },
+  {
+    q: "inspect 的常见意思是什么？",
+    opts: ["A. 反驳", "B. 运输", "C. 预测", "D. 检查"],
+    ans: 3,
+    exp: "inspect = 检查、仔细查看。词根拆分可以辅助记忆，但不必逐字翻译。"
+  },
+  {
+    q: "dict 常与哪个意思有关？",
+    opts: ["A. 说、讲", "B. 拉、拖", "C. 形成", "D. 压"],
+    ans: 0,
+    exp: "dict 与“说、讲”有关，如 predict（预测）、dictionary（字典）。"
+  },
+  {
+    q: "duc / duct 常与哪个意思有关？",
+    opts: ["A. 携带", "B. 引导、带领", "C. 转动", "D. 看"],
+    ans: 1,
+    exp: "duc / duct 与引导、带领有关，如 conduct（指挥、引导）。"
+  },
+  {
+    q: "词根 tract 常与哪个意思有关？",
+    opts: ["A. 写", "B. 说", "C. 拉、拖", "D. 听"],
+    ans: 2,
+    exp: "tract 与拉、拖有关，如 attract（吸引）、extract（提取）。"
+  },
+  {
+    q: "以下哪组匹配正确？",
+    opts: ["A. pre- — 错误地", "B. sub- — 跨越", "C. anti- — 再次", "D. re- — 再次/向回"],
+    ans: 3,
+    exp: "re- 常表示“再次”或“向回”；其他选项把前缀含义配错了。"
+  },
+  {
+    q: "misunderstand 的常见意思是什么？",
+    opts: ["A. 误解", "B. 介绍", "C. 压缩", "D. 运输"],
+    ans: 0,
+    exp: "misunderstand = 误解；mis- 常表示错误地。"
+  },
+  {
+    q: "support 的常见意思是什么？",
+    opts: ["A. 预测", "B. 支持、支撑", "C. 消失", "D. 反转"],
+    ans: 1,
+    exp: "support = 支持、支撑。记忆拆分可以辅助理解，但整词含义优先。"
+  },
+  {
+    q: "underestimate 的意思是什么？",
+    opts: ["A. 高估", "B. 运输", "C. 低估", "D. 介绍"],
+    ans: 2,
+    exp: "underestimate = 低估；under- 在这里有“不足、低于”的联想。"
+  },
+  {
+    q: "哪一项把常见词义配对正确？",
+    opts: ["A. contradict — 支持", "B. extract — 描述", "C. pressure — 观众", "D. transmit — 传输"],
+    ans: 3,
+    exp: "transmit = 传输；其他三项的词义配对不正确。"
+  }
+];
+
+let correctCount = 0;
+let answeredCount = 0;
+const quizContainer = document.getElementById('quizContainer');
+const letters = ['A', 'B', 'C', 'D'];
+
+quizData.forEach((q, idx) => {
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  card.id = `qcard-${idx}`;
+
+  const question = document.createElement('div');
+  question.className = 'quiz-question';
+  question.textContent = `${idx + 1}. ${q.q}`;
+
+  const options = document.createElement('div');
+  options.className = 'quiz-options';
+
+  q.opts.forEach((option, optionIndex) => {
+    const button = document.createElement('button');
+    button.className = 'quiz-opt';
+    button.type = 'button';
+    button.textContent = `${letters[optionIndex]}. ${option}`;
+    button.addEventListener('click', () => checkAnswer(idx, optionIndex, button));
+    options.appendChild(button);
+  });
+
+  const explanation = document.createElement('div');
+  explanation.className = 'quiz-explain';
+  explanation.id = `exp-${idx}`;
+  explanation.textContent = `💡 ${q.exp}`;
+
+  card.append(question, options, explanation);
+  quizContainer.appendChild(card);
+});
+
+function checkAnswer(questionIndex, selectedIndex, selectedButton) {
+  const q = quizData[questionIndex];
+  const card = document.getElementById(`qcard-${questionIndex}`);
+  const buttons = [...card.querySelectorAll('.quiz-opt')];
+
+  if (buttons.some(button => button.disabled)) return;
+  buttons.forEach(button => { button.disabled = true; });
+
+  if (selectedIndex === q.ans) {
+    selectedButton.classList.add('correct');
+    correctCount += 1;
+  } else {
+    selectedButton.classList.add('wrong');
+    buttons[q.ans].classList.add('correct');
+  }
+
+  document.getElementById(`exp-${questionIndex}`).classList.add('show');
+  answeredCount += 1;
+  document.getElementById('scoreDisplay').textContent = correctCount;
+  document.getElementById('progressText').textContent =
+    `进度：${Math.round(answeredCount / quizData.length * 100)}%`;
+
+  if (answeredCount === quizData.length) {
+    document.getElementById('finalScore').textContent = correctCount;
+    document.getElementById('comment').textContent =
+      correctCount >= 18 ? '基础掌握很扎实！' :
+      correctCount >= 14 ? '表现不错，建议复习错题。' :
+      '建议回看 Day 1–5 的重点词缀和词根，再试一次。';
+    document.getElementById('btn-finish').style.display = 'block';
+  }
+}
+
+function goToPage(pageIndex) {
+  document.querySelectorAll('.page').forEach((page, index) => {
+    page.classList.toggle('active', index === pageIndex);
+  });
+  document.querySelectorAll('.step').forEach((step, index) => {
+    step.classList.remove('active', 'done');
+    if (index < pageIndex) step.classList.add('done');
+    if (index === pageIndex) step.classList.add('active');
+  });
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>\n","message":"只更新 Day 6：修正复习题表述并均衡答案位置","owner":"641672940cui","path":"day6.html","repo":"english","sha":"07ccb19c498f0fda68ccdbc27828a12005c60eb1"}]}"
     body { font-family: system-ui, -apple-system, sans-serif; background: #f0f5fb; padding: 14px 10px 30px; color: #1a2a3a; }
     .container { max-width: 820px; margin: 0 auto; }
     
